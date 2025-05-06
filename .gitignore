@@ -5,3 +5,5 @@
 __pycache__
 .ipynb_checkpoints
 Untitled*.ipynb
+notebooks-local
+data_Qu_2015.nc
