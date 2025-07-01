@@ -261,9 +261,17 @@ class BoundaryCondition:
 
 @dataclass(frozen=True)
 class FixedConcentrationBoundary(BoundaryCondition):
+    """Boundary condition with fixed concentration on the boundary
+
+    On outflow, the dispersive flux is set to zero, only advection out
+    of the domain.
+    """
+
     fixed_concentration: float | Callable[[jax.Array], jax.Array]
 
-    def compute_flux(self, time: jax.Array, system: System, boundary_cell_state: jax.Array):
+    def compute_flux(
+        self, time: jax.Array, system: System, boundary_cell_state: jax.Array
+    ):
         # TODO use area and porosity
         if isinstance(self.fixed_concentration, float):
             fixed_concentration = self.fixed_concentration
@@ -274,16 +282,16 @@ class FixedConcentrationBoundary(BoundaryCondition):
 
         if self.left:
             c_interface = jax.lax.select(
-                velocity > 0,
+                velocity >= 0,
                 fixed_concentration,
                 boundary_cell_state,
             )
             advection_sign = 1
         else:
             c_interface = jax.lax.select(
-                velocity > 0,
-                boundary_cell_state,
+                velocity <= 0,
                 fixed_concentration,
+                boundary_cell_state,
             )
             advection_sign = -1
 
@@ -294,8 +302,20 @@ class FixedConcentrationBoundary(BoundaryCondition):
         location = 0 if self.left else -1
         dx = system.cells.face_distances[location]
         dispersion_coefficient = system.dispersion.get_coefficient(time, system)
+        dispersion = -diff * self.species_selector(dispersion_coefficient) / dx * 2
 
-        return (advection - diff * self.species_selector(dispersion_coefficient) / dx * 2) / dx
+        if self.left:
+            dispersion = jax.lax.select(
+                velocity >= 0, dispersion, jnp.zeros_like(dispersion)
+            )
+        else:
+            dispersion = jax.lax.select(
+                velocity <= 0,
+                dispersion,
+                jnp.zeros_like(dispersion),
+            )
+
+        return (advection + dispersion) / dx
 
 
 def apply_bcs(bcs, t, system, state, rate):
