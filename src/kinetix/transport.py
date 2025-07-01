@@ -26,7 +26,7 @@ class Species:
 @dataclass(frozen=True)
 class System:
     porosity: jax.Array
-    velocity: jax.Array
+    velocity: Callable[[jax.Array], jax.Array]
     cells: Cells
     advection: Advection
     dispersion: Dispersion
@@ -88,7 +88,7 @@ class Cells:
 class Advection:
     limiter_type: str = "minmod"  # Options: "minmod", "upwind", "MC"
 
-    def rate(self, state: Species, system: System) -> Species:
+    def rate(self, time: jax.Array, state: Species, system: System) -> Species:
         def flat_rate(concentration):
             cells = system.cells
             dx_center = cells.center_distances  # (n_cells - 1,)
@@ -104,7 +104,8 @@ class Advection:
             # Internal faces (i = 1 to n_cells - 1)
             left_state = QR[:-1]  # right side of cell i-1
             right_state = QL[1:]  # left side of cell i
-            internal_flux = self.upwind_flux(left_state, right_state, system.velocity)
+            velocity = system.velocity(time)
+            internal_flux = self.upwind_flux(left_state, right_state, velocity)
 
             # Handle boundary fluxes using boundary condition object
             left_flux = jnp.array(0.0)
@@ -183,15 +184,16 @@ class Dispersion:
     # pore diffusion coefficient
     pore_diffusion: Species
 
-    def get_coefficient(self, system):
+    def get_coefficient(self, time: jax.Array, system: System):
+        velocity = system.velocity(time)
         return jax.tree.map(
-            lambda pore_diffusion: jnp.abs(system.velocity) * self.dispersivity
+            lambda pore_diffusion: jnp.abs(velocity) * self.dispersivity
             + pore_diffusion,
             self.pore_diffusion,
         )
 
-    def rate(self, state: Species, system: System) -> Species:
-        coeff = self.get_coefficient(system)
+    def rate(self, time: jax.Array, state: Species, system: System) -> Species:
+        coeff = self.get_coefficient(time, system)
 
         def flat_rate(concentration, coeff):
             cells = system.cells
@@ -261,37 +263,39 @@ class BoundaryCondition:
 class FixedConcentrationBoundary(BoundaryCondition):
     fixed_concentration: float | Callable[[jax.Array], jax.Array]
 
-    def compute_flux(self, t, system, boundary_cell_state):
+    def compute_flux(self, time: jax.Array, system: System, boundary_cell_state: jax.Array):
         # TODO use area and porosity
         if isinstance(self.fixed_concentration, float):
             fixed_concentration = self.fixed_concentration
         else:
-            fixed_concentration = self.fixed_concentration(t)
+            fixed_concentration = self.fixed_concentration(time)
+
+        velocity = system.velocity(time)
 
         if self.left:
             c_interface = jax.lax.select(
-                system.velocity > 0,
+                velocity > 0,
                 fixed_concentration,
                 boundary_cell_state,
             )
             advection_sign = 1
         else:
             c_interface = jax.lax.select(
-                system.velocity > 0,
+                velocity > 0,
                 boundary_cell_state,
                 fixed_concentration,
             )
             advection_sign = -1
 
-        advection = advection_sign * system.velocity * c_interface
+        advection = advection_sign * velocity * c_interface
 
         # dispersion flow
         diff = boundary_cell_state - fixed_concentration
         location = 0 if self.left else -1
-        dx = system.cells.face_distances[location] / 2
-        dispersion_coefficient = system.dispersion.get_coefficient(system)
+        dx = system.cells.face_distances[location]
+        dispersion_coefficient = system.dispersion.get_coefficient(time, system)
 
-        return advection - diff * self.species_selector(dispersion_coefficient) / dx
+        return (advection - diff * self.species_selector(dispersion_coefficient) / dx * 2) / dx
 
 
 def apply_bcs(bcs, t, system, state, rate):
@@ -305,13 +309,13 @@ def apply_bcs(bcs, t, system, state, rate):
     return rate
 
 
-def rhs(t, state, system: System):
+def rhs(time, state, system: System):
     rate = jax.tree.map(
         lambda a, d: a + d,
-        system.advection.rate(state, system),
-        system.dispersion.rate(state, system),
+        system.advection.rate(time, state, system),
+        system.dispersion.rate(time, state, system),
     )
-    return apply_bcs(system.bcs, t, system, state, rate)
+    return apply_bcs(system.bcs, time, system, state, rate)
 
 
 def make_solver(

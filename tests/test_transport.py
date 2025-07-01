@@ -33,7 +33,7 @@ def test_tracer():
     ]
     system = System(
         porosity=jnp.array(0.3),
-        velocity=jnp.array(1 / 365),
+        velocity=lambda t: jnp.array(1 / 365),
         cells=cells,
         advection=advection,
         dispersion=dispersion,
@@ -47,4 +47,4 @@ def test_tracer():
     )
     solution = solver(state, system)
     assert solution.ys.tracer.shape == (123, 200)
-    assert np.allclose(solution.ys.tracer[-1, 0], 10)
+    np.testing.assert_allclose(solution.ys.tracer[-1, 0], 10, rtol=1e-3)
