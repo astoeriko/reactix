@@ -19,6 +19,9 @@ matplotlib = ">=3.10.1,<4"
 arviz = ">=0.21.0,<0.22"
 maturin = ">=1.8.3,<2"
 zarr = ">=3.0.6,<4"
+jupyterlab = ">=4.4.1,<5"
+pytest = ">=8.4.1,<9"
+ipympl = ">=0.9.7,<0.10"
 
 [pypi-dependencies]
 kinetix = { path = ".", editable = true }
