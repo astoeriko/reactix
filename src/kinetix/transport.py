@@ -23,13 +23,16 @@ class Species:
 
 
 @jax.tree_util.register_dataclass
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class System:
     porosity: jax.Array
     velocity: Callable[[jax.Array], jax.Array]
     cells: Cells
     advection: Advection
     dispersion: Dispersion
+    reactions: list[BoundaryCondition] = field(
+        default_factory=list
+    )
     bcs: list[BoundaryCondition] = field(
         default_factory=list
     )  # avoid shared mutable default!
@@ -330,10 +333,15 @@ def apply_bcs(bcs, t, system, state, rate):
 
 
 def rhs(time, state, system: System):
+    vmaped_rates = [
+        jax.vmap(reaction.rate, [None, type(state).int_zeros(), None])(time, state, system)
+        for reaction in system.reactions
+    ]
     rate = jax.tree.map(
-        lambda a, d: a + d,
+        lambda *args: sum(args),
         system.advection.rate(time, state, system),
         system.dispersion.rate(time, state, system),
+        *vmaped_rates,
     )
     return apply_bcs(system.bcs, time, system, state, rate)
 
