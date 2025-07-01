@@ -25,8 +25,7 @@ def test_tracer():
     advection = Advection(limiter_type="minmod")
     bcs = [
         FixedConcentrationBoundary(
-            is_active=lambda t, system: jnp.array(True),
-            left=True,
+            boundary="left",
             species_selector=lambda s: getattr(s, "tracer"),
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
@@ -61,14 +60,12 @@ def test_negative_velocity():
     advection = Advection(limiter_type="minmod")
     bcs = [
         FixedConcentrationBoundary(
-            is_active=lambda t, system: jnp.array(True),
-            left=False,
+            boundary="right",
             species_selector=lambda s: getattr(s, "tracer"),
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
         FixedConcentrationBoundary(
-            is_active=lambda t, system: True,
-            left=True,
+            boundary="left",
             species_selector=lambda s: getattr(s, "tracer"),
             fixed_concentration=lambda t: jnp.array(5.0),
         ),
@@ -104,13 +101,13 @@ def test_duplicate_bondaries():
     bcs = [
         FixedConcentrationBoundary(
             is_active=lambda t, system: t < 1000,
-            left=True,
+            boundary="left",
             species_selector=lambda s: getattr(s, "tracer"),
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
         FixedConcentrationBoundary(
             is_active=lambda t, system: t >= 500,
-            left=True,
+            boundary="left",
             species_selector=lambda s: getattr(s, "tracer"),
             fixed_concentration=lambda t: jnp.array(3.0),
         ),

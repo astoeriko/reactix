@@ -6,7 +6,7 @@ import equinox as eqx
 import diffrax
 
 from dataclasses import dataclass, field, replace
-from typing import Callable
+from typing import Callable, Literal
 
 
 @jax.tree_util.register_dataclass
@@ -222,18 +222,18 @@ class Dispersion:
         return jax.tree.map(flat_rate, state, coeff)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class BoundaryCondition:
-    is_active: Callable[[jax.Array, System], jax.Array]
+    is_active: Callable[[jax.Array, System], jax.Array] = lambda t, system: jnp.array(True)
     species_selector: Callable
-    left: bool
+    boundary: Literal["left", "right"]
 
     def apply(self, t, system, state, rate, apply_count):
         species_rate = self.species_selector(rate)
         species_state = self.species_selector(state)
         species_apply_count = self.species_selector(apply_count)
 
-        location = 0 if self.left else -1
+        location = 0 if self.boundary == "left" else -1
         flux = self.compute_flux(t, system, species_state[location])
 
         active_val = species_rate.at[location].add(flux)
@@ -280,7 +280,7 @@ class FixedConcentrationBoundary(BoundaryCondition):
 
         velocity = system.velocity(time)
 
-        if self.left:
+        if self.boundary == "left":
             c_interface = jax.lax.select(
                 velocity >= 0,
                 fixed_concentration,
@@ -299,12 +299,12 @@ class FixedConcentrationBoundary(BoundaryCondition):
 
         # dispersion flow
         diff = boundary_cell_state - fixed_concentration
-        location = 0 if self.left else -1
+        location = 0 if self.boundary == "left" else -1
         dx = system.cells.face_distances[location]
         dispersion_coefficient = system.dispersion.get_coefficient(time, system)
         dispersion = -diff * self.species_selector(dispersion_coefficient) / dx * 2
 
-        if self.left:
+        if self.boundary == "left":
             dispersion = jax.lax.select(
                 velocity >= 0, dispersion, jnp.zeros_like(dispersion)
             )
