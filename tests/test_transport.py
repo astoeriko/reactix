@@ -16,7 +16,8 @@ from kinetix.transport import (
 
 def test_tracer():
     cells = Cells.equally_spaced(10, 200)
-    dispersion = Dispersion(
+    dispersion = Dispersion.build(
+        cells,
         dispersivity=jnp.array(0.1),
         pore_diffusion=Species(
             tracer=jnp.array(1e-9 * 3600 * 24),
@@ -30,9 +31,9 @@ def test_tracer():
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
     ]
-    system = System(
+    system = System.build(
         porosity=jnp.array(0.3),
-        velocity=lambda t: jnp.array(1 / 365),
+        discharge=lambda t: jnp.array(1 / 365),
         cells=cells,
         advection=advection,
         dispersion=dispersion,
@@ -51,7 +52,8 @@ def test_tracer():
 
 def test_negative_velocity():
     cells = Cells.equally_spaced(10, 200)
-    dispersion = Dispersion(
+    dispersion = Dispersion.build(
+        cells,
         dispersivity=jnp.array(0.1),
         pore_diffusion=Species(
             tracer=jnp.array(1e-9 * 3600 * 24),
@@ -70,9 +72,9 @@ def test_negative_velocity():
             fixed_concentration=lambda t: jnp.array(5.0),
         ),
     ]
-    system = System(
+    system = System.build(
         porosity=jnp.array(0.3),
-        velocity=lambda t: jnp.array(-1 / 365),
+        discharge=lambda t: jnp.array(-1 / 365),
         cells=cells,
         advection=advection,
         dispersion=dispersion,
@@ -91,7 +93,8 @@ def test_negative_velocity():
 
 def test_duplicate_bondaries():
     cells = Cells.equally_spaced(10, 200)
-    dispersion = Dispersion(
+    dispersion = Dispersion.build(
+        cells,
         dispersivity=jnp.array(0.1),
         pore_diffusion=Species(
             tracer=jnp.array(1e-9 * 3600 * 24),
@@ -112,9 +115,9 @@ def test_duplicate_bondaries():
             fixed_concentration=lambda t: jnp.array(3.0),
         ),
     ]
-    system = System(
+    system = System.build(
         porosity=jnp.array(0.3),
-        velocity=lambda t: jnp.array(1 / 365),
+        discharge=lambda t: jnp.array(1 / 365),
         cells=cells,
         advection=advection,
         dispersion=dispersion,

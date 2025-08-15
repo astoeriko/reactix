@@ -25,24 +25,66 @@ class Species:
 @jax.tree_util.register_dataclass
 @dataclass(frozen=True, kw_only=True)
 class System:
+    # Scalar or one value per cell
     porosity: jax.Array
-    velocity: Callable[[jax.Array], jax.Array]
+    discharge: Callable[[jax.Array], jax.Array]
     cells: Cells
     advection: Advection
     dispersion: Dispersion
-    reactions: list[BoundaryCondition] = field(
-        default_factory=list
-    )
+    reactions: list[BoundaryCondition] = field(default_factory=list)
     bcs: list[BoundaryCondition] = field(
         default_factory=list
     )  # avoid shared mutable default!
 
-    # TODO get advection and dispersion
-    # TODO add reactions
     # TODO rename to Model, but maybe some attrisbutes in System or so?
-    # TODO porosity depending in position?
+    # TODO: retardation_factor: Species
 
-    # retardation_factor: Species
+    @classmethod
+    def build(
+        cls,
+        *,
+        cells: Cells,
+        advection: Advection,
+        dispersion: Dispersion,
+        bcs: list[BoundaryCondition] | None = None,
+        reactions: list[BoundaryCondition] | None = None,
+        discharge: Callable[[jax.Array], jax.Array] | jax.Array,
+        porosity: jax.Array,
+    ):
+        if bcs is None:
+            bcs = []
+
+        if reactions is None:
+            reactions = []
+
+        if callable(discharge):
+            discharge_fn = discharge
+        else:
+            discharge = jnp.asarray(discharge)
+            assert discharge.ndim == 0
+            discharge_fn = lambda time: discharge
+
+        if porosity.ndim == 0:
+            porosity = jnp.ones(cells.n_cells) * porosity
+
+        if porosity.ndim != 1 or porosity.shape != (cells.n_cells,):
+            raise ValueError(
+                f"Invalid porosity shape: {porosity.shape}. "
+                f"Expected shape {(cells.n_cells,)}"
+            )
+        return cls(
+            cells=cells,
+            advection=advection,
+            dispersion=dispersion,
+            bcs=bcs,
+            reactions=reactions,
+            discharge=discharge_fn,
+            porosity=porosity,
+        )
+
+    def cell_velocity(self, t):
+        discharge = self.discharge(t)
+        return discharge / self.cells.cell_area / self.porosity
 
 
 @jax.tree_util.register_dataclass
@@ -54,11 +96,11 @@ class Cells:
     # The x coordinate of the point between cells,
     # and the first and last boundary. Shape = (n_cells + 1,)
     nodes: jax.Array
+    interface_area: jax.Array
 
-    # TODO add area for each node
-
-    def cell_length(self) -> jax.Array:
-        return self.nodes[1:] - self.nodes[:-1]
+    @property
+    def cell_area(self):
+        return (self.interface_area[:-1] + self.interface_area[1:]) / 2
 
     @property
     def face_distances(self):
@@ -77,12 +119,15 @@ class Cells:
         return self.centers[1:] - self.centers[:-1]
 
     @classmethod
-    def equally_spaced(cls, length, n_cells):
+    def equally_spaced(cls, length, n_cells, *, interface_area=None):
+        if interface_area is None:
+            interface_area = jnp.ones(n_cells + 1)
         nodes = jnp.linspace(0, length, n_cells + 1)
         return Cells(
             n_cells=n_cells,
             nodes=nodes,
             centers=(nodes[1:] - nodes[:-1]) / 2 + nodes[:-1],
+            interface_area=interface_area,
         )
 
 
@@ -90,6 +135,10 @@ class Cells:
 @dataclass(frozen=True)
 class Advection:
     limiter_type: str = "minmod"  # Options: "minmod", "upwind", "MC"
+
+    @classmethod
+    def build(cls, *, limiter_type):
+        return cls(limiter_type=limiter_type)
 
     def rate(self, time: jax.Array, state: Species, system: System) -> Species:
         def flat_rate(concentration):
@@ -107,21 +156,23 @@ class Advection:
             # Internal faces (i = 1 to n_cells - 1)
             left_state = QR[:-1]  # right side of cell i-1
             right_state = QL[1:]  # left side of cell i
-            velocity = system.velocity(time)
-            internal_flux = self.upwind_flux(left_state, right_state, velocity)
+            discharge = system.discharge(time)
+            upwind_concentration = self.choose_upwind_concentration(
+                left_state, right_state, discharge
+            )
 
-            # Handle boundary fluxes using boundary condition object
-            left_flux = jnp.array(0.0)
-            right_flux = jnp.array(0.0)
-
-            full_flux = jnp.concatenate(
-                [left_flux[None], internal_flux, right_flux[None]]
+            # Fluxes over the domain boundary are handled in a BoundaryCondition object,
+            # so we set the concentrations to zero here.
+            interface_concentrations = jnp.concatenate(
+                [jnp.array([0.0]), upwind_concentration, jnp.array([0.0])]
             )
 
             # Compute flux divergence (flux differences over each cell)
-            # TODO use area and porocity
-            # TODO better names
-            flux_div = (full_flux[:-1] - full_flux[1:]) / dx_face
+            flux_div = (
+                system.cell_velocity(time)
+                * (interface_concentrations[:-1] - interface_concentrations[1:])
+                / dx_face
+            )
 
             return flux_div
 
@@ -153,10 +204,9 @@ class Advection:
             raise ValueError(f"Unknown limiter type: {self.limiter_type}")
 
     @staticmethod
-    def upwind_flux(left_state, right_state, velocity):
-        """Simple upwind flux function."""
-        # TODO porocity?
-        return jnp.where(velocity >= 0, velocity * left_state, velocity * right_state)
+    def choose_upwind_concentration(left_state, right_state, discharge):
+        """Select upwind concentration based on the direction of flow"""
+        return jax.lax.select(discharge >= 0, left_state, right_state)
 
     @staticmethod
     def minmod(a, b):
@@ -182,52 +232,76 @@ class Advection:
 @jax.tree_util.register_dataclass
 @dataclass(frozen=True)
 class Dispersion:
+    # Scalar or one value per cell
     # Longitudinal dispersivity
     dispersivity: jax.Array
     # pore diffusion coefficient
     pore_diffusion: Species
 
-    def get_coefficient(self, time: jax.Array, system: System):
-        velocity = system.velocity(time)
+    @classmethod
+    def build(cls, *, cells, dispersivity, pore_diffusion):
+        if dispersivity.ndim == 0:
+            dispersivity = jnp.ones(cells.n_cells) * dispersivity
+
+        if dispersivity.ndim != 1 or dispersivity.shape != (cells.n_cells,):
+            raise ValueError(
+                f"Invalid dispersivity shape: {dispersivity.shape}. "
+                f"Expected shape {(cells.n_cells,)}"
+            )
+        return cls(dispersivity=dispersivity, pore_diffusion=pore_diffusion)
+
+    def get_dispersion_coefficient(self, time: jax.Array, system: System) -> Species:
+        velocity = system.cell_velocity(time)
         return jax.tree.map(
             lambda pore_diffusion: jnp.abs(velocity) * self.dispersivity
             + pore_diffusion,
             self.pore_diffusion,
         )
 
+    def _get_interface_coefficient(self, time: jax.Array, system: System) -> Species:
+        """Compute dispersion coefficient times porosity for each interior interface.
+
+        Averaging is based on continuity considerations, in analogy to Kirchhoff's
+        rule of two resistors in a row.
+        """
+        dx = system.cells.face_distances
+        A = system.cells.cell_area
+        # Sum of the lengths of cell i an i+1
+        total_length = dx[:-1] + dx[1:]
+        # Volume of cells i and i+1 combined
+        total_volume = dx[:-1] * A[:-1] + dx[1:] * A[1:]
+        geometry_factor = total_length**2 / total_volume
+
+        def inner(coeff):
+            total_resistance = dx[:-1] / (
+                system.porosity[:-1] * coeff[:-1] * A[:-1]
+            ) + dx[1:] / (system.porosity[1:] * coeff[1:] * A[1:])
+            return geometry_factor / total_resistance
+
+        return jax.tree.map(inner, self.get_dispersion_coefficient(time, system))
+
     def rate(self, time: jax.Array, state: Species, system: System) -> Species:
-        coeff = self.get_coefficient(time, system)
+        coeff = self._get_interface_coefficient(time, system)
 
         def flat_rate(concentration, coeff):
             cells = system.cells
-            # TODO add areas and porosity
-
             diffs = jnp.diff(concentration)
-            dc_dx = diffs / (cells.centers[1:] - cells.centers[:-1])
-            dx = cells.nodes[1:] - cells.nodes[:-1]
-            flux = -dc_dx * coeff
+            dc_dx = diffs / cells.center_distances
+            flux = -dc_dx * coeff * cells.interface_area[1:-1]
+            flux_div = jnp.concatenate([jnp.array([0.0]), flux]) - jnp.concatenate(
+                [flux, jnp.array([0.0])]
+            )
 
-            return (
-                jnp.concatenate(
-                    [
-                        jnp.array(0.0)[None],
-                        flux,
-                    ]
-                )
-                - jnp.concatenate(
-                    [
-                        flux,
-                        jnp.array(0.0)[None],
-                    ]
-                )
-            ) / dx
+            return flux_div / cells.face_distances / (cells.cell_area * system.porosity)
 
         return jax.tree.map(flat_rate, state, coeff)
 
 
 @dataclass(frozen=True, kw_only=True)
 class BoundaryCondition:
-    is_active: Callable[[jax.Array, System], jax.Array] = lambda t, system: jnp.array(True)
+    is_active: Callable[[jax.Array, System], jax.Array] = lambda t, system: jnp.array(
+        True
+    )
     species_selector: Callable
     boundary: Literal["left", "right"]
 
@@ -275,45 +349,51 @@ class FixedConcentrationBoundary(BoundaryCondition):
     def compute_flux(
         self, time: jax.Array, system: System, boundary_cell_state: jax.Array
     ):
-        # TODO use area and porosity
         if isinstance(self.fixed_concentration, float):
             fixed_concentration = self.fixed_concentration
         else:
             fixed_concentration = self.fixed_concentration(time)
 
-        velocity = system.velocity(time)
+        discharge = system.discharge(time)
+        location = 0 if self.boundary == "left" else -1
 
         if self.boundary == "left":
             c_interface = jax.lax.select(
-                velocity >= 0,
+                discharge >= 0,
                 fixed_concentration,
                 boundary_cell_state,
             )
             advection_sign = 1
         else:
             c_interface = jax.lax.select(
-                velocity <= 0,
+                discharge <= 0,
                 fixed_concentration,
                 boundary_cell_state,
             )
             advection_sign = -1
 
-        advection = advection_sign * velocity * c_interface
+        advection = advection_sign * system.cell_velocity(time)[location] * c_interface
 
         # dispersion flow
         diff = boundary_cell_state - fixed_concentration
-        location = 0 if self.boundary == "left" else -1
         dx = system.cells.face_distances[location]
-        dispersion_coefficient = system.dispersion.get_coefficient(time, system)
-        dispersion = -diff * self.species_selector(dispersion_coefficient) / dx * 2
+        dispersion_coefficient = system.dispersion.get_dispersion_coefficient(
+            time, system
+        )
+        interface_dispersion_coefficient = (
+            self.species_selector(dispersion_coefficient)[location]
+            * system.cells.interface_area[location]
+            / system.cells.cell_area[location]
+        )
+        dispersion = -diff * interface_dispersion_coefficient / dx * 2
 
         if self.boundary == "left":
             dispersion = jax.lax.select(
-                velocity >= 0, dispersion, jnp.zeros_like(dispersion)
+                discharge >= 0, dispersion, jnp.zeros_like(dispersion)
             )
         else:
             dispersion = jax.lax.select(
-                velocity <= 0,
+                discharge <= 0,
                 dispersion,
                 jnp.zeros_like(dispersion),
             )
@@ -334,7 +414,9 @@ def apply_bcs(bcs, t, system, state, rate):
 
 def rhs(time, state, system: System):
     vmaped_rates = [
-        jax.vmap(reaction.rate, [None, type(state).int_zeros(), None])(time, state, system)
+        jax.vmap(reaction.rate, [None, type(state).int_zeros(), None])(
+            time, state, system
+        )
         for reaction in system.reactions
     ]
     rate = jax.tree.map(
