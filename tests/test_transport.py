@@ -224,3 +224,42 @@ def test_duplicate_bondaries():
     )
     with pytest.raises(eqx.EquinoxRuntimeError, match="Duplicate"):
         solver(state, system)
+
+
+def test_mass_conservation():
+    """Test that the total mass in the system does not change with no-flux boundaries
+
+    This also needs to hold in a system with unequl cell sizes.
+    """
+    areas = jnp.linspace(0, 0.1, 201) + 1
+    cells = Cells.equally_spaced(10, 200, interface_area=areas)
+    dispersion = Dispersion.build(
+        cells=cells,
+        dispersivity=jnp.array(0.1),
+        pore_diffusion=Species(
+            tracer=jnp.array(1e-9 * 3600 * 24),
+        ),
+    )
+    advection = Advection(limiter_type="minmod")
+    bcs = []
+    system = System.build(
+        porosity=jnp.array(0.3),
+        discharge=lambda t: jnp.array(1 / 100) * jnp.cos(2 * np.pi * 1 / 100 * t),
+        cells=cells,
+        advection=advection,
+        dispersion=dispersion,
+        bcs=bcs,
+    )
+    t_points = jnp.linspace(0, 1000, 123)
+    solver = make_solver(t_max=1000, t_points=t_points, rtol=1e-3, atol=1e-3)
+    val0 = jnp.zeros(cells.n_cells)
+    val0 = val0.at[50:150].set(5)
+    state = Species(
+        tracer=val0,
+    )
+    solution = solver(state, system)
+    y = xr.DataArray(solution.ys.tracer, dims=("time", "x"))
+    vol = xr.DataArray(
+        np.array(cells.cell_area) * np.array(cells.face_distances), dims="x"
+    )
+    np.testing.assert_allclose((y * vol).sum("x"), (val0 * vol).sum(), rtol=1e-6)
