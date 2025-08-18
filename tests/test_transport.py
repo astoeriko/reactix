@@ -17,7 +17,7 @@ from kinetix.transport import (
 def test_tracer():
     cells = Cells.equally_spaced(10, 200)
     dispersion = Dispersion.build(
-        cells,
+        cells=cells,
         dispersivity=jnp.array(0.1),
         pore_diffusion=Species(
             tracer=jnp.array(1e-9 * 3600 * 24),
@@ -53,7 +53,7 @@ def test_tracer():
 def test_negative_velocity():
     cells = Cells.equally_spaced(10, 200)
     dispersion = Dispersion.build(
-        cells,
+        cells=cells,
         dispersivity=jnp.array(0.1),
         pore_diffusion=Species(
             tracer=jnp.array(1e-9 * 3600 * 24),
@@ -94,7 +94,7 @@ def test_negative_velocity():
 def test_duplicate_bondaries():
     cells = Cells.equally_spaced(10, 200)
     dispersion = Dispersion.build(
-        cells,
+        cells=cells,
         dispersivity=jnp.array(0.1),
         pore_diffusion=Species(
             tracer=jnp.array(1e-9 * 3600 * 24),
