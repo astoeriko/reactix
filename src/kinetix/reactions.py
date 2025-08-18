@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import jax
-from dataclasses import dataclass
+from dataclasses import dataclass, KW_ONLY
 from abc import ABC, abstractmethod
 from functools import wraps
 
@@ -9,6 +9,7 @@ from functools import wraps
 @dataclass(frozen=True)
 class SpatiallyVarying:
     value: jax.Array
+    _: KW_ONLY
     axis: int = 0
 
 

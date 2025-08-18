@@ -7,8 +7,10 @@ import diffrax
 
 from dataclasses import dataclass, field
 from typing import Callable, Literal
+import operator
 
 from kinetix.species import AbstractSpecies
+from kinetix.reactions import KineticReaction
 
 
 @jax.tree_util.register_dataclass
@@ -20,7 +22,7 @@ class System:
     cells: Cells
     advection: Advection
     dispersion: Dispersion
-    reactions: list[BoundaryCondition] = field(default_factory=list)
+    reactions: list[KineticReaction] = field(default_factory=list)
     bcs: list[BoundaryCondition] = field(
         default_factory=list
     )  # avoid shared mutable default!
@@ -410,17 +412,28 @@ def apply_bcs(bcs, t, system, state, rate):
 
 
 def rhs(time, state, system: System):
-    vmaped_rates = [
-        jax.vmap(reaction._eval_dcdt, [None, type(state).int_zeros(), None])(
-            time, state, system
-        )
-        for reaction in system.reactions
-    ]
+    def compute_pointwise_reaction_rates(time, state, reactions):
+        if len(reactions) == 0:
+            return type(state).zeros()
+
+        rates = [reaction._eval_dcdt(time, state, system) for reaction in reactions]
+        return jax.tree.map(lambda *args: sum(args), *rates)
+
+    compute_spatial_reaction_rates = jax.vmap(
+        compute_pointwise_reaction_rates,
+        [
+            None,
+            type(state).int_zeros(),
+            [reaction._spatial_axes for reaction in system.reactions],
+        ],
+    )
+
+    reaction_rates = compute_spatial_reaction_rates(time, state, system.reactions)
     rate = jax.tree.map(
         lambda *args: sum(args),
         system.advection.rate(time, state, system),
         system.dispersion.rate(time, state, system),
-        *vmaped_rates,
+        reaction_rates,
     )
     return apply_bcs(system.bcs, time, system, state, rate)
 
