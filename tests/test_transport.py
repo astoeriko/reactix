@@ -1,4 +1,5 @@
 import jax.numpy as jnp
+import jax
 import numpy as np
 import pytest
 import equinox as eqx
@@ -13,6 +14,9 @@ from kinetix import (
     System,
     make_solver,
     declare_species,
+    KineticReaction,
+    reaction,
+    SpatiallyVarying,
 )
 
 TracerSpecies = declare_species(["tracer"])
@@ -272,3 +276,151 @@ def test_mass_conservation():
         np.array(cells.cell_area) * np.array(cells.face_distances), dims="x"
     )
     np.testing.assert_allclose((y * vol).sum("x"), (val0 * vol).sum(), rtol=1e-6)
+
+
+@reaction
+class FirstOrderDecay(KineticReaction):
+    decay_coefficient: jax.Array
+
+    def rate(self, time, state, system):
+        return self.decay_coefficient * state.reactive_tracer
+
+    def stoichiometry(self, time, state, system):
+        return {
+            "reactive_tracer": -1,
+        }
+
+
+def test_reactive_tracer_constant_param():
+    Species = declare_species(["tracer", "reactive_tracer"])
+    reactions = [FirstOrderDecay(decay_coefficient=1 / 100)]
+    n_cells = 200
+    cells = Cells.equally_spaced(10, n_cells, interface_area=None)
+    dispersion = Dispersion.build(
+        cells=cells,
+        dispersivity=jnp.array(0.1),
+        pore_diffusion=Species(
+            tracer=jnp.array(1e-9 * 3600 * 24),
+            reactive_tracer=jnp.array(1e-9 * 3600 * 24),
+        ),
+    )
+    advection = Advection.build(
+        limiter_type="minmod",
+    )
+    bcs = [
+        FixedConcentrationBoundary(
+            boundary="left",
+            species_selector=lambda s: getattr(s, "tracer"),
+            fixed_concentration=lambda t: jnp.array(10.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="right",
+            species_selector=lambda s: getattr(s, "tracer"),
+            fixed_concentration=lambda t: jnp.array(3.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="left",
+            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            fixed_concentration=lambda t: jnp.array(10.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="right",
+            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            fixed_concentration=lambda t: jnp.array(3.0),
+        ),
+    ]
+    system = System.build(
+        porosity=jnp.array(0.3),
+        discharge=lambda t: jnp.array(1 / 100),
+        cells=cells,
+        advection=advection,
+        dispersion=dispersion,
+        bcs=bcs,
+        reactions=reactions,
+    )
+    t_points = jnp.linspace(0, 8000, 123)
+    solver = make_solver(t_max=8000, t_points=t_points, rtol=1e-5, atol=1e-5)
+    val0 = jnp.zeros(cells.n_cells)
+    state = Species(tracer=val0, reactive_tracer=val0)
+    solution = solver(state, system)
+    assert solution.ys.reactive_tracer.shape == (123, 200)
+
+    # Check the steady state profile against the analytical solution for a system
+    # without dispersion (advection + decay only)
+    x = system.cells.centers
+    velocity = system.discharge(0) / system.porosity
+    travel_time = x / velocity
+    c0 = np.array(system.bcs[2].fixed_concentration(-1))
+    analytical_solution = c0 * np.exp(-reactions[0].decay_coefficient * travel_time)
+    np.testing.assert_allclose(
+        solution.ys.reactive_tracer[-1, :], analytical_solution, rtol=0.1, atol=0.01
+    )
+
+
+def test_reactive_tracer_variable_param():
+    Species = declare_species(["tracer", "reactive_tracer"])
+    n_cells = 200
+    decay_coefficient = jnp.ones(n_cells)
+    decay_coefficient = decay_coefficient.at[100:].set(2)
+    reactions = [
+        FirstOrderDecay(decay_coefficient=SpatiallyVarying(decay_coefficient / 100))
+    ]
+    cells = Cells.equally_spaced(10, n_cells, interface_area=None)
+    dispersion = Dispersion.build(
+        cells=cells,
+        dispersivity=jnp.array(0.1),
+        pore_diffusion=Species(
+            tracer=jnp.array(1e-9 * 3600 * 24),
+            reactive_tracer=jnp.array(1e-9 * 3600 * 24),
+        ),
+    )
+    advection = Advection.build(
+        limiter_type="minmod",
+    )
+    bcs = [
+        FixedConcentrationBoundary(
+            boundary="left",
+            species_selector=lambda s: getattr(s, "tracer"),
+            fixed_concentration=lambda t: jnp.array(10.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="right",
+            species_selector=lambda s: getattr(s, "tracer"),
+            fixed_concentration=lambda t: jnp.array(3.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="left",
+            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            fixed_concentration=lambda t: jnp.array(10.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="right",
+            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            fixed_concentration=lambda t: jnp.array(3.0),
+        ),
+    ]
+    system = System.build(
+        porosity=jnp.array(0.3),
+        discharge=lambda t: jnp.array(1 / 100),
+        cells=cells,
+        advection=advection,
+        dispersion=dispersion,
+        bcs=bcs,
+        reactions=reactions,
+    )
+    t_points = jnp.linspace(0, 8000, 123)
+    solver = make_solver(t_max=8000, t_points=t_points, rtol=1e-5, atol=1e-5)
+    val0 = jnp.zeros(cells.n_cells)
+    state = Species(tracer=val0, reactive_tracer=val0)
+    solution = solver(state, system)
+    assert solution.ys.reactive_tracer.shape == (123, 200)
+
+    # Make sure that the concentration decreases over the steady state profile
+    profile = solution.ys.reactive_tracer[-1, :]
+    assert profile[20] < profile[10]
+
+    # Make sure the the concentration decrease is stronger where the decay
+    # coefficient is higher
+    ratio_high_decay = profile[120] / profile[110]
+    ratio_low_decay = profile[20] / profile[10]
+    assert ratio_high_decay < ratio_low_decay
