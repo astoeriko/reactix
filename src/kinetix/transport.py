@@ -5,21 +5,70 @@ import jax.numpy as jnp
 import equinox as eqx
 import diffrax
 
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field, replace, make_dataclass
 from typing import Callable, Literal
+from abc import ABC, abstractmethod
 
 
 @jax.tree_util.register_dataclass
 @dataclass(frozen=True)
-class Species:
-    tracer: jax.Array
+class AbstractSpecies(ABC):
+    @classmethod
+    @abstractmethod
+    def zeros(cls) -> "AbstractSpecies": ...
 
     @classmethod
-    def zeros(cls) -> "Species":
-        return Species(tracer=jnp.zeros(()))
+    @abstractmethod
+    def int_zeros(cls) -> "AbstractSpecies": ...
 
-    def add(self, name, value) -> "Species":
+    def add(self, name, value) -> "AbstractSpecies":
         return replace(self, **{name: value + getattr(self, name)})
+
+
+def declare_species(
+    names: list[str], *, shapes: dict[str, tuple[int, ...]] | None = None
+):
+    """
+    Declare chemical species used in a chemical/reactive transport model.
+
+    For example, the call `declare_species(["tracer"])` is equivalent to
+    the following:
+
+    ```
+    @jax.tree_util.register_dataclass
+    @dataclass(frozen=True)
+    class Species(AbstractSpecies):
+        tracer: Array
+
+        @classmethod
+        def zeros(cls) -> "Species":
+            return Species(tracer=jnp.zeros(()))
+
+        @classmethod
+        def int_zeros(cls):
+            return Species(tracer=0)
+    ```
+    """
+
+    if shapes is None:
+        shapes = {}
+
+    @classmethod
+    def zeros(cls):
+        return Species(**{name: jnp.zeros(shapes.get(name, ())) for name in names})
+
+    @classmethod
+    def int_zeros(cls):
+        return Species(**{name: 0 for name in names})
+
+    Species = make_dataclass(
+        "Species",
+        [(name, jax.Array) for name in names],
+        namespace={"zeros": zeros, "int_zeros": int_zeros},
+        bases=(AbstractSpecies,),
+        frozen=True,
+    )
+    return jax.tree_util.register_dataclass(Species)
 
 
 @jax.tree_util.register_dataclass
@@ -140,7 +189,9 @@ class Advection:
     def build(cls, *, limiter_type):
         return cls(limiter_type=limiter_type)
 
-    def rate(self, time: jax.Array, state: Species, system: System) -> Species:
+    def rate(
+        self, time: jax.Array, state: AbstractSpecies, system: System
+    ) -> AbstractSpecies:
         def flat_rate(concentration):
             cells = system.cells
             dx_center = cells.center_distances  # (n_cells - 1,)
@@ -236,7 +287,7 @@ class Dispersion:
     # Longitudinal dispersivity
     dispersivity: jax.Array
     # pore diffusion coefficient
-    pore_diffusion: Species
+    pore_diffusion: AbstractSpecies
 
     @classmethod
     def build(cls, *, cells, dispersivity, pore_diffusion):
@@ -250,7 +301,9 @@ class Dispersion:
             )
         return cls(dispersivity=dispersivity, pore_diffusion=pore_diffusion)
 
-    def get_dispersion_coefficient(self, time: jax.Array, system: System) -> Species:
+    def get_dispersion_coefficient(
+        self, time: jax.Array, system: System
+    ) -> AbstractSpecies:
         velocity = system.cell_velocity(time)
         return jax.tree.map(
             lambda pore_diffusion: jnp.abs(velocity) * self.dispersivity
@@ -258,7 +311,9 @@ class Dispersion:
             self.pore_diffusion,
         )
 
-    def _get_interface_coefficient(self, time: jax.Array, system: System) -> Species:
+    def _get_interface_coefficient(
+        self, time: jax.Array, system: System
+    ) -> AbstractSpecies:
         """Compute dispersion coefficient times porosity for each interior interface.
 
         Averaging is based on continuity considerations, in analogy to Kirchhoff's
@@ -280,7 +335,9 @@ class Dispersion:
 
         return jax.tree.map(inner, self.get_dispersion_coefficient(time, system))
 
-    def rate(self, time: jax.Array, state: Species, system: System) -> Species:
+    def rate(
+        self, time: jax.Array, state: AbstractSpecies, system: System
+    ) -> AbstractSpecies:
         coeff = self._get_interface_coefficient(time, system)
 
         def flat_rate(concentration, coeff):
@@ -451,7 +508,7 @@ def make_solver(
     t_vals = diffrax.SaveAt(ts=t_points)
 
     @eqx.filter_jit(device=device)
-    def solve(y0: Species, args):
+    def solve(y0: AbstractSpecies, args):
         result = diffrax.diffeqsolve(
             term,
             solver,

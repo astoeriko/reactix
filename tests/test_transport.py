@@ -10,10 +10,19 @@ from kinetix.transport import (
     Cells,
     Dispersion,
     FixedConcentrationBoundary,
-    Species,
     System,
     make_solver,
+    declare_species,
 )
+
+TracerSpecies = declare_species(["tracer"])
+
+
+def test_species_shapes():
+    Species = declare_species(["tracer"], shapes={"tracer": (5, 3)})
+    x = Species.zeros()
+    assert x.tracer.shape == (5, 3)
+    assert Species.int_zeros().tracer == 0
 
 
 def test_tracer():
@@ -21,7 +30,7 @@ def test_tracer():
     dispersion = Dispersion.build(
         cells=cells,
         dispersivity=jnp.array(0.1),
-        pore_diffusion=Species(
+        pore_diffusion=TracerSpecies(
             tracer=jnp.array(1e-9 * 3600 * 24),
         ),
     )
@@ -44,7 +53,7 @@ def test_tracer():
     t_points = jnp.linspace(0, 1000, 123)
     solver = make_solver(t_max=1000, t_points=t_points, rtol=1e-3, atol=1e-3)
     val0 = jnp.zeros(cells.n_cells)
-    state = Species(
+    state = TracerSpecies(
         tracer=val0,
     )
     solution = solver(state, system)
@@ -83,7 +92,7 @@ def test_against_analytical_solution():
     dispersion = Dispersion.build(
         cells=cells,
         dispersivity=jnp.array(dispersivity),
-        pore_diffusion=Species(
+        pore_diffusion=TracerSpecies(
             tracer=jnp.array(pore_diffusion),
         ),
     )
@@ -114,7 +123,7 @@ def test_against_analytical_solution():
     t_points = jnp.linspace(0, 500, 123)
     solver = make_solver(t_max=500, t_points=t_points, rtol=1e-3, atol=1e-3)
     val0 = jnp.zeros(cells.n_cells)
-    state = Species(
+    state = TracerSpecies(
         tracer=val0,
     )
     solution = solver(state, system)
@@ -148,7 +157,7 @@ def test_negative_velocity():
     dispersion = Dispersion.build(
         cells=cells,
         dispersivity=jnp.array(0.1),
-        pore_diffusion=Species(
+        pore_diffusion=TracerSpecies(
             tracer=jnp.array(1e-9 * 3600 * 24),
         ),
     )
@@ -176,7 +185,7 @@ def test_negative_velocity():
     t_points = jnp.linspace(0, 1000, 123)
     solver = make_solver(t_max=1000, t_points=t_points, rtol=1e-3, atol=1e-3)
     val0 = jnp.zeros(cells.n_cells)
-    state = Species(
+    state = TracerSpecies(
         tracer=val0,
     )
     solution = solver(state, system)
@@ -189,7 +198,7 @@ def test_duplicate_bondaries():
     dispersion = Dispersion.build(
         cells=cells,
         dispersivity=jnp.array(0.1),
-        pore_diffusion=Species(
+        pore_diffusion=TracerSpecies(
             tracer=jnp.array(1e-9 * 3600 * 24),
         ),
     )
@@ -219,7 +228,7 @@ def test_duplicate_bondaries():
     t_points = jnp.linspace(0, 1000, 123)
     solver = make_solver(t_max=1000, t_points=t_points, rtol=1e-3, atol=1e-3)
     val0 = jnp.zeros(cells.n_cells)
-    state = Species(
+    state = TracerSpecies(
         tracer=val0,
     )
     with pytest.raises(eqx.EquinoxRuntimeError, match="Duplicate"):
@@ -236,7 +245,7 @@ def test_mass_conservation():
     dispersion = Dispersion.build(
         cells=cells,
         dispersivity=jnp.array(0.1),
-        pore_diffusion=Species(
+        pore_diffusion=TracerSpecies(
             tracer=jnp.array(1e-9 * 3600 * 24),
         ),
     )
@@ -254,7 +263,7 @@ def test_mass_conservation():
     solver = make_solver(t_max=1000, t_points=t_points, rtol=1e-3, atol=1e-3)
     val0 = jnp.zeros(cells.n_cells)
     val0 = val0.at[50:150].set(5)
-    state = Species(
+    state = TracerSpecies(
         tracer=val0,
     )
     solution = solver(state, system)
