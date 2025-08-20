@@ -22,6 +22,7 @@ class System:
     cells: Cells
     advection: Advection
     dispersion: Dispersion
+    species_is_mobile: AbstractSpecies
     reactions: list[KineticReaction] = field(default_factory=list)
     bcs: list[BoundaryCondition] = field(
         default_factory=list
@@ -38,6 +39,7 @@ class System:
         advection: Advection,
         dispersion: Dispersion,
         bcs: list[BoundaryCondition] | None = None,
+        species_is_mobile: AbstractSpecies,
         reactions: list[BoundaryCondition] | None = None,
         discharge: Callable[[jax.Array], jax.Array] | jax.Array,
         porosity: jax.Array,
@@ -63,10 +65,19 @@ class System:
                 f"Invalid porosity shape: {porosity.shape}. "
                 f"Expected shape {(cells.n_cells,)}"
             )
+
+        for i, bc in enumerate(bcs):
+            if not bc.species_selector(species_is_mobile):
+                raise ValueError(
+                    "Cannot apply boundary condition to immobile species. "
+                    f"Please modify or remove boundary condition {i}."
+                )
+
         return cls(
             cells=cells,
             advection=advection,
             dispersion=dispersion,
+            species_is_mobile=species_is_mobile,
             bcs=bcs,
             reactions=reactions,
             discharge=discharge_fn,
@@ -429,8 +440,21 @@ def rhs(time, state, system: System):
     )
 
     reaction_rates = compute_spatial_reaction_rates(time, state, system.reactions)
+
+    def sum_rhs_terms(
+        species_is_mobile: bool,
+        advection: jax.Array,
+        dispersion: jax.Array,
+        reactions: jax.Array,
+    ) -> jax.Array:
+        if species_is_mobile:
+            return advection + dispersion + reactions
+        else:
+            return reactions
+
     rate = jax.tree.map(
-        lambda *args: sum(args),
+        sum_rhs_terms,
+        system.species_is_mobile,
         system.advection.rate(time, state, system),
         system.dispersion.rate(time, state, system),
         reaction_rates,

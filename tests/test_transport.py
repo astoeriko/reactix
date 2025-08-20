@@ -20,6 +20,7 @@ from kinetix import (
 )
 
 TracerSpecies = declare_species(["tracer"])
+Species = declare_species(["tracer", "reactive_tracer"])
 
 
 def test_species_shapes():
@@ -53,6 +54,7 @@ def test_tracer():
         advection=advection,
         dispersion=dispersion,
         bcs=bcs,
+        species_is_mobile=TracerSpecies(tracer=True),
     )
     t_points = jnp.linspace(0, 1000, 123)
     solver = make_solver(t_max=1000, t_points=t_points, rtol=1e-3, atol=1e-3)
@@ -123,6 +125,7 @@ def test_against_analytical_solution():
         advection=advection,
         dispersion=dispersion,
         bcs=bcs,
+        species_is_mobile=TracerSpecies(tracer=True),
     )
     t_points = jnp.linspace(0, 500, 123)
     solver = make_solver(t_max=500, t_points=t_points, rtol=1e-3, atol=1e-3)
@@ -185,6 +188,7 @@ def test_negative_velocity():
         advection=advection,
         dispersion=dispersion,
         bcs=bcs,
+        species_is_mobile=TracerSpecies(tracer=True),
     )
     t_points = jnp.linspace(0, 1000, 123)
     solver = make_solver(t_max=1000, t_points=t_points, rtol=1e-3, atol=1e-3)
@@ -228,6 +232,7 @@ def test_duplicate_bondaries():
         advection=advection,
         dispersion=dispersion,
         bcs=bcs,
+        species_is_mobile=TracerSpecies(tracer=True),
     )
     t_points = jnp.linspace(0, 1000, 123)
     solver = make_solver(t_max=1000, t_points=t_points, rtol=1e-3, atol=1e-3)
@@ -237,6 +242,98 @@ def test_duplicate_bondaries():
     )
     with pytest.raises(eqx.EquinoxRuntimeError, match="Duplicate"):
         solver(state, system)
+
+
+def test_immobile_species():
+    k_dec = 1 / 500
+    reactions = [FirstOrderDecay(decay_coefficient=k_dec)]
+    n_cells = 200
+    cells = Cells.equally_spaced(10, n_cells, interface_area=None)
+    dispersion = Dispersion.build(
+        cells=cells,
+        dispersivity=jnp.array(0.1),
+        pore_diffusion=Species(
+            tracer=jnp.array(1e-9 * 3600 * 24),
+            reactive_tracer=jnp.array(1e-9 * 3600 * 24),
+        ),
+    )
+    advection = Advection.build(
+        limiter_type="minmod",
+    )
+    bcs = [
+        FixedConcentrationBoundary(
+            boundary="left",
+            species_selector=lambda s: getattr(s, "tracer"),
+            fixed_concentration=lambda t: jnp.array(10.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="right",
+            species_selector=lambda s: getattr(s, "tracer"),
+            fixed_concentration=lambda t: jnp.array(3.0),
+        ),
+    ]
+    system = System.build(
+        porosity=jnp.array(0.3),
+        discharge=lambda t: jnp.array(k_dec),
+        cells=cells,
+        advection=advection,
+        dispersion=dispersion,
+        bcs=bcs,
+        reactions=reactions,
+        species_is_mobile=Species(tracer=True, reactive_tracer=False),
+    )
+    t_points = jnp.linspace(0, 8000, 123)
+    solver = make_solver(t_max=8000, t_points=t_points, rtol=1e-5, atol=1e-5)
+    val0 = jnp.zeros(cells.n_cells)
+    c0 = 5
+    state = Species(tracer=val0, reactive_tracer=jnp.ones(n_cells) * c0)
+    solution = solver(state, system)
+
+    # Check that the concentration is still uniform throughout the domain
+    # after some simulation time
+    np.testing.assert_allclose(
+        solution.ys.reactive_tracer[50, :],
+        solution.ys.reactive_tracer[50, 0],
+        atol=1e-6,
+    )
+
+    # Check that the concentration of the immobile reactive tracer at a fixed
+    # location decreases exponentially over time
+    np.testing.assert_allclose(
+        solution.ys.reactive_tracer[:, 1], c0 * np.exp(-k_dec * solution.ts), atol=1e-3
+    )
+
+
+def test_bc_for_immobile_species():
+    cells = Cells.equally_spaced(10, 200)
+    dispersion = Dispersion.build(
+        cells=cells,
+        dispersivity=jnp.array(0.1),
+        pore_diffusion=TracerSpecies(
+            tracer=jnp.array(1e-9 * 3600 * 24),
+        ),
+    )
+    advection = Advection(limiter_type="minmod")
+    bcs = [
+        FixedConcentrationBoundary(
+            is_active=lambda t, system: t < 1000,
+            boundary="left",
+            species_selector=lambda s: getattr(s, "tracer"),
+            fixed_concentration=lambda t: jnp.array(10.0),
+        ),
+    ]
+    with pytest.raises(
+        ValueError, match="Cannot apply boundary condition to immobile species."
+    ):
+        System.build(
+            porosity=jnp.array(0.3),
+            discharge=lambda t: jnp.array(1 / 365),
+            cells=cells,
+            advection=advection,
+            dispersion=dispersion,
+            bcs=bcs,
+            species_is_mobile=TracerSpecies(tracer=False),
+        )
 
 
 def test_mass_conservation():
@@ -262,6 +359,7 @@ def test_mass_conservation():
         advection=advection,
         dispersion=dispersion,
         bcs=bcs,
+        species_is_mobile=TracerSpecies(tracer=True),
     )
     t_points = jnp.linspace(0, 1000, 123)
     solver = make_solver(t_max=1000, t_points=t_points, rtol=1e-3, atol=1e-3)
@@ -292,7 +390,6 @@ class FirstOrderDecay(KineticReaction):
 
 
 def test_reactive_tracer_constant_param():
-    Species = declare_species(["tracer", "reactive_tracer"])
     reactions = [FirstOrderDecay(decay_coefficient=1 / 100)]
     n_cells = 200
     cells = Cells.equally_spaced(10, n_cells, interface_area=None)
@@ -337,6 +434,7 @@ def test_reactive_tracer_constant_param():
         dispersion=dispersion,
         bcs=bcs,
         reactions=reactions,
+        species_is_mobile=Species(tracer=True, reactive_tracer=True),
     )
     t_points = jnp.linspace(0, 8000, 123)
     solver = make_solver(t_max=8000, t_points=t_points, rtol=1e-5, atol=1e-5)
@@ -358,7 +456,6 @@ def test_reactive_tracer_constant_param():
 
 
 def test_reactive_tracer_variable_param():
-    Species = declare_species(["tracer", "reactive_tracer"])
     n_cells = 200
     decay_coefficient = jnp.ones(n_cells)
     decay_coefficient = decay_coefficient.at[100:].set(2)
@@ -407,6 +504,7 @@ def test_reactive_tracer_variable_param():
         dispersion=dispersion,
         bcs=bcs,
         reactions=reactions,
+        species_is_mobile=Species(tracer=True, reactive_tracer=True),
     )
     t_points = jnp.linspace(0, 8000, 123)
     solver = make_solver(t_max=8000, t_points=t_points, rtol=1e-5, atol=1e-5)
