@@ -47,7 +47,7 @@ def reaction(cls):
 @jax.tree_util.register_dataclass
 @dataclass(frozen=True, kw_only=True)
 class KineticReaction(ABC):
-    _spatial_axes: "KineticReaction"
+    _spatial_axes: "KineticReaction | None" = None
 
     @abstractmethod
     def rate(self, time, state, stytem) -> jax.Array: ...
