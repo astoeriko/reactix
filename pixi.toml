@@ -10,6 +10,7 @@ version = "0.1.0"
 
 [tasks]
 develop = { cmd = "maturin develop --release --uv", cwd = "../nuts-py" }
+install-deps = { cmd = "pip install git+https://github.com/pymc-devs/pymc.git@518eac9e272fe517b0fd518e6f10226de6da3bc4 && pip install git+https://github.com/aseyboldt/pytensor.git@4d7c6ed66cbae747af5243dbd3f33b4a3ed7bac9" }
 
 [dependencies]
 ipykernel = ">=6.29.5,<7"
@@ -22,11 +23,14 @@ zarr = ">=3.0.6,<4"
 jupyterlab = ">=4.4.1,<5"
 pytest = ">=8.4.1,<9"
 ipympl = ">=0.9.7,<0.10"
+pip = ">=25.2,<26"
+nutpie = ">=0.15.2,<0.16"
 
 [pypi-dependencies]
 kinetix = { path = ".", editable = true }
-pytensor = { git = "https://github.com/aseyboldt/pytensor.git", rev = "4d7c6ed66cbae747af5243dbd3f33b4a3ed7bac9" }
-pymc = ">=2.22.0"
+#pytensor = { git = "https://github.com/aseyboldt/pytensor.git", rev = "4d7c6ed66cbae747af5243dbd3f33b4a3ed7bac9"}
+#pymc = "==5.21.*"
+#pymc = { git = "https://github.com/pymc-devs/pymc.git", rev = "518eac9e272fe517b0fd518e6f10226de6da3bc4" }
 cloudpickle = ">=3.1.1, <4"
 cachetools = ">=5.5.2, <6"
 rich = ">=13.9.4, <14"
@@ -34,4 +38,4 @@ threadpoolctl = ">=3.6.0, <4"
 flowjax = ">=17.1.1, <18"
 tensorflow-probability = ">=0.25.0, <0.26"
 diffrax = "*"
-jax = { version = "*", extras = ["cuda12"] }
+jax = { version = "*", extras = [] }
