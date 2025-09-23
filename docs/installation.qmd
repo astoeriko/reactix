@@ -1,0 +1,122 @@
+---
+title: "Installation"
+---
+
+# Installing Kinetix
+
+## Requirements
+
+Kinetix requires Python 3.11 or later. The package depends on several scientific computing libraries:
+
+- **JAX**: For automatic differentiation and JIT compilation
+- **NumPy**: For numerical arrays
+- **PyMC**: For Bayesian inference
+- **ArviZ**: For Bayesian data analysis
+- **Equinox**: For PyTree-compatible differential equations
+- **Diffrax**: For differential equation solving
+
+## Installation Methods
+
+### From Source (Recommended)
+
+Since Kinetix is currently in development, installation from source is recommended:
+
+```bash
+git clone https://github.com/your-org/kinetix.git
+cd kinetix
+pip install -e .
+```
+
+This will install Kinetix in development mode, allowing you to easily update the code and contribute changes.
+
+### Using Pixi (Development Environment)
+
+The project uses [Pixi](https://pixi.sh/) for dependency management. If you have Pixi installed:
+
+```bash
+git clone https://github.com/your-org/kinetix.git
+cd kinetix
+pixi install
+pixi shell
+```
+
+This will create an isolated environment with all dependencies properly configured.
+
+## Verify Installation
+
+You can verify that Kinetix is installed correctly by running:
+
+```python
+import kinetix
+print("Kinetix installed successfully!")
+
+# Test basic functionality
+from kinetix import declare_species, System
+Species = declare_species(["tracer"])
+print("Species declaration works!")
+```
+
+## GPU Support
+
+Kinetix leverages JAX, which can run on GPUs for enhanced performance. To enable GPU support:
+
+### NVIDIA GPUs (CUDA)
+
+```bash
+pip install --upgrade "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+```
+
+### AMD GPUs (ROCm)
+
+```bash
+pip install --upgrade "jax[rocm]" -f https://storage.googleapis.com/jax-releases/jax_rocm_releases.html
+```
+
+### Apple Silicon (Metal)
+
+JAX has experimental Metal support for Apple Silicon Macs:
+
+```bash
+pip install --upgrade "jax[metal]"
+```
+
+## Development Installation
+
+If you plan to contribute to Kinetix development:
+
+```bash
+git clone https://github.com/your-org/kinetix.git
+cd kinetix
+pip install -e ".[dev]"
+```
+
+This installs additional development dependencies for testing, linting, and documentation.
+
+## Troubleshooting
+
+### Common Issues
+
+**Import errors**: Make sure all dependencies are installed. Try reinstalling with:
+```bash
+pip install --upgrade kinetix
+```
+
+**JAX installation issues**: JAX installation can be platform-specific. Refer to the [JAX installation guide](https://jax.readthedocs.io/en/latest/installation.html) for detailed instructions.
+
+**PyMC compatibility**: Ensure you have compatible versions of PyMC and its dependencies. The project is tested with PyMC 5.0+.
+
+### Getting Help
+
+If you encounter installation issues:
+
+1. Check the [GitHub Issues](https://github.com/your-org/kinetix/issues) for known problems
+2. Create a new issue with your system information and error messages
+3. Join the discussion in our community channels
+
+## Next Steps
+
+Once Kinetix is installed, you can:
+
+1. Follow the [Quick Start Guide](quickstart.qmd)
+2. Run the [Transport Model Example](examples/transport-model.qmd)
+3. Explore [Bayesian Inference](examples/transport-with-pymc.qmd)

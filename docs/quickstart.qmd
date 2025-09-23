@@ -1,0 +1,214 @@
+---
+title: "Quick Start Guide"
+---
+
+# Quick Start Guide
+
+This guide will walk you through the basics of using Kinetix to set up and solve reactive transport problems.
+
+## Basic Concepts
+
+Kinetix models reactive transport through three main components:
+
+1. **Transport processes**: Advection and dispersion of chemical species
+2. **Chemical reactions**: Kinetic reactions that transform species
+3. **Boundary conditions**: Fixed concentrations or fluxes at domain boundaries
+
+## Your First Model
+
+Let's build a simple 1D transport model with a conservative tracer:
+
+### Step 1: Import Kinetix
+
+```python
+import jax.numpy as jnp
+import matplotlib.pyplot as plt
+from kinetix import (
+    System, Cells, Advection, Dispersion,
+    FixedConcentrationBoundary, declare_species, make_solver
+)
+```
+
+### Step 2: Declare Chemical Species
+
+```python
+# Define the species in your system
+Species = declare_species(["tracer"])
+
+# Specify which species are mobile (can be transported)
+species_is_mobile = Species(tracer=True)
+```
+
+### Step 3: Set Up the Physical Domain
+
+```python
+# Create a 1D domain with 100 cells over 10 length units
+n_cells = 100
+cells = Cells.equally_spaced(length=10.0, n_cells=n_cells)
+
+# Define transport properties
+advection = Advection.build(limiter_type="upwind")
+dispersion = Dispersion.build(
+    cells=cells,
+    dispersivity=jnp.array(0.1),  # Longitudinal dispersivity
+    pore_diffusion=Species(tracer=jnp.array(1e-9))  # Molecular diffusion
+)
+```
+
+### Step 4: Set Boundary Conditions
+
+```python
+# Fixed concentration at inlet (left) and outlet (right)
+boundary_conditions = [
+    FixedConcentrationBoundary(
+        boundary="left",
+        species_selector=lambda s: s.tracer,
+        fixed_concentration=lambda t: jnp.array(1.0)  # Constant injection
+    ),
+    FixedConcentrationBoundary(
+        boundary="right",
+        species_selector=lambda s: s.tracer,
+        fixed_concentration=lambda t: jnp.array(0.0)  # Clean boundary
+    )
+]
+```
+
+### Step 5: Create the Transport System
+
+```python
+# Define system properties
+porosity = jnp.ones(n_cells) * 0.3  # 30% porosity
+discharge_rate = lambda t: jnp.array(0.1)  # Constant flow rate
+
+# Build the complete system
+system = System.build(
+    porosity=porosity,
+    discharge=discharge_rate,
+    cells=cells,
+    advection=advection,
+    dispersion=dispersion,
+    species_is_mobile=species_is_mobile,
+    bcs=boundary_conditions,
+    reactions=[]  # No reactions for this simple case
+)
+```
+
+### Step 6: Solve the Model
+
+```python
+# Create solver
+solver = make_solver(t_max=50.0, rtol=1e-6, atol=1e-6)
+
+# Set initial conditions (clean system)
+initial_state = Species(tracer=jnp.zeros(n_cells))
+
+# Solve the transport equation
+solution = solver(initial_state, system)
+
+# Plot results
+plt.figure(figsize=(10, 6))
+for i in range(0, len(solution.ts), 10):  # Plot every 10th time step
+    plt.plot(cells.centers, solution.ys.tracer[i],
+             alpha=0.7, label=f't={solution.ts[i]:.1f}')
+plt.xlabel('Distance')
+plt.ylabel('Concentration')
+plt.title('Conservative Tracer Transport')
+plt.legend()
+plt.show()
+```
+
+## Adding Chemical Reactions
+
+Now let's extend the model to include a first-order decay reaction:
+
+### Step 1: Define the Reaction
+
+```python
+from kinetix import KineticReaction, reaction
+
+@reaction
+class FirstOrderDecay(KineticReaction):
+    decay_coefficient: jnp.ndarray
+
+    def rate(self, time, state, system):
+        # Reaction rate proportional to concentration
+        return self.decay_coefficient * state.tracer
+
+    def stoichiometry(self, time, state, system):
+        # One mole of tracer consumed per reaction
+        return {"tracer": -1}
+```
+
+### Step 2: Add Reaction to System
+
+```python
+# Create reaction instance
+decay_reaction = FirstOrderDecay(decay_coefficient=jnp.array(0.1))
+
+# Build system with reactions
+reactive_system = System.build(
+    porosity=porosity,
+    discharge=discharge_rate,
+    cells=cells,
+    advection=advection,
+    dispersion=dispersion,
+    species_is_mobile=species_is_mobile,
+    bcs=boundary_conditions,
+    reactions=[decay_reaction]  # Include the decay reaction
+)
+
+# Solve reactive transport
+reactive_solution = solver(initial_state, reactive_system)
+```
+
+## Multiple Species Example
+
+For systems with multiple interacting species:
+
+```python
+# Declare multiple species
+Species = declare_species(["substrate", "product"])
+species_is_mobile = Species(substrate=True, product=True)
+
+@reaction
+class Transformation(KineticReaction):
+    rate_constant: jnp.ndarray
+
+    def rate(self, time, state, system):
+        return self.rate_constant * state.substrate
+
+    def stoichiometry(self, time, state, system):
+        return {
+            "substrate": -1,  # Consumed
+            "product": 1      # Produced
+        }
+
+# Initial state with substrate present
+initial_state = Species(
+    substrate=jnp.ones(n_cells),  # Initial substrate
+    product=jnp.zeros(n_cells)    # No product initially
+)
+```
+
+## Key Tips
+
+1. **Units**: Be consistent with units across all parameters (length, time, concentration)
+2. **Stability**: Use appropriate time steps and spatial resolution for numerical stability
+3. **Boundary conditions**: Ensure boundary conditions are physically reasonable
+4. **Species mobility**: Set `species_is_mobile` correctly for each species
+
+## Next Steps
+
+- Explore the [Transport Model Example](examples/transport-model.qmd) for more complex scenarios
+- Learn about [Bayesian Inference](examples/transport-with-pymc.qmd) for parameter estimation
+- Check the [API Reference](api/index.qmd) for detailed documentation
+
+## Common Issues
+
+**Numerical instability**: Try reducing time step size or increasing spatial resolution
+
+**Slow convergence**: Check that reaction rates and transport parameters are reasonable
+
+**Boundary condition errors**: Ensure boundary conditions match your species declarations
+
+**Memory issues**: Reduce the number of output time points or spatial cells for large problems

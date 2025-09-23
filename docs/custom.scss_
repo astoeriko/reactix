@@ -1,0 +1,387 @@
+/*-- scss:defaults --*/
+
+// Color palette
+$primary: #2563eb !default;
+$secondary: #7c3aed !default;
+$success: #059669 !default;
+$info: #06b6d4 !default;
+$warning: #d97706 !default;
+$danger: #dc2626 !default;
+$light: #f8fafc !default;
+$dark: #1f2937 !default;
+
+// Theme colors
+$blue: #2563eb !default;
+$purple: #7c3aed !default;
+$cyan: #06b6d4 !default;
+$green: #059669 !default;
+$yellow: #d97706 !default;
+$red: #dc2626 !default;
+$gray-100: #f1f5f9 !default;
+$gray-200: #e2e8f0 !default;
+$gray-300: #cbd5e1 !default;
+$gray-400: #94a3b8 !default;
+$gray-500: #64748b !default;
+$gray-600: #475569 !default;
+$gray-700: #334155 !default;
+$gray-800: #1e293b !default;
+$gray-900: #0f172a !default;
+
+// Typography
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+$font-family-monospace: "SF Mono", Monaco, Inconsolata, "Roboto Mono", Consolas, "Courier New", monospace !default;
+
+$font-size-base: 1rem !default;
+$line-height-base: 1.6 !default;
+
+$h1-font-size: 2.5rem !default;
+$h2-font-size: 2rem !default;
+$h3-font-size: 1.5rem !default;
+$h4-font-size: 1.25rem !default;
+$h5-font-size: 1.125rem !default;
+$h6-font-size: 1rem !default;
+
+// Spacing
+$spacer: 1rem !default;
+
+// Border radius
+$border-radius: 0.375rem !default;
+$border-radius-sm: 0.25rem !default;
+$border-radius-lg: 0.5rem !default;
+
+// Shadows
+$box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !default;
+$box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !default;
+$box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !default;
+
+// Code
+$code-font-size: 0.875em !default;
+$code-color: $gray-700 !default;
+$pre-color: $gray-800 !default;
+
+/*-- scss:rules --*/
+
+// Custom styling for Kinetix theme
+
+// Navbar enhancements
+.navbar {
+  box-shadow: $box-shadow;
+  border-bottom: 1px solid $gray-200;
+
+  .navbar-brand {
+    font-weight: 700;
+    color: $primary !important;
+
+    &:hover {
+      color: darken($primary, 10%) !important;
+    }
+  }
+
+  .nav-link {
+    font-weight: 500;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $primary !important;
+    }
+  }
+}
+
+// Headings with enhanced styling
+h1 {
+  border-bottom: 3px solid $primary;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  color: $dark;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, $primary, $secondary);
+    margin-bottom: 1rem;
+    border-radius: 2px;
+  }
+}
+
+h2 {
+  color: $primary;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+
+  &:not(:first-child) {
+    border-top: 1px solid $gray-200;
+    padding-top: 2rem;
+  }
+}
+
+h3 {
+  color: $secondary;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+// Enhanced code blocks
+.sourceCode {
+  background-color: $gray-100;
+  border: 1px solid $gray-200;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-sm;
+
+  &:hover {
+    box-shadow: $box-shadow;
+  }
+}
+
+pre {
+  code {
+    font-size: $code-font-size;
+  }
+}
+
+// Inline code
+:not(pre) > code {
+  background-color: lighten($primary, 45%);
+  color: darken($primary, 20%);
+  border: 1px solid lighten($primary, 35%);
+  font-weight: 500;
+}
+
+// Sidebar styling
+.sidebar-navigation {
+  background-color: $light;
+  border-right: 1px solid $gray-200;
+
+  .sidebar-item {
+    &.sidebar-item-section {
+      .sidebar-item-text {
+        color: $dark;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        margin-top: 1rem;
+      }
+    }
+
+    .sidebar-item-text {
+      color: $gray-600;
+      font-weight: 500;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+
+    &.active .sidebar-item-text {
+      color: $primary;
+      font-weight: 600;
+    }
+  }
+}
+
+// Table styling
+table {
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  box-shadow: $box-shadow-sm;
+  border-radius: $border-radius;
+  overflow: hidden;
+
+  th {
+    background: linear-gradient(135deg, $primary, $secondary);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+  }
+
+  td, th {
+    padding: 0.75rem 1rem;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: lighten($primary, 48%);
+    }
+
+    &:nth-child(even) {
+      background-color: $gray-50;
+    }
+  }
+}
+
+// Alert boxes
+.callout {
+  border-radius: $border-radius-lg;
+  border-left: 4px solid;
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  box-shadow: $box-shadow-sm;
+
+  &.callout-note {
+    background-color: lighten($info, 45%);
+    border-left-color: $info;
+
+    .callout-title {
+      color: darken($info, 20%);
+    }
+  }
+
+  &.callout-warning {
+    background-color: lighten($warning, 45%);
+    border-left-color: $warning;
+
+    .callout-title {
+      color: darken($warning, 20%);
+    }
+  }
+
+  &.callout-tip {
+    background-color: lighten($success, 45%);
+    border-left-color: $success;
+
+    .callout-title {
+      color: darken($success, 20%);
+    }
+  }
+
+  &.callout-important {
+    background-color: lighten($danger, 45%);
+    border-left-color: $danger;
+
+    .callout-title {
+      color: darken($danger, 20%);
+    }
+  }
+}
+
+// Button styling
+.btn {
+  font-weight: 500;
+  border-radius: $border-radius;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: $box-shadow;
+  }
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, $primary, $secondary);
+  border: none;
+
+  &:hover {
+    background: linear-gradient(135deg, darken($primary, 5%), darken($secondary, 5%));
+  }
+}
+
+// Links
+a {
+  color: $primary;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $secondary;
+  }
+}
+
+// Cards
+.card {
+  border: 1px solid $gray-200;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-sm;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: $box-shadow-lg;
+    transform: translateY(-2px);
+  }
+}
+
+// Footer
+footer {
+  background: linear-gradient(135deg, $dark, darken($dark, 10%));
+  color: white;
+  margin-top: 3rem;
+
+  a {
+    color: $info;
+
+    &:hover {
+      color: lighten($info, 20%);
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+
+    &::before {
+      width: 40px;
+      height: 3px;
+    }
+  }
+
+  .sourceCode {
+    border-radius: $border-radius;
+  }
+
+  .sidebar-navigation {
+    background-color: white;
+  }
+}
+
+// Print styles
+@media print {
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  .navbar,
+  .sidebar-navigation,
+  footer {
+    display: none !important;
+  }
+}
+
+// Animation keyframes
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Content animations
+.content {
+  animation: fadeIn 0.6s ease-out;
+}
+
+// Syntax highlighting customization
+.sourceCode {
+  .co { color: $gray-500; font-style: italic; } // Comments
+  .kw { color: $purple; font-weight: 600; } // Keywords
+  .st { color: $success; } // Strings
+  .dv { color: $info; } // Numbers
+  .fu { color: $primary; font-weight: 500; } // Functions
+}

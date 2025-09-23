@@ -1,0 +1,288 @@
+---
+title: "Transport Model Example"
+subtitle: "Basic reactive transport modeling with Kinetix"
+format:
+  html:
+    code-fold: false
+    toc: true
+jupyter: python3
+---
+
+# Transport Model Example
+
+This example demonstrates how to build a reactive transport model using Kinetix. We'll create a 1D transport system with advection, dispersion, and first-order decay reactions.
+
+## Setup
+
+First, let's import the necessary libraries and configure JAX:
+
+```{python}
+import jax
+import jax.numpy as jnp
+import numpy as np
+import matplotlib.pyplot as plt
+
+from kinetix import (
+    Advection,
+    Cells,
+    Dispersion,
+    FixedConcentrationBoundary,
+    System,
+    make_solver,
+    declare_species,
+    KineticReaction,
+    reaction,
+    SpatiallyConst,
+    SpatiallyVarying
+)
+
+from dataclasses import dataclass
+
+# Enable 64-bit precision
+jax.config.update("jax_enable_x64", True)
+```
+
+## Define Chemical Species
+
+We'll work with two species: a conservative tracer and a reactive tracer that undergoes first-order decay:
+
+```{python}
+# Declare the species in our system
+Species = declare_species(["tracer", "reactive_tracer"])
+
+# Specify that both species are mobile (can be transported)
+species_is_mobile = Species(tracer=True, reactive_tracer=True)
+```
+
+## Define Chemical Reactions
+
+Let's create a first-order decay reaction for the reactive tracer:
+
+```{python}
+@reaction
+class FirstOrderDecay(KineticReaction):
+    decay_coefficient: jax.Array
+
+    def rate(self, time, state, system):
+        """Reaction rate proportional to concentration"""
+        return self.decay_coefficient * state.reactive_tracer
+
+    def stoichiometry(self, time, state, system):
+        """One mole of reactive tracer consumed per reaction"""
+        return {
+            "reactive_tracer": -1,
+        }
+```
+
+## Set Up the Transport System
+
+Now we'll define the physical domain and transport properties:
+
+```{python}
+# System parameters
+n_cells = 200
+decay_rate = 1/500  # First-order decay coefficient
+
+# Create reactions list
+reactions = [
+    FirstOrderDecay(decay_coefficient=decay_rate)
+]
+
+# Set up spatial domain
+interface_areas = jnp.ones(n_cells + 1)
+cells = Cells.equally_spaced(10, n_cells, interface_area=interface_areas)
+
+# Define dispersion properties
+dispersion = Dispersion.build(
+    cells=cells,
+    dispersivity=jnp.array(0.1),  # Longitudinal dispersivity
+    pore_diffusion=Species(
+        tracer=jnp.array(1e-9 * 3600 * 24),        # Convert to daily units
+        reactive_tracer=jnp.array(1e-9 * 3600 * 24),
+    ),
+)
+
+# Set up advection with flux limiter
+advection = Advection.build(limiter_type="minmod")
+```
+
+## Boundary Conditions
+
+Define fixed concentration boundaries at both ends of the domain:
+
+```{python}
+# Boundary conditions
+bcs = [
+    # Left boundary (inlet) - tracer
+    FixedConcentrationBoundary(
+        boundary="left",
+        species_selector=lambda s: getattr(s, "tracer"),
+        fixed_concentration=lambda t: jnp.array(10.0),
+    ),
+    # Right boundary (outlet) - tracer
+    FixedConcentrationBoundary(
+        boundary="right",
+        species_selector=lambda s: getattr(s, "tracer"),
+        fixed_concentration=lambda t: jnp.array(3.0),
+    ),
+    # Left boundary (inlet) - reactive tracer
+    FixedConcentrationBoundary(
+        boundary="left",
+        species_selector=lambda s: getattr(s, "reactive_tracer"),
+        fixed_concentration=lambda t: jnp.array(10.0),
+    ),
+    # Right boundary (outlet) - reactive tracer
+    FixedConcentrationBoundary(
+        boundary="right",
+        species_selector=lambda s: getattr(s, "reactive_tracer"),
+        fixed_concentration=lambda t: jnp.array(3.0),
+    )
+]
+```
+
+## Create the Complete System
+
+Now we'll combine all components into a complete transport system:
+
+```{python}
+# Define porosity (with heterogeneity)
+porosity = jnp.ones(n_cells) * 0.3
+porosity = porosity.at[100:].set(0.1)  # Lower porosity in second half
+
+# Build the complete system
+system = System.build(
+    porosity=porosity,
+    discharge=lambda t: jnp.array(1 / 365) * 0.3,  # Constant discharge
+    cells=cells,
+    advection=advection,
+    dispersion=dispersion,
+    species_is_mobile=species_is_mobile,
+    bcs=bcs,
+    reactions=reactions
+)
+```
+
+## Solve the Transport Equations
+
+Set up the solver and run the simulation:
+
+```{python}
+# Time points for output
+t_points = jnp.linspace(0, 8000, 123)
+
+# Create solver with specified tolerances
+solver = make_solver(t_max=8000, t_points=t_points, rtol=1e-3, atol=1e-3)
+
+# Initial conditions (clean system)
+val0 = jnp.zeros(cells.n_cells)
+initial_state = Species(
+    tracer=val0,
+    reactive_tracer=val0
+)
+
+# Solve the system
+solution = solver(initial_state, system)
+```
+
+## Visualize Results
+
+### Spatial Profiles
+
+Plot concentration profiles at different times:
+
+```{python}
+# Plot conservative tracer
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+plt.plot(cells.centers, solution.ys.tracer.T[:, 0::10])
+plt.xlabel('Distance')
+plt.ylabel('Concentration')
+plt.title('Conservative Tracer')
+plt.grid(True, alpha=0.3)
+
+# Plot reactive tracer
+plt.subplot(1, 2, 2)
+plt.plot(cells.centers, solution.ys.reactive_tracer.T[:, 0::10])
+plt.xlabel('Distance')
+plt.ylabel('Concentration')
+plt.title('Reactive Tracer (with decay)')
+plt.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+### Animation
+
+Create an animated visualization showing the evolution of both species:
+
+```{python}
+# Create interactive animation
+%matplotlib widget
+from matplotlib import animation
+
+fig, ax = plt.subplots()
+
+artists = []
+for tracer_data, reactive_data in zip(solution.ys.tracer, solution.ys.reactive_tracer):
+    containers = [
+        ax.plot(cells.centers, tracer_data, color="C0", label="Conservative"),
+        ax.plot(cells.centers, reactive_data, color="C1", label="Reactive")
+    ]
+    artist = []
+    for container in containers:
+        artist.extend(container)
+    artists.append(artist)
+
+ax.set_xlabel('Distance')
+ax.set_ylabel('Concentration')
+ax.set_title('Transport with Reaction')
+ax.legend()
+ax.grid(True, alpha=0.3)
+
+ani = animation.ArtistAnimation(fig=fig, artists=artists, interval=40)
+plt.show()
+```
+
+## Mass Balance Analysis
+
+Let's verify our solution by checking mass conservation:
+
+```{python}
+# Calculate mass input over time
+mass_in = system.discharge(solution.ts) * bcs[0].fixed_concentration(solution.ts) * solution.ts
+
+# Calculate mass in the system
+mass_in_system = (solution.ys.tracer * cells.cell_area *
+                  cells.face_distances * system.porosity).sum(axis=1)
+
+# Plot mass balance
+plt.figure(figsize=(10, 6))
+plt.plot(solution.ts, mass_in, label='Cumulative Mass Input', linewidth=2)
+plt.plot(solution.ts, mass_in_system, label='Mass in System', linewidth=2, linestyle='--')
+plt.xlabel('Time')
+plt.ylabel('Mass')
+plt.title('Mass Balance Check')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+```
+
+## Key Observations
+
+1. **Conservative tracer**: Reaches steady state as it's transported by advection and dispersion
+2. **Reactive tracer**: Shows lower concentrations due to first-order decay
+3. **Heterogeneity effect**: The change in porosity at x=5 affects the transport behavior
+4. **Mass balance**: The system conserves mass for the conservative tracer
+
+## Next Steps
+
+- Try modifying the decay coefficient or porosity distribution
+- Add more complex reactions or multiple species
+- Explore different boundary conditions
+- Use this model for [Bayesian parameter estimation](transport-with-pymc.qmd)
+
+## References
+
+This example demonstrates the basic capabilities of Kinetix for reactive transport modeling. For more advanced features and Bayesian inference capabilities, see the [PyMC integration example](transport-with-pymc.qmd).

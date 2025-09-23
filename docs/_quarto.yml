@@ -1,0 +1,65 @@
+project:
+  type: website
+  title: "Kinetix"
+  output-dir: _site
+
+website:
+  title: "Kinetix"
+  description: "Reaction kinetics with JAX and PyMC"
+  site-url: "https://kinetix.readthedocs.io"
+  repo-url: "https://github.com/your-org/kinetix"
+  repo-actions: [edit, issue]
+
+  navbar:
+    title: "Kinetix"
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Examples"
+        menu:
+          - text: "Transport Model"
+            href: examples/transport-model.qmd
+          - text: "Bayesian Inference"
+            href: examples/transport-with-pymc.qmd
+      - text: "API Reference"
+        href: api/index.qmd
+
+  sidebar:
+    - title: "Getting Started"
+      contents:
+        - index.qmd
+        - installation.qmd
+        - quickstart.qmd
+
+    - title: "Examples"
+      contents:
+        - examples/transport-model.qmd
+        - examples/transport-with-pymc.qmd
+
+    - title: "API Reference"
+      contents:
+        - api/index.qmd
+
+format:
+  html:
+    theme:
+      - cosmo
+      - custom.scss
+    css: styles.css
+    toc: true
+    code-fold: false
+    code-tools: true
+    number-sections: true
+
+execute:
+  eval: false
+  #freeze: auto
+  #cache: true
+  #warning: false
+  #error: false
+
+jupyter:
+  kernels:
+    - name: pixi-kernel-python3
+      language: python
+      display_name: "Python (Pixi)"

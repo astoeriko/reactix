@@ -1,0 +1,342 @@
+---
+title: "Bayesian Inference with PyMC"
+subtitle: "Parameter estimation for reactive transport models"
+format:
+  html:
+    code-fold: false
+    toc: true
+jupyter: python3
+---
+
+# Bayesian Inference with PyMC
+
+This example demonstrates how to use Kinetix with PyMC for Bayesian parameter estimation in reactive transport models. We'll estimate the decay coefficient for a first-order reaction using synthetic observations.
+
+## Setup
+
+Import the necessary libraries and configure JAX:
+
+```{python}
+import jax
+import jax.numpy as jnp
+import numpy as np
+import matplotlib.pyplot as plt
+import dataclasses
+
+from kinetix import (
+    Advection,
+    Cells,
+    Dispersion,
+    FixedConcentrationBoundary,
+    System,
+    make_solver,
+    declare_species,
+    KineticReaction,
+    reaction,
+    SpatiallyConst,
+    SpatiallyVarying
+)
+
+from dataclasses import dataclass
+
+# PyMC and related imports
+import pytensor.tensor as pt
+import pytensor
+import pymc as pm
+import nutpie
+
+# Enable 64-bit precision
+jax.config.update("jax_enable_x64", True)
+```
+
+## Define the Transport Model
+
+First, let's set up our reactive transport model with the same structure as the basic example:
+
+```{python}
+@reaction
+class FirstOrderDecay(KineticReaction):
+    decay_coefficient: jax.Array
+
+    def rate(self, time, state, system):
+        return self.decay_coefficient * state.reactive_tracer
+
+    def stoichiometry(self, time, state, system):
+        return {
+            "reactive_tracer": -1,
+        }
+
+# Declare species
+Species = declare_species(["tracer", "reactive_tracer"])
+```
+
+## Parameterized System Builder
+
+Create a function that builds the transport system given parameters:
+
+```{python}
+def make_system(decay_coefficient):
+    """Build transport system with given decay coefficient"""
+    species_is_mobile = Species(tracer=True, reactive_tracer=True)
+    n_cells = 200
+
+    reactions = [
+        FirstOrderDecay(decay_coefficient=decay_coefficient)
+    ]
+
+    interface_areas = jnp.ones(n_cells + 1)
+    cells = Cells.equally_spaced(10, n_cells, interface_area=interface_areas)
+
+    dispersion = Dispersion.build(
+        cells=cells,
+        dispersivity=jnp.array(0.1),
+        pore_diffusion=Species(
+            tracer=jnp.array(1e-9 * 3600 * 24),
+            reactive_tracer=jnp.array(1e-9 * 3600 * 24),
+        ),
+    )
+
+    advection = Advection.build(limiter_type="upwind")
+
+    bcs = [
+        FixedConcentrationBoundary(
+            boundary="left",
+            species_selector=lambda s: getattr(s, "tracer"),
+            fixed_concentration=lambda t: jnp.array(10.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="right",
+            species_selector=lambda s: getattr(s, "tracer"),
+            fixed_concentration=lambda t: jnp.array(3.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="left",
+            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            fixed_concentration=lambda t: jnp.array(1.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="right",
+            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            fixed_concentration=lambda t: jnp.array(3.0),
+        )
+    ]
+
+    porosity = jnp.ones(n_cells) * 0.3
+
+    return System.build(
+        porosity=porosity,
+        discharge=lambda t: jnp.array(1 / 365) * 0.3,
+        cells=cells,
+        advection=advection,
+        dispersion=dispersion,
+        species_is_mobile=species_is_mobile,
+        bcs=bcs,
+        reactions=reactions
+    )
+```
+
+## Set Up Bayesian Model
+
+Now we'll create a PyMC model for parameter inference:
+
+```{python}
+# Time points for simulation
+t_points = jnp.linspace(0, 8000, 123)
+
+# Model coordinates for PyMC
+coords = {
+    "time_dense": np.array(t_points),
+}
+
+with pm.Model(coords=coords) as model:
+    # Prior for decay coefficient (log-normal)
+    decay_coefficient = pm.HalfNormal("k_dec", 0.01)
+
+    # Build system with current parameter value
+    system = make_system(decay_coefficient)
+
+    # Add spatial coordinate
+    model.add_coord("x", np.array(system.cells.centers))
+
+    # Initial conditions
+    val0 = jnp.zeros(system.cells.n_cells)
+    initial_state = Species(
+        tracer=val0,
+        reactive_tracer=val0
+    )
+
+    # Define solver as PyTensor operation
+    @pytensor.as_jax_op
+    def solve_pt(y0, system):
+        solve_fn_dense = make_solver(
+            t_max=8000, t_points=t_points,
+            rtol=1e-6, atol=1e-6, max_steps=10_000 * 100
+        )
+        return solve_fn_dense(y0, system).ys
+
+    # Solve the transport equations
+    solution = solve_pt(initial_state, system)
+
+    # Create deterministic variables for each species
+    fields = dataclasses.fields(solution)
+    for field in fields:
+        pm.Deterministic(
+            field.name,
+            getattr(solution, field.name),
+            dims=("time_dense", "x"),
+        )
+
+    # Synthetic observation (for demonstration)
+    # In practice, this would be your actual measured data
+    pm.Normal("observation",
+              mu=solution.reactive_tracer[20, 40],
+              sigma=0.1,
+              observed=0.5)
+```
+
+## Sample from Prior
+
+Let's first sample from the prior to see the range of model predictions:
+
+```{python}
+with model:
+    prior = pm.sample_prior_predictive(draws=50)
+```
+
+## Compile Model for Efficient Sampling
+
+Use nutpie for fast sampling with JAX backend:
+
+```{python}
+compiled = nutpie.compile_pymc_model(model, backend="jax", gradient_backend="jax")
+```
+
+## Run MCMC Sampling
+
+```{python}
+# Start background sampling
+sampler = nutpie.sample(compiled, chains=2, blocking=False)
+```
+
+## Monitor Sampling Progress
+
+```{python}
+# Check sampling progress periodically
+trace_preview = sampler.inspect()
+```
+
+## Analyze Results
+
+Once sampling is complete, analyze the posterior:
+
+```{python}
+# Get final trace (when sampling is done)
+trace = sampler.abort()  # or sampler.get() if completed
+
+import arviz as az
+
+# Plot trace for decay coefficient
+az.plot_trace(trace.warmup_posterior.k_dec_log__.isel(draw=slice(50, None)))
+plt.show()
+```
+
+## Visualize Posterior Predictions
+
+```{python}
+# Plot posterior predictions for reactive tracer
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+# Time series at specific location
+axes[0, 0].plot(t_points, trace.warmup_posterior.reactive_tracer.isel(
+    chain=0, x=-1, draw=slice(-50, None)
+).T, alpha=0.1, color='blue')
+axes[0, 0].set_title('Reactive Tracer at Outlet')
+axes[0, 0].set_xlabel('Time')
+axes[0, 0].set_ylabel('Concentration')
+
+# Spatial profiles at specific time
+axes[0, 1].plot(system.cells.centers, trace.warmup_posterior.reactive_tracer.isel(
+    chain=0, time_dense=20, draw=slice(-50, None)
+).T, alpha=0.1, color='red')
+axes[0, 1].set_title('Spatial Profile at t=1300')
+axes[0, 1].set_xlabel('Distance')
+axes[0, 1].set_ylabel('Concentration')
+
+# Prior predictions
+axes[1, 0].plot(system.cells.centers, prior.prior.reactive_tracer.isel(
+    chain=0, time_dense=20, draw=slice(None, 20)
+).T, alpha=0.3, color='green')
+axes[1, 0].set_title('Prior Predictions')
+axes[1, 0].set_xlabel('Distance')
+axes[1, 0].set_ylabel('Concentration')
+
+# Parameter posterior
+axes[1, 1].hist(trace.warmup_posterior.k_dec.values.flatten(), bins=30, alpha=0.7)
+axes[1, 1].set_title('Decay Coefficient Posterior')
+axes[1, 1].set_xlabel('k_dec')
+axes[1, 1].set_ylabel('Density')
+
+plt.tight_layout()
+plt.show()
+```
+
+## Model Diagnostics
+
+Check sampling diagnostics:
+
+```{python}
+# Check for divergences
+divergences = trace.warmup_sample_stats.diverging
+divergences.plot.line(x="draw", hue="chain")
+plt.title('Divergences During Sampling')
+plt.show()
+
+# Check step size adaptation
+step_size = trace.warmup_sample_stats.step_size
+step_size.plot.line(x="draw")
+plt.yscale("log")
+plt.title('Step Size Adaptation')
+plt.show()
+
+# Parameter trace
+trace.warmup_posterior.k_dec.isel(chain=0, draw=slice(100, None)).plot.line(x="draw")
+plt.title('Decay Coefficient Trace')
+plt.show()
+```
+
+## Key Insights
+
+This example demonstrates several important concepts:
+
+1. **Parameter Uncertainty**: The Bayesian approach quantifies uncertainty in parameter estimates
+2. **Model Predictions**: Posterior samples provide uncertainty bands for model predictions
+3. **Prior Influence**: Prior distributions affect the inference, especially with limited data
+4. **Computational Efficiency**: JAX compilation enables fast sampling for complex models
+
+## Advanced Applications
+
+This framework enables:
+
+- **Multi-parameter inference**: Estimate multiple parameters simultaneously
+- **Model comparison**: Compare different reaction mechanisms
+- **Hierarchical models**: Account for spatial or temporal variability
+- **Uncertainty propagation**: Quantify prediction uncertainty
+
+## Practical Considerations
+
+When applying this to real data:
+
+1. **Data preprocessing**: Ensure observations are properly aligned with model outputs
+2. **Prior specification**: Use domain knowledge to set informative priors
+3. **Model validation**: Check posterior predictive distributions against held-out data
+4. **Computational resources**: Large models may require HPC resources
+
+## Next Steps
+
+- Experiment with different prior distributions
+- Add multiple observation points
+- Try multi-parameter estimation
+- Explore hierarchical model structures
+- Apply to your own transport data
+
+This example shows the power of combining mechanistic transport models with Bayesian inference for robust parameter estimation and uncertainty quantification.
