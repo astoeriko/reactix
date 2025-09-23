@@ -3990,8 +3990,8 @@ packages:
   timestamp: 1733217331982
 - pypi: ../pytensor
   name: pytensor
-  version: 2.32.0+52.gf83212623.dirty
-  sha256: 384044434a89591a5c8ea8922c05a64be62c89cb0b421a3e3246fbe7f82c417f
+  version: 2.32.0+52.gf83212623
+  sha256: f3b553dc2c981b0e6a61739a0edbf5aa1f88c760021e992e9adbbf2518b53c43
   requires_dist:
   - setuptools>=59.0.0
   - scipy>=1,<2
