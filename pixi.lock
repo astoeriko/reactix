@@ -350,14 +350,14 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/b9/33/f86091c706db1a5459f501830241afff2ecab3532725c188ea57be6e54de/optax-0.2.5-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/94/9c/4672a90dfd2ce7d40428759c9aaed0164a9a90010349f607aa5e29132766/optimistix-0.0.10-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ca/2c/ae8eb6c197ec055bb4bc4a10859561c783fd602b2816acff7faf9c230df7/paramax-0.0.3-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/00/62/1e973f657ffc91a0ca5a22723f3d7f4a3df946cb3832e23d8f29eb33647f/pymc-5.25.1-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/ac/e4/47e7e2818c8b1acbd64f9a0ab3de001e484fb3545c82b37c350d71eb9e7b/pytensor-2.31.7-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/19/71/39c7c0d87f8d4e6c020a393182060eaefeeae6c01dab6a84ec346f2567df/rich-13.9.4-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/fe/b6/e116761ceeb880b7ad4c6a7e1203538754dd7dda42538f08d6daaf8dfa4d/tensorflow_probability-0.25.0-py2.py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/32/d5/f9a850d79b0851d1d4ef6456097579a9005b31fea68726a4ae5f2d82ddd9/threadpoolctl-3.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/03/98/eb27cc78ad3af8e302c9d8ff4977f5026676e130d28dd7578132a457170c/toolz-1.0.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/d0/30/dc54f88dd4a2b5dc8a0279bdd7270e735851848b762aeb1c1184ed1f6b14/tqdm-4.67.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/8d/96/04e7b441807b26b794da5b11e59ed7f83b2cf8af202bd7eba8ad2fa6046e/wadler_lindig-0.1.7-py3-none-any.whl
+      - pypi: ../pymc-dev
+      - pypi: ../pytensor
       - pypi: ./
 packages:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -3923,22 +3923,23 @@ packages:
   - pkg:pypi/pygments?source=hash-mapping
   size: 889287
   timestamp: 1750615908735
-- pypi: https://files.pythonhosted.org/packages/00/62/1e973f657ffc91a0ca5a22723f3d7f4a3df946cb3832e23d8f29eb33647f/pymc-5.25.1-py3-none-any.whl
+- pypi: ../pymc-dev
   name: pymc
-  version: 5.25.1
-  sha256: 4e1185cf20052b9be44f2ac8705dc6c77ff7b8d347d920d5e28719d970d9fa15
+  version: 5.25.1+10.g9f653a6eb
+  sha256: 0e84d192bfdb755d0597c031b56fc43bad690e5714bddb999de9c9770996ab6d
   requires_dist:
   - arviz>=0.13.0
   - cachetools>=4.2.1
   - cloudpickle
   - numpy>=1.25.0
   - pandas>=0.24.0
-  - pytensor>=2.31.7,<2.32
+  - pytensor>=2.32.0,<2.33
   - rich>=13.7.1
   - scipy>=1.4.1
   - threadpoolctl>=3.1.0,<4.0.0
   - typing-extensions>=3.7.4
   requires_python: '>=3.10'
+  editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/pyparsing-3.2.3-pyhe01879c_2.conda
   sha256: afe32182b1090911b64ac0f29eb47e03a015d142833d8a917defd65d91c99b74
   md5: aa0028616c0750c773698fdc254b2b8d
@@ -3987,10 +3988,10 @@ packages:
   - pkg:pypi/pysocks?source=hash-mapping
   size: 21085
   timestamp: 1733217331982
-- pypi: https://files.pythonhosted.org/packages/ac/e4/47e7e2818c8b1acbd64f9a0ab3de001e484fb3545c82b37c350d71eb9e7b/pytensor-2.31.7-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+- pypi: ../pytensor
   name: pytensor
-  version: 2.31.7
-  sha256: e5abd20541c9d9a4340fde4da63cab5a6b4ec3228f0070b539bb6188f2255512
+  version: 2.32.0+52.gf83212623.dirty
+  sha256: 384044434a89591a5c8ea8922c05a64be62c89cb0b421a3e3246fbe7f82c417f
   requires_dist:
   - setuptools>=59.0.0
   - scipy>=1,<2
@@ -4015,13 +4016,12 @@ packages:
   - sphinx>=5.1.0,<6 ; extra == 'rtd'
   - pygments ; extra == 'rtd'
   - pydot ; extra == 'rtd'
-  - pydot2 ; extra == 'rtd'
-  - pydot-ng ; extra == 'rtd'
   - jax ; extra == 'jax'
   - jaxlib ; extra == 'jax'
   - numba>=0.57 ; extra == 'numba'
   - llvmlite ; extra == 'numba'
   requires_python: '>=3.10,<3.14'
+  editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/pytest-8.4.1-pyhd8ed1ab_0.conda
   sha256: 93e267e4ec35353e81df707938a6527d5eb55c97bf54c3b87229b69523afb59d
   md5: a49c2283f24696a7b30367b7346a0144
