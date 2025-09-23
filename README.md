@@ -22,6 +22,10 @@ Kinetix might not be the right choice if…
 - the system involves a lot of equilibrium chemical reactions (like in PHREEQC),
 - you want to couple groundwater flow and transport simulations.
 
+## Development status
+
+This project is still under development. While most features are implemented by now, the API may still change, and documentation is largely missing at this point. The folder `notebooks` contains Jupyter notebooks that illustrate usage.
+If you are interested in trying out the package, feel free to reach out with any questions.
 
 ## Contact
 
