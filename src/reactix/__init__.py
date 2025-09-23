@@ -5,6 +5,7 @@ from reactix.transport import (
     Dispersion,
     FixedConcentrationBoundary,
     make_solver,
+    user_system_parameters,
 )
 from reactix.species import declare_species
 from reactix.reactions import (
@@ -21,6 +22,7 @@ __all__ = [
     "Dispersion",
     "FixedConcentrationBoundary",
     "make_solver",
+    "user_system_parameters",
     "declare_species",
     "SpatiallyConst",
     "SpatiallyVarying",

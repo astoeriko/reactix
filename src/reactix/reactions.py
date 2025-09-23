@@ -18,12 +18,24 @@ class SpatiallyConst:
     value: jax.Array
 
 
-def reaction(cls):
+def _make_spatial_jaxtree(cls):
     cls = dataclass(frozen=True, kw_only=True)(cls)
-    cls = jax.tree_util.register_dataclass(cls)
 
     @wraps(cls)
     def make_instance(**kwargs):
+        class _WithSpatialAxes(cls):
+            @property
+            def _spatial_axes(self):
+                return spatial_axes_value
+
+        _WithSpatialAxes.__name__ = cls.__name__
+        _WithSpatialAxes.__qualname__ = cls.__qualname__
+        _WithSpatialAxes.__doc__ = cls.__doc__
+
+        new_cls = _WithSpatialAxes
+        new_cls = dataclass(frozen=True, kw_only=True)(new_cls)
+        new_cls = jax.tree_util.register_dataclass(new_cls)
+
         spatial_axes = {}
         clean_kwargs = {}
 
@@ -38,17 +50,19 @@ def reaction(cls):
                 spatial_axes[name] = None
                 clean_kwargs[name] = val
 
-        spatial_axes = cls(_spatial_axes=None, **spatial_axes)
-        return cls(_spatial_axes=spatial_axes, **clean_kwargs)
+        spatial_axes_value = new_cls(**spatial_axes)
+        return new_cls(**clean_kwargs)
 
     return make_instance
+
+
+def reaction(cls):
+    return _make_spatial_jaxtree(cls)
 
 
 @jax.tree_util.register_dataclass
 @dataclass(frozen=True, kw_only=True)
 class KineticReaction(ABC):
-    _spatial_axes: "KineticReaction | None" = None
-
     @abstractmethod
     def rate(self, time, state, stytem) -> jax.Array: ...
 

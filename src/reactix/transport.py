@@ -6,11 +6,15 @@ import equinox as eqx
 import diffrax
 
 from dataclasses import dataclass, field
-from typing import Callable, Literal
+from typing import Callable, Literal, Any
 import operator
 
 from reactix.species import AbstractSpecies
-from reactix.reactions import KineticReaction
+from reactix.reactions import KineticReaction, _make_spatial_jaxtree
+
+
+def user_system_parameters(cls):
+    return _make_spatial_jaxtree(cls)
 
 
 @jax.tree_util.register_dataclass
@@ -27,6 +31,24 @@ class System:
     bcs: list[BoundaryCondition] = field(
         default_factory=list
     )  # avoid shared mutable default!
+    parameters: Any | None = None
+
+    @property
+    def _spatial_axes(self):
+        """Store a jaxtree like self that encodes which parameters
+        have a spatial dimension
+        """
+        return System(
+            cells=self.cells._spatial_axes,
+            advection=self.advection._spatial_axes,
+            dispersion=self.dispersion._spatial_axes,
+            species_is_mobile=None,
+            bcs=None,
+            reactions=[reaction._spatial_axes for reaction in self.reactions],
+            discharge=None,
+            porosity=0,
+            parameters=self.parameters._spatial_axes if self.parameters else None,
+        )
 
     # TODO rename to Model, but maybe some attrisbutes in System or so?
     # TODO: retardation_factor: Species
@@ -43,6 +65,7 @@ class System:
         reactions: list[BoundaryCondition] | None = None,
         discharge: Callable[[jax.Array], jax.Array] | jax.Array,
         porosity: jax.Array,
+        parameters: Any | None = None,
     ):
         if bcs is None:
             bcs = []
@@ -82,6 +105,7 @@ class System:
             reactions=reactions,
             discharge=discharge_fn,
             porosity=porosity,
+            parameters=parameters,
         )
 
     def cell_velocity(self, t):
@@ -99,18 +123,31 @@ class Cells:
     # and the first and last boundary. Shape = (n_cells + 1,)
     nodes: jax.Array
     interface_area: jax.Array
+    cell_area: jax.Array
+    face_distances: jax.Array
 
     @property
-    def cell_area(self):
-        return (self.interface_area[:-1] + self.interface_area[1:]) / 2
+    def _spatial_axes(self):
+        return Cells(
+            n_cells=None,
+            centers=0,
+            nodes=None,
+            interface_area=None,
+            cell_area=0,
+            face_distances=0,
+        )
 
-    @property
-    def face_distances(self):
+    @classmethod
+    def _cell_area(cls, interface_area):
+        return (interface_area[:-1] + interface_area[1:]) / 2
+
+    @classmethod
+    def _face_distances(cls, nodes):
         """
         Returns the distance between cell boundaries (dx for flux divergence).
         Shape = (n_cells,)
         """
-        return self.nodes[1:] - self.nodes[:-1]
+        return nodes[1:] - nodes[:-1]
 
     @property
     def center_distances(self):
@@ -125,11 +162,18 @@ class Cells:
         if interface_area is None:
             interface_area = jnp.ones(n_cells + 1)
         nodes = jnp.linspace(0, length, n_cells + 1)
+        face_distances = cls._face_distances(nodes)
+        cell_area = cls._cell_area(interface_area)
+        if (face_distances <= 0).any():
+            raise ValueError("Cell nodes must be in strictly increasing order.")
+
         return Cells(
             n_cells=n_cells,
             nodes=nodes,
             centers=(nodes[1:] - nodes[:-1]) / 2 + nodes[:-1],
             interface_area=interface_area,
+            cell_area=cell_area,
+            face_distances=face_distances,
         )
 
 
@@ -137,6 +181,10 @@ class Cells:
 @dataclass(frozen=True)
 class Advection:
     limiter_type: str = "minmod"  # Options: "minmod", "upwind", "MC"
+
+    @property
+    def _spatial_axes(self):
+        return Advection(limiter_type=None)
 
     @classmethod
     def build(cls, *, limiter_type):
@@ -241,6 +289,13 @@ class Dispersion:
     dispersivity: jax.Array
     # pore diffusion coefficient
     pore_diffusion: AbstractSpecies
+
+    @property
+    def _spatial_axes(self):
+        return Dispersion(
+            dispersivity=0,
+            pore_diffusion=None,
+        )
 
     @classmethod
     def build(cls, *, cells, dispersivity, pore_diffusion):
@@ -423,7 +478,8 @@ def apply_bcs(bcs, t, system, state, rate):
 
 
 def rhs(time, state, system: System):
-    def compute_pointwise_reaction_rates(time, state, reactions):
+    def compute_pointwise_reaction_rates(time, state, system):
+        reactions = system.reactions
         if len(reactions) == 0:
             return type(state).zeros()
 
@@ -435,11 +491,11 @@ def rhs(time, state, system: System):
         [
             None,
             type(state).int_zeros(),
-            [reaction._spatial_axes for reaction in system.reactions],
+            system._spatial_axes,
         ],
     )
 
-    reaction_rates = compute_spatial_reaction_rates(time, state, system.reactions)
+    reaction_rates = compute_spatial_reaction_rates(time, state, system)
 
     def sum_rhs_terms(
         species_is_mobile: bool,
