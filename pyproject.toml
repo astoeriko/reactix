@@ -1,16 +1,16 @@
 [project]
-name = "kinetix"
+name = "reactix"
 version = "0.1"
-description = "Reaction kinetics with jax and pymc"
+description = "Reactive transport with jax and pymc"
 readme = "README.md"
 requires-python = ">=3.11"
-keywords = ["statistics", "bayesian", "pymc"]
+keywords = ["reactive transport", "reaction", "pymc"]
 authors = [
   { name = "Anna Störiko", email = "a.storiko@tudelft.nl" },
   { name = "Adrian Seyboldt", email = "adrian.seyboldt@gmail.com" },
 ]
 maintainers = [
-  { name = "Adrian Seyboldt", email = "adrian.seyboldt@gmail.com" },
+  { name = "Anna Störiko", email = "a.storiko@tudelft.nl" },
 ]
 
 classifiers = [

@@ -1,4 +1,4 @@
-from kinetix.transport import (
+from reactix.transport import (
     System,
     Cells,
     Advection,
@@ -6,8 +6,8 @@ from kinetix.transport import (
     FixedConcentrationBoundary,
     make_solver,
 )
-from kinetix.species import declare_species
-from kinetix.reactions import (
+from reactix.species import declare_species
+from reactix.reactions import (
     SpatiallyConst,
     SpatiallyVarying,
     KineticReaction,

@@ -2078,16 +2078,6 @@ packages:
   purls: []
   size: 134088
   timestamp: 1754905959823
-- pypi: ./
-  name: kinetix
-  version: '0.1'
-  sha256: ba03b232312fbd7e2a60e471f026885a977f55e264723171d746b5363f4f71a4
-  requires_dist:
-  - numpy
-  - arviz
-  - pymc
-  requires_python: '>=3.11'
-  editable: true
 - conda: https://conda.anaconda.org/conda-forge/linux-64/kiwisolver-1.4.9-py313hc8edb43_0.conda
   sha256: 0d04eac5aad3dce0684889535ce8908ec6206cc7ba6dfbe4548ced1fe66f8ea2
   md5: 62736c3dc8dd7e76bb4d79532a9ab262
@@ -4253,6 +4243,16 @@ packages:
   purls: []
   size: 27363
   timestamp: 1753295056377
+- pypi: ./
+  name: reactix
+  version: '0.1'
+  sha256: 314a04eaf7b5291409ca931d20d28496966617b2fc92dbfebfb2f041ae541a9e
+  requires_dist:
+  - numpy
+  - arviz
+  - pymc
+  requires_python: '>=3.11'
+  editable: true
 - conda: https://conda.anaconda.org/conda-forge/linux-64/readline-8.2-h8c095d6_2.conda
   sha256: 2d6d0c026902561ed77cd646b5021aef2d4db22e57a5b0178dfc669231e06d2c
   md5: 283b96675859b20a825f8fa30f311446

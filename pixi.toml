@@ -4,7 +4,7 @@ authors = [
   "Adrian Seyboldt <adrian.seyboldt@gmail.com>",
 ]
 channels = ["conda-forge"]
-name = "kinetix"
+name = "reactix"
 platforms = ["linux-64"]
 version = "0.1.0"
 
@@ -33,7 +33,7 @@ nutpie = ">=0.15.2,<0.16"
 
 
 [pypi-dependencies]
-kinetix = { path = ".", editable = true }
+reactix = { path = ".", editable = true }
 #pytensor = { git = "https://github.com/aseyboldt/pytensor.git", rev = "4d7c6ed66cbae747af5243dbd3f33b4a3ed7bac9" }
 pytensor = { path = "../pytensor", editable = true }
 #pymc = ">=5.25.1"

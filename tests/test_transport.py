@@ -6,7 +6,7 @@ import equinox as eqx
 import xarray as xr
 from scipy.special import erfc
 
-from kinetix import (
+from reactix import (
     Advection,
     Cells,
     Dispersion,

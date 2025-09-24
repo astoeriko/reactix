@@ -9,8 +9,8 @@ from dataclasses import dataclass, field
 from typing import Callable, Literal
 import operator
 
-from kinetix.species import AbstractSpecies
-from kinetix.reactions import KineticReaction
+from reactix.species import AbstractSpecies
+from reactix.reactions import KineticReaction
 
 
 @jax.tree_util.register_dataclass
