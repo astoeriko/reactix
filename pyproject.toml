@@ -22,4 +22,4 @@ classifiers = [
   "Programming Language :: Python :: 3 :: Only",
 ]
 
-dependencies = ["numpy", "arviz", "pymc"]
+dependencies = ["numpy", "arviz", "pymc", "nutpie<0.16.0", "jax", "diffrax", "equinox"]
