@@ -166,7 +166,7 @@ with pm.Model(coords=coords) as model:
     )
 
     # Define solver as PyTensor operation
-    @pytensor.as_jax_op
+    @pytensor.wrap_jax
     def solve_pt(y0, system):
         solve_fn_dense = make_solver(
             t_max=8000, t_points=t_points,
