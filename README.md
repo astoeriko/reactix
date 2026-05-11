@@ -31,3 +31,10 @@ If you are interested in trying out the package, feel free to reach out with any
 
 For questions about this project, please open an issue or contact Anna Störiko (a.storiko@tudelft.nl).
 
+## Waiver
+
+Technische Universiteit Delft hereby disclaims all copyright interest in the program “Reactix” (1-D reactive transport models with JAX) written by the Author(s). 
+
+Stefan Aarninkhof, Dean of faculty of Civil Engineering and Geosciences.
+
+Copyright (c) 2026 Anna Störiko.
