@@ -1,3 +1,5 @@
+"""Reaction framework utilities for reactive transport models."""
+
 from __future__ import annotations
 
 import jax
@@ -8,6 +10,20 @@ from functools import wraps
 
 @dataclass(frozen=True)
 class SpatiallyVarying:
+    """
+    Marker for parameters that vary spatially in the domain.
+
+    This class wraps a parameter value that has spatial variation along
+    a specified axis, enabling vectorized computations across the domain.
+
+    Parameters
+    ----------
+    value : jax.Array
+        The parameter values, with shape including the spatial dimension.
+    axis : int, optional
+        The axis along which the parameter varies spatially. Default is 0.
+    """
+
     value: jax.Array
     _: KW_ONLY
     axis: int = 0
@@ -15,6 +31,18 @@ class SpatiallyVarying:
 
 @dataclass(frozen=True)
 class SpatiallyConst:
+    """
+    Marker for parameters that are constant across the domain.
+
+    This class wraps a parameter value that does not vary spatially,
+    indicating it should be treated as a scalar or constant array.
+
+    Parameters
+    ----------
+    value : jax.Array
+        The constant parameter value.
+    """
+
     value: jax.Array
 
 
@@ -57,16 +85,95 @@ def _make_spatial_jaxtree(cls):
 
 
 def reaction(cls):
+    """
+    Decorate a class to create spatially-aware reaction classes.
+
+    This decorator transforms a class into a dataclass that can handle
+    spatially varying parameters using SpatiallyVarying and SpatiallyConst
+    markers. It enables JAX tree operations and spatial axis tracking.
+
+    Parameters
+    ----------
+    cls : type
+        The class to be decorated, typically a reaction implementation.
+
+    Returns
+    -------
+    callable
+        A factory function that creates instances with spatial awareness.
+
+    Notes
+    -----
+    The decorated class will automatically handle parameters marked with
+    SpatiallyVarying or SpatiallyConst, enabling vectorized computations
+    across spatial domains.
+    """
     return _make_spatial_jaxtree(cls)
 
 
 @jax.tree_util.register_dataclass
 @dataclass(frozen=True, kw_only=True)
 class KineticReaction(ABC):
+    """
+    Abstract base class for kinetic reactions in reactive transport.
+
+    This class defines the interface for implementing kinetic reactions
+    that can be coupled with transport equations. Subclasses must implement
+    the rate method and define stoichiometry.
+
+    Attributes
+    ----------
+    stoichiometry : dict or callable
+        Reaction stoichiometry mapping species names to coefficients.
+        Can be a dict for constant stoichiometry or a callable for
+        time/state-dependent stoichiometry.
+
+    Notes
+    -----
+    Reactions are evaluated using the _eval_dcdt method, which computes
+    the rate of change of species concentrations based on the reaction rate
+    and stoichiometry.
+    """
+
     @abstractmethod
-    def rate(self, time, state, stytem) -> jax.Array: ...
+    def rate(self, time, state, system) -> jax.Array:
+        """
+        Compute the reaction rate.
+
+        Parameters
+        ----------
+        time : jax.Array
+            Current time.
+        state : AbstractSpecies
+            Current species concentrations.
+        system : System
+            The transport system.
+
+        Returns
+        -------
+        jax.Array
+            The reaction rate.
+        """
+        ...
 
     def _eval_dcdt(self, time, state, system):
+        """
+        Evaluate the rate of change of species concentrations due to this reaction.
+
+        Parameters
+        ----------
+        time : jax.Array
+            Current time.
+        state : AbstractSpecies
+            Current species concentrations.
+        system : System
+            The transport system.
+
+        Returns
+        -------
+        AbstractSpecies
+            Rate of change of species concentrations.
+        """
         if callable(self.stoichiometry):
             stoichiometry = self.stoichiometry(time, state, system)
         elif isinstance(self.stoichiometry, dict):

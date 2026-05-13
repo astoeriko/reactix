@@ -1,3 +1,9 @@
+"""Reactix: a JAX-powered reactive-transport modeling library.
+
+This package exposes the core transport, species, and reaction APIs
+for building and solving 1D reactive-transport systems.
+"""
+
 from reactix.transport import (
     System,
     Cells,
