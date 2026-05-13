@@ -31,6 +31,14 @@ If you are interested in trying out the package, feel free to reach out with any
 
 For questions about this project, please open an issue or contact Anna Störiko (a.storiko@tudelft.nl).
 
+## Acknowledgement
+
+This project is supported by TU Delft.
+
+## License
+
+This project is under an MIT license. Please see [the license](./LICENSE) for details.
+
 ## Waiver
 
 Technische Universiteit Delft hereby disclaims all copyright interest in the program “Reactix” (1-D reactive transport models with JAX) written by the Author(s). 
