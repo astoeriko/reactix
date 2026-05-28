@@ -2,10 +2,10 @@
 
 Reactix is a Python package for simulating reactive transport of chemical species suitable for one-dimensional systems with **advection, dispersion and kinetic reactions**.
 Reaction kinetics can be defined flexibly in plain Python.
-The package combines a finite volume discretization in space with advanced ODE solvers from diffrax for efficient time integration.
+The package combines a finite volume discretization in space with advanced ODE solvers from [diffrax](https://docs.kidger.site/diffrax/) for efficient time integration.
 
 Reactix is built on the JAX ecosystem which provides automatic differentiation, making the models **fully differentiable**.
-This enables the use of gradient-based methods for sensitivity analysis and uncertainty quantification. The package integrates seamlessly with PyMCfor Bayesian modeling and parameter estimation.
+This enables the use of gradient-based methods for sensitivity analysis and uncertainty quantification. The package integrates seamlessly with [PyMC](https://docs.pymc.io/) for Bayesian modeling and parameter estimation.
 
 ## Use cases
 
@@ -21,6 +21,89 @@ Reactix might not be the right choice if…
 - your model needs to be 2-D or 3-D,
 - the system involves a lot of equilibrium chemical reactions (like in PHREEQC),
 - you want to couple groundwater flow and transport simulations.
+
+## Installation
+
+To avoid possible dependency conflicts, we recommend installing Reactix in a dedicated environment. Reactix requires **Python 3.10 or later**.
+
+You can create an environment with conda:
+
+```bash
+conda create -n reactix python=3.10
+conda activate reactix
+```
+
+Or with venv:
+
+```bash
+python -m venv reactix-env
+source reactix-env/bin/activate   # Linux/macOS
+reactix-env\Scripts\activate      # Windows
+```
+
+Activate the environment before installing the package.
+
+### Dependencies
+
+Reactix depends on [JAX](https://jax.readthedocs.io), [diffrax](https://docs.kidger.site/diffrax/), and [PyMC](https://www.pymc.io). These are installed automatically when installing Reactix via pip, uv, or conda.
+
+> **JAX and GPU support:** [TODO: add info on GPU support/development/plans here]
+
+### User installation
+
+To install the package you can use conda, pip or uv. The package is available on PyPI and conda-forge. 
+
+#### **pip** (from PyPI):
+
+```bash
+pip install reactix
+```
+
+#### **conda** (from conda-forge):
+
+```bash
+conda install -c conda-forge reactix
+```
+
+#### **uv** (from PyPI):
+
+If you don't have `uv` installed, you can get it with:
+
+```bash
+# Linux/macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Or via pip
+pip install uv
+```
+
+Then install Reactix:
+
+```bash
+uv pip install reactix
+```
+
+### Developer installation
+
+Clone the repository and install the package in editable mode with development dependencies:
+
+```bash
+git clone https://github.com/astoeriko/reactix.git
+cd reactix
+pip install -e ".[dev]"
+```
+
+Or with uv:
+
+```bash
+uv pip install -e ".[dev]"
+```
+
+Make your changes and propose them as described in the [contributing guidelines](./CONTRIBUTING.md).
+
 
 ## Development status
 
