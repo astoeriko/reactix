@@ -23,3 +23,6 @@ classifiers = [
 ]
 
 dependencies = ["numpy", "arviz", "pymc", "nutpie<0.16.0", "jax", "diffrax", "equinox"]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
