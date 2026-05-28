@@ -24,12 +24,12 @@ Reactix might not be the right choice if…
 
 ## Installation
 
-To avoid possible dependency conflicts, we recommend installing Reactix in a dedicated environment. Reactix requires **Python 3.10 or later**.
+To avoid possible dependency conflicts, we recommend installing Reactix in a dedicated environment. Reactix requires **Python 3.11 or later**.
 
 You can create an environment with conda:
 
 ```bash
-conda create -n reactix python=3.10
+conda create -n reactix python=3.11
 conda activate reactix
 ```
 
@@ -41,7 +41,29 @@ source reactix-env/bin/activate   # Linux/macOS
 reactix-env\Scripts\activate      # Windows
 ```
 
+or with uv:
+
+```bash
+uv venv reactix-env
+source reactix-env/bin/activate  # Linux/macOS
+reactix-env\Scripts\activate     # Windows
+```
+
 Activate the environment before installing the package.
+
+> [!NOTE]  
+> If you don't have `uv` installed, you can get it with:
+
+```bash
+# Linux/macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Or via pip
+pip install uv
+```
 
 ### Dependencies
 
@@ -67,20 +89,6 @@ conda install -c conda-forge reactix
 
 #### **uv** (from PyPI):
 
-If you don't have `uv` installed, you can get it with:
-
-```bash
-# Linux/macOS
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Windows (PowerShell)
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-
-# Or via pip
-pip install uv
-```
-
-Then install Reactix:
 
 ```bash
 uv pip install reactix
@@ -103,6 +111,16 @@ uv pip install -e ".[dev]"
 ```
 
 Make your changes and propose them as described in the [contributing guidelines](./CONTRIBUTING.md).
+
+## Usage example
+
+[TODO]: Add a short code snippet and short description here.
+
+[TODO]: Full API documentation is forthcoming.
+
+### Jupyter notebook examples
+
+In the [`notebooks`](./notebooks) folder there are examples that demonstrate the use of Reactix.
 
 
 ## Development status
