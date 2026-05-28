@@ -3,11 +3,11 @@ name: Ruff
 on: 
   pull_request:
     branches:
-      - dev
+      - develop
   workflow_dispatch:
   push:
     branches:
-      - dev
+      - develop
 
 jobs:
   build:
