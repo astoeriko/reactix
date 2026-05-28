@@ -26,27 +26,29 @@ Reactix might not be the right choice if…
 
 To avoid possible dependency conflicts, we recommend installing Reactix in a dedicated environment. Reactix requires **Python 3.11 or later**.
 
-You can create an environment with conda:
+You can create an environment with uv or conda:
+
+With uv:
+
+```bash
+uv venv reactix-env
+source reactix-env/bin/activate  # Linux/macOS
+reactix-env\Scripts\activate     # Windows
+```
+
+With conda:
 
 ```bash
 conda create -n reactix python=3.11
 conda activate reactix
 ```
 
-Or with venv:
+Or alternatively with venv:
 
 ```bash
 python -m venv reactix-env
 source reactix-env/bin/activate   # Linux/macOS
 reactix-env\Scripts\activate      # Windows
-```
-
-or with uv:
-
-```bash
-uv venv reactix-env
-source reactix-env/bin/activate  # Linux/macOS
-reactix-env\Scripts\activate     # Windows
 ```
 
 Activate the environment before installing the package.
@@ -75,10 +77,10 @@ Reactix depends on [JAX](https://jax.readthedocs.io), [diffrax](https://docs.kid
 
 To install the package you can use conda, pip or uv. The package is available on PyPI and conda-forge. 
 
-#### **pip** (from PyPI):
+#### **uv** (from PyPI):
 
 ```bash
-pip install reactix
+uv pip install reactix
 ```
 
 #### **conda** (from conda-forge):
@@ -87,11 +89,10 @@ pip install reactix
 conda install -c conda-forge reactix
 ```
 
-#### **uv** (from PyPI):
-
+#### **pip** (from PyPI):
 
 ```bash
-uv pip install reactix
+pip install reactix
 ```
 
 ### Developer installation
@@ -101,13 +102,13 @@ Clone the repository and install the package in editable mode with development d
 ```bash
 git clone https://github.com/astoeriko/reactix.git
 cd reactix
-pip install -e ".[dev]"
+uv pip install -e ".[dev]"
 ```
 
-Or with uv:
+Or with pip:
 
 ```bash
-uv pip install -e ".[dev]"
+pip install -e ".[dev]"
 ```
 
 Make your changes and propose them as described in the [contributing guidelines](./CONTRIBUTING.md).
