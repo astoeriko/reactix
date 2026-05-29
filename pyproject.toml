@@ -1,10 +1,15 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "reactix"
-version = "0.1"
-description = "Reactive transport with jax and pymc"
+version = "0.0.1"
+description = "Reactive transport modelling with JAX and PyMC"
 readme = "README.md"
 requires-python = ">=3.11"
-keywords = ["reactive transport", "reaction", "pymc"]
+license = { file = "LICENSE" }
+keywords = ["reactive transport", "reaction", "pymc", "jax"]
 authors = [
   { name = "Anna Störiko", email = "a.storiko@tudelft.nl" },
   { name = "Adrian Seyboldt", email = "adrian.seyboldt@gmail.com" },
@@ -17,15 +22,48 @@ classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3 :: Only",
 ]
 
-dependencies = ["numpy", "arviz", "pymc", "nutpie<0.16.0", "jax", "diffrax", "equinox"]
+# Core dependencies
+dependencies = [
+  "jax>=0.4.14",
+  "equinox>=0.11.0",
+  "diffrax>=0.5.0",
+  "pymc>=5.0.0",
+  "arviz>=0.17.0",
+  "numpy>=1.24.0",
+  "nutpie>=0.13.0",
+  "matplotlib>=3.7.0",
+  "jupyter>=1.0.0",
+  "ipympl>=0.9.7",
+]
 
 [project.optional-dependencies]
-dev = ["pytest", "ruff"]
 
-[tool.ruff]
-exclude = ["docs", "notebooks"]
+# Development environment
+dev = [
+  "pytest>=7.0",
+  "pytest-cov>=4.0",
+  "ruff>=0.4.0",
+  "sphinx>=7.0",
+  "sphinx-autodoc-typehints>=1.23",
+  "furo>=2024.1.29",
+  "myst-parser>=2.0",
+  "pre-commit>=3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/astoeriko/reactix"
+Repository = "https://github.com/astoeriko/reactix"
+Issues = "https://github.com/astoeriko/reactix/issues"
+
+# --- Pytest ---
+
+# --- Hatch (build) ---
+[tool.hatch.build.targets.wheel]
+packages = ["src/reactix"]
+
