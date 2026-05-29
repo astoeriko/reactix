@@ -4,16 +4,10 @@ on:
   pull_request:
     branches:
       - develop
-    paths-ignore:
-      - "docs/**"
-      - "notebooks/**"
   workflow_dispatch:
   push:
     branches:
       - develop
-    paths-ignore:
-      - "docs/**"
-      - "notebooks/**"
 
 jobs:
   build:

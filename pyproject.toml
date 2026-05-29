@@ -26,3 +26,6 @@ dependencies = ["numpy", "arviz", "pymc", "nutpie<0.16.0", "jax", "diffrax", "eq
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff"]
+
+[tool.ruff]
+exclude = ["docs", "notebooks"]
