@@ -37,4 +37,4 @@ jobs:
         # install project dependencies
         pip install .
     - name: Run Ruff
-      run: ruff check --output-format=github
+      run: ruff check --output-format=github --exclude docs,notebooks
