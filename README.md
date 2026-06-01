@@ -39,7 +39,7 @@ reactix-env\Scripts\activate     # Windows
 With conda:
 
 ```bash
-conda create -n reactix python=3.11
+conda create -n reactix python=3.13
 conda activate reactix
 ```
 
