@@ -43,7 +43,7 @@ def test_tracer():
     bcs = [
         FixedConcentrationBoundary(
             boundary="left",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
     ]
@@ -107,12 +107,12 @@ def test_against_analytical_solution():
     bcs = [
         FixedConcentrationBoundary(
             boundary="left",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(c0),
         ),
         FixedConcentrationBoundary(
             boundary="right",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(0.0),
         ),
     ]
@@ -172,12 +172,12 @@ def test_negative_velocity():
     bcs = [
         FixedConcentrationBoundary(
             boundary="right",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
         FixedConcentrationBoundary(
             boundary="left",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(5.0),
         ),
     ]
@@ -215,13 +215,13 @@ def test_duplicate_bondaries():
         FixedConcentrationBoundary(
             is_active=lambda t, system: t < 1000,
             boundary="left",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
         FixedConcentrationBoundary(
             is_active=lambda t, system: t >= 500,
             boundary="left",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(3.0),
         ),
     ]
@@ -263,12 +263,12 @@ def test_immobile_species():
     bcs = [
         FixedConcentrationBoundary(
             boundary="left",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
         FixedConcentrationBoundary(
             boundary="right",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(3.0),
         ),
     ]
@@ -318,7 +318,7 @@ def test_bc_for_immobile_species():
         FixedConcentrationBoundary(
             is_active=lambda t, system: t < 1000,
             boundary="left",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
     ]
@@ -407,22 +407,22 @@ def test_reactive_tracer_constant_param():
     bcs = [
         FixedConcentrationBoundary(
             boundary="left",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
         FixedConcentrationBoundary(
             boundary="right",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(3.0),
         ),
         FixedConcentrationBoundary(
             boundary="left",
-            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            species_selector=lambda s: s.reactive_tracer,
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
         FixedConcentrationBoundary(
             boundary="right",
-            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            species_selector=lambda s: s.reactive_tracer,
             fixed_concentration=lambda t: jnp.array(3.0),
         ),
     ]
@@ -477,22 +477,22 @@ def test_reactive_tracer_variable_param():
     bcs = [
         FixedConcentrationBoundary(
             boundary="left",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
         FixedConcentrationBoundary(
             boundary="right",
-            species_selector=lambda s: getattr(s, "tracer"),
+            species_selector=lambda s: s.tracer,
             fixed_concentration=lambda t: jnp.array(3.0),
         ),
         FixedConcentrationBoundary(
             boundary="left",
-            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            species_selector=lambda s: s.reactive_tracer,
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
         FixedConcentrationBoundary(
             boundary="right",
-            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            species_selector=lambda s: s.reactive_tracer,
             fixed_concentration=lambda t: jnp.array(3.0),
         ),
     ]
