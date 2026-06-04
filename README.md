@@ -79,29 +79,29 @@ Reactix depends on [JAX](https://jax.readthedocs.io), [diffrax](https://docs.kid
 
 Below are instructions for installing the package for users and developers.
 
-### User installation
+#### User installation
 
 To install the package you can use conda, pip or uv. The package is available on PyPI and conda-forge. 
 
-#### **uv** (from PyPI):
+- **uv** (from PyPI):
 
-```bash
-uv pip install reactix
-```
+    ```bash
+    uv pip install reactix
+    ```
 
-#### **conda** (from conda-forge):
+- **conda** (from conda-forge):
 
-```bash
-conda install -c conda-forge reactix
-```
+    ```bash
+    conda install -c conda-forge reactix
+    ```
 
-#### **pip** (from PyPI):
+- **pip** (from PyPI):
 
-```bash
-pip install reactix
-```
+    ```bash
+    pip install reactix
+    ```
 
-### Developer installation
+#### Developer installation
 
 If you want to contribute to the development of Reactix, clone the repository and install the package in editable mode with development dependencies:
 
