@@ -1,4 +1,3 @@
-import pytest
 import jax.numpy as jnp
 from reactix import declare_species
 

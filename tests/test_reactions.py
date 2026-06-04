@@ -1,8 +1,6 @@
 import jax.numpy as jnp
 import jax
 import numpy as np
-import pytest
-import equinox as eqx
 from reactix import reaction, KineticReaction, declare_species, SpatiallyVarying
 
 
