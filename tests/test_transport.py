@@ -21,8 +21,8 @@ from reactix import (
     user_system_parameters,
 )
 
-TracerSpecies = declare_species(['tracer'])
-Species = declare_species(['tracer', 'reactive_tracer'])
+TracerSpecies = declare_species(["tracer"])
+Species = declare_species(["tracer", "reactive_tracer"])
 
 
 @user_system_parameters
@@ -114,10 +114,7 @@ def ogata_banks_solution(t, x, u, D, c0):
     return (
         c0
         / 2
-        * (
-            erfc((x - u * t) / (2 * np.sqrt(D * t)))
-            + np.exp(u * x / D) * erfc((x + u * t) / (2 * np.sqrt(D * t)))
-        )
+        * (erfc((x - u * t) / (2 * np.sqrt(D * t))) + np.exp(u * x / D) * erfc((x + u * t) / (2 * np.sqrt(D * t))))
     )
 
 
@@ -330,9 +327,7 @@ def test_immobile_species():
 
     # Check that the concentration of the immobile reactive tracer at a fixed
     # location decreases exponentially over time
-    np.testing.assert_allclose(
-        solution.ys.reactive_tracer[:, 1], c0 * np.exp(-k_dec * solution.ts), atol=1e-3
-    )
+    np.testing.assert_allclose(solution.ys.reactive_tracer[:, 1], c0 * np.exp(-k_dec * solution.ts), atol=1e-3)
 
 
 def test_bc_for_immobile_species():
@@ -353,9 +348,7 @@ def test_bc_for_immobile_species():
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
     ]
-    with pytest.raises(
-        ValueError, match="Cannot apply boundary condition to immobile species."
-    ):
+    with pytest.raises(ValueError, match="Cannot apply boundary condition to immobile species."):
         System.build(
             porosity=jnp.array(0.3),
             discharge=lambda t: jnp.array(1 / 365),
@@ -401,9 +394,7 @@ def test_mass_conservation():
     )
     solution = solver(state, system)
     y = xr.DataArray(solution.ys.tracer, dims=("time", "x"))
-    vol = xr.DataArray(
-        np.array(cells.cell_area) * np.array(cells.face_distances), dims="x"
-    )
+    vol = xr.DataArray(np.array(cells.cell_area) * np.array(cells.face_distances), dims="x")
     np.testing.assert_allclose((y * vol).sum("x"), (val0 * vol).sum(), rtol=1e-6)
 
 
@@ -481,18 +472,14 @@ def test_reactive_tracer_constant_param():
     travel_time = x / velocity
     c0 = np.array(system.bcs[2].fixed_concentration(-1))
     analytical_solution = c0 * np.exp(-reactions[0].decay_coefficient * travel_time)
-    np.testing.assert_allclose(
-        solution.ys.reactive_tracer[-1, :], analytical_solution, rtol=0.1, atol=0.01
-    )
+    np.testing.assert_allclose(solution.ys.reactive_tracer[-1, :], analytical_solution, rtol=0.1, atol=0.01)
 
 
 def test_reactive_tracer_variable_param():
     n_cells = 200
     decay_coefficient = jnp.ones(n_cells)
     decay_coefficient = decay_coefficient.at[100:].set(2)
-    reactions = [
-        FirstOrderDecay(decay_coefficient=SpatiallyVarying(decay_coefficient / 100))
-    ]
+    reactions = [FirstOrderDecay(decay_coefficient=SpatiallyVarying(decay_coefficient / 100))]
     cells = Cells.equally_spaced(10, n_cells, interface_area=None)
     dispersion = Dispersion.build(
         cells=cells,
