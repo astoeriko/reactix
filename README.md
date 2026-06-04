@@ -1,8 +1,8 @@
 # Reactix – Simulating 1-D reactive transport with differentiable models in JAX
 
 Reactix is a Python package for simulating reactive transport of chemical species suitable for one-dimensional systems with **advection, dispersion and kinetic reactions**.
-Reaction kinetics can be defined flexibly in plain Python.
-The package combines a finite volume discretization in space with advanced ODE solvers from [diffrax](https://docs.kidger.site/diffrax/) for efficient time integration.
+
+Reaction kinetics can be defined flexibly in plain Python. The package combines a finite volume discretization in space with advanced ODE solvers from [diffrax](https://docs.kidger.site/diffrax/) for efficient time integration.
 
 Reactix is built on the JAX ecosystem which provides automatic differentiation, making the models **fully differentiable**.
 This enables the use of gradient-based methods for sensitivity analysis and uncertainty quantification. The package integrates seamlessly with [PyMC](https://docs.pymc.io/) for Bayesian modeling and parameter estimation.
