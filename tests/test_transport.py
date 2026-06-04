@@ -23,11 +23,6 @@ TracerSpecies = declare_species(["tracer"])
 Species = declare_species(["tracer", "reactive_tracer"])
 
 
-def test_species_shapes():
-    Species = declare_species(["tracer"], shapes={"tracer": (5, 3)})
-    x = Species.zeros()
-    assert x.tracer.shape == (5, 3)
-    assert Species.int_zeros().tracer == 0
 
 
 def test_tracer():

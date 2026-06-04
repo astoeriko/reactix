@@ -31,7 +31,8 @@ def test_species_add_method():
 
 def test_declare_species_with_shapes():
     """Test that declare_species handles custom shapes."""
-    Species = declare_species(['conc'], shapes={'conc': (10, 5)})
+    Species = declare_species(["tracer"], shapes={"tracer": (5, 3)})
 
     zero_state = Species.zeros()
-    assert zero_state.conc.shape == (10, 5)
+    assert zero_state.tracer.shape == (5, 3)
+    assert Species.int_zeros().tracer == 0
