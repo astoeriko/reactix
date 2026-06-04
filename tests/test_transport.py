@@ -229,7 +229,7 @@ def test_negative_velocity():
     np.testing.assert_allclose(solution.ys.tracer[-1, -1], 10, rtol=1e-3)
 
 
-def test_duplicate_bondaries():
+def test_duplicate_boundaries():
     cells = Cells.equally_spaced(10, 200)
     dispersion = Dispersion.build(
         cells=cells,
