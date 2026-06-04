@@ -344,6 +344,8 @@ class Cells:
             face_distances=face_distances,
         )
 
+    # TODO: add method for creating non-uniform grids
+
 
 @jax.tree_util.register_dataclass
 @dataclass(frozen=True)
