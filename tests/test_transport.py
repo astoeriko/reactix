@@ -61,6 +61,31 @@ def test_cells_equally_spaced_geometry():
     np.testing.assert_allclose(cells.centers, jnp.array([1.0, 3.0, 5.0, 7.0, 9.0]))
 
 
+def test_system_discharge_function_from_scalar():
+    """Test that System.build converts scalar discharge to function."""
+    Species = declare_species(["tracer"])
+    cells = Cells.equally_spaced(10.0, 5)
+
+    system = System.build(
+        cells=cells,
+        advection=Advection(),
+        dispersion=Dispersion.build(
+            cells=cells,
+            dispersivity=jnp.array(0.1),
+            pore_diffusion=TracerSpecies(
+                tracer=jnp.array(1e-9 * 3600 * 24),
+            ),
+        ),
+        discharge=jnp.array(0.5),  # scalar, not a function
+        porosity=jnp.array(0.3),
+        species_is_mobile=Species(tracer=True),
+    )
+
+    # discharge_fn should work with time as input
+    result = system.discharge(time=jnp.array(5.0))
+    assert result == 0.5
+
+
 def test_tracer():
     cells = Cells.equally_spaced(10, 200)
     dispersion = Dispersion.build(
