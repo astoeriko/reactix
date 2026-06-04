@@ -243,7 +243,7 @@ def test_duplicate_bondaries():
     with pytest.raises(eqx.EquinoxRuntimeError, match="Duplicate"):
         solver(state, system)
 
-
+@pytest.mark.integratio
 def test_immobile_species():
     k_dec = 1 / 500
     reactions = [FirstOrderDecay(decay_coefficient=k_dec)]
@@ -388,7 +388,7 @@ class FirstOrderDecay(KineticReaction):
             "reactive_tracer": -1,
         }
 
-
+@pytest.mark.integratio
 def test_reactive_tracer_constant_param():
     reactions = [FirstOrderDecay(decay_coefficient=1 / 100)]
     n_cells = 200
@@ -454,7 +454,7 @@ def test_reactive_tracer_constant_param():
         solution.ys.reactive_tracer[-1, :], analytical_solution, rtol=0.1, atol=0.01
     )
 
-
+@pytest.mark.integratio
 def test_reactive_tracer_variable_param():
     n_cells = 200
     decay_coefficient = jnp.ones(n_cells)
