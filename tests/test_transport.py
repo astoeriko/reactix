@@ -29,7 +29,7 @@ def test_species_shapes():
     assert x.tracer.shape == (5, 3)
     assert Species.int_zeros().tracer == 0
 
-
+@pytest.mark.integration
 def test_tracer():
     cells = Cells.equally_spaced(10, 200)
     dispersion = Dispersion.build(
@@ -158,7 +158,7 @@ def test_against_analytical_solution():
         atol=1e-3,
     )
 
-
+@pytest.mark.integration
 def test_negative_velocity():
     cells = Cells.equally_spaced(10, 200)
     dispersion = Dispersion.build(
@@ -335,7 +335,7 @@ def test_bc_for_immobile_species():
             species_is_mobile=TracerSpecies(tracer=False),
         )
 
-
+@pytest.mark.integration
 def test_mass_conservation():
     """Test that the total mass in the system does not change with no-flux boundaries
 
