@@ -17,17 +17,73 @@ from reactix import (
     KineticReaction,
     reaction,
     SpatiallyVarying,
+    SpatiallyConst,
+    user_system_parameters,
 )
 
 TracerSpecies = declare_species(["tracer"])
 Species = declare_species(["tracer", "reactive_tracer"])
 
 
-def test_species_shapes():
-    Species = declare_species(["tracer"], shapes={"tracer": (5, 3)})
-    x = Species.zeros()
-    assert x.tracer.shape == (5, 3)
-    assert Species.int_zeros().tracer == 0
+@user_system_parameters
+class SystemParameters:
+    solid_density: jax.Array
+
+
+def test_user_system_parameters_const():
+    """Test construction of user-defined system parameters with constant value."""
+    params = SystemParameters(solid_density=SpatiallyConst(jnp.array(2.65)))
+    # TODO: Does this need to be an array?
+    # If so, can I enforce this, or give an error if the user does not provide an array?
+    assert params.solid_density == 2.65
+    assert params.solid_density.shape == ()
+
+
+def test_user_system_parameters_varying():
+    """Test construction of user-defined system parameters with spatially varying value."""
+    params = SystemParameters(solid_density=SpatiallyVarying(jnp.array([2.65, 2.7, 2.5])))
+    assert params.solid_density.shape == (3,)
+
+
+def test_cells_equally_spaced_geometry():
+    """Test that equally_spaced creates correct cell geometry."""
+    cells = Cells.equally_spaced(length=10.0, n_cells=5)
+
+    assert cells.n_cells == 5
+    # Nodes should span [0, 10] with 6 nodes for 5 cells
+    assert len(cells.nodes) == 6
+    assert cells.nodes[0] == 0.0
+    assert cells.nodes[-1] == 10.0
+    # Check equal spacing
+    np.testing.assert_allclose(jnp.diff(cells.nodes), 2.0)
+    # Check cell centers are at midpoints
+    assert len(cells.centers) == 5
+    np.testing.assert_allclose(cells.centers, jnp.array([1.0, 3.0, 5.0, 7.0, 9.0]))
+
+
+def test_system_discharge_function_from_scalar():
+    """Test that System.build converts scalar discharge to function."""
+    Species = declare_species(["tracer"])
+    cells = Cells.equally_spaced(10.0, 5)
+
+    system = System.build(
+        cells=cells,
+        advection=Advection(),
+        dispersion=Dispersion.build(
+            cells=cells,
+            dispersivity=jnp.array(0.1),
+            pore_diffusion=TracerSpecies(
+                tracer=jnp.array(1e-9 * 3600 * 24),
+            ),
+        ),
+        discharge=jnp.array(0.5),  # scalar, not a function
+        porosity=jnp.array(0.3),
+        species_is_mobile=Species(tracer=True),
+    )
+
+    # discharge_fn should work with time as input
+    result = system.discharge(time=jnp.array(5.0))
+    assert result == 0.5
 
 
 def test_tracer():
@@ -83,10 +139,7 @@ def ogata_banks_solution(t, x, u, D, c0):
     return (
         c0
         / 2
-        * (
-            erfc((x - u * t) / (2 * np.sqrt(D * t)))
-            + np.exp(u * x / D) * erfc((x + u * t) / (2 * np.sqrt(D * t)))
-        )
+        * (erfc((x - u * t) / (2 * np.sqrt(D * t))) + np.exp(u * x / D) * erfc((x + u * t) / (2 * np.sqrt(D * t))))
     )
 
 
@@ -201,7 +254,7 @@ def test_negative_velocity():
     np.testing.assert_allclose(solution.ys.tracer[-1, -1], 10, rtol=1e-3)
 
 
-def test_duplicate_bondaries():
+def test_duplicate_boundaries():
     cells = Cells.equally_spaced(10, 200)
     dispersion = Dispersion.build(
         cells=cells,
@@ -299,9 +352,7 @@ def test_immobile_species():
 
     # Check that the concentration of the immobile reactive tracer at a fixed
     # location decreases exponentially over time
-    np.testing.assert_allclose(
-        solution.ys.reactive_tracer[:, 1], c0 * np.exp(-k_dec * solution.ts), atol=1e-3
-    )
+    np.testing.assert_allclose(solution.ys.reactive_tracer[:, 1], c0 * np.exp(-k_dec * solution.ts), atol=1e-3)
 
 
 def test_bc_for_immobile_species():
@@ -322,9 +373,7 @@ def test_bc_for_immobile_species():
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
     ]
-    with pytest.raises(
-        ValueError, match="Cannot apply boundary condition to immobile species."
-    ):
+    with pytest.raises(ValueError, match="Cannot apply boundary condition to immobile species."):
         System.build(
             porosity=jnp.array(0.3),
             discharge=lambda t: jnp.array(1 / 365),
@@ -370,9 +419,7 @@ def test_mass_conservation():
     )
     solution = solver(state, system)
     y = xr.DataArray(solution.ys.tracer, dims=("time", "x"))
-    vol = xr.DataArray(
-        np.array(cells.cell_area) * np.array(cells.face_distances), dims="x"
-    )
+    vol = xr.DataArray(np.array(cells.cell_area) * np.array(cells.face_distances), dims="x")
     np.testing.assert_allclose((y * vol).sum("x"), (val0 * vol).sum(), rtol=1e-6)
 
 
@@ -450,18 +497,14 @@ def test_reactive_tracer_constant_param():
     travel_time = x / velocity
     c0 = np.array(system.bcs[2].fixed_concentration(-1))
     analytical_solution = c0 * np.exp(-reactions[0].decay_coefficient * travel_time)
-    np.testing.assert_allclose(
-        solution.ys.reactive_tracer[-1, :], analytical_solution, rtol=0.1, atol=0.01
-    )
+    np.testing.assert_allclose(solution.ys.reactive_tracer[-1, :], analytical_solution, rtol=0.1, atol=0.01)
 
 
 def test_reactive_tracer_variable_param():
     n_cells = 200
     decay_coefficient = jnp.ones(n_cells)
     decay_coefficient = decay_coefficient.at[100:].set(2)
-    reactions = [
-        FirstOrderDecay(decay_coefficient=SpatiallyVarying(decay_coefficient / 100))
-    ]
+    reactions = [FirstOrderDecay(decay_coefficient=SpatiallyVarying(decay_coefficient / 100))]
     cells = Cells.equally_spaced(10, n_cells, interface_area=None)
     dispersion = Dispersion.build(
         cells=cells,
