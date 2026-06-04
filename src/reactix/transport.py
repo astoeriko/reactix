@@ -9,7 +9,6 @@ import diffrax
 
 from dataclasses import dataclass, field
 from typing import Callable, Literal, Any
-import operator
 
 from reactix.species import AbstractSpecies
 from reactix.reactions import KineticReaction, _make_spatial_jaxtree
@@ -184,7 +183,8 @@ class System:
         else:
             discharge = jnp.asarray(discharge)
             assert discharge.ndim == 0
-            discharge_fn = lambda time: discharge
+            def discharge_fn(time):
+                return discharge
 
         if porosity.ndim == 0:
             porosity = jnp.ones(cells.n_cells) * porosity
@@ -343,6 +343,8 @@ class Cells:
             cell_area=cell_area,
             face_distances=face_distances,
         )
+
+    # TODO: add method for creating non-uniform grids
 
 
 @jax.tree_util.register_dataclass
@@ -886,9 +888,10 @@ def apply_bcs(bcs, t, system, state, rate):
     apply_count = jax.tree.map(jnp.zeros_like, rate)
     for bc in bcs:
         rate, apply_count = bc.apply(t, system, state, rate, apply_count)
-    check_bc = lambda rate, apply_count: eqx.error_if(
-        rate, (apply_count > 1).any(), "Duplicate boundary conditions."
-    )
+    def check_bc(rate, apply_count):
+        return eqx.error_if(
+            rate, (apply_count > 1).any(), "Duplicate boundary conditions."
+        )
     rate = jax.tree.map(check_bc, rate, apply_count)
     return rate
 
