@@ -1,6 +1,6 @@
 import jax.numpy as jnp
 import jax
-from reactix import reaction, KineticReaction, declare_species
+from reactix import reaction, KineticReaction, declare_species, SpatiallyVarying
 
 
 @reaction
