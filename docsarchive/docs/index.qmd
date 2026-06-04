@@ -1,0 +1,115 @@
+---
+title: "Kinetix"
+subtitle: "Reaction kinetics with JAX and PyMC"
+---
+
+# Welcome to Kinetix
+
+Kinetix is a Python library for modeling reactive transport processes using JAX for high-performance computing and PyMC for Bayesian inference. It provides a flexible framework for simulating chemical species transport with advection, dispersion, and kinetic reactions.
+
+## Key Features
+
+- **High Performance**: Built on JAX for automatic differentiation and JIT compilation
+- **Bayesian Inference**: Seamless integration with PyMC for uncertainty quantification
+- **Flexible Modeling**: Support for multiple species, boundary conditions, and reaction types
+- **Reactive Transport**: Combined modeling of physical transport and chemical reactions
+
+## Quick Example
+
+Here's a simple example of setting up a transport model with first-order decay:
+
+```python
+import jax.numpy as jnp
+from kinetix import (
+    System, Cells, Advection, Dispersion,
+    FixedConcentrationBoundary, declare_species,
+    KineticReaction, reaction, make_solver
+)
+
+# Declare chemical species
+Species = declare_species(["tracer", "reactive_tracer"])
+
+# Define a first-order decay reaction
+@reaction
+class FirstOrderDecay(KineticReaction):
+    decay_coefficient: jnp.ndarray
+
+    def rate(self, time, state, system):
+        return self.decay_coefficient * state.reactive_tracer
+
+    def stoichiometry(self, time, state, system):
+        return {"reactive_tracer": -1}
+
+# Set up the transport system
+n_cells = 200
+cells = Cells.equally_spaced(length=10, n_cells=n_cells)
+dispersion = Dispersion.build(
+    cells=cells,
+    dispersivity=jnp.array(0.1),
+    pore_diffusion=Species(
+        tracer=jnp.array(1e-9 * 3600 * 24),
+        reactive_tracer=jnp.array(1e-9 * 3600 * 24),
+    ),
+)
+advection = Advection.build(limiter_type="minmod")
+
+# Define boundary conditions
+bcs = [
+    FixedConcentrationBoundary(
+        boundary="left",
+        species_selector=lambda s: s.tracer,
+        fixed_concentration=lambda t: jnp.array(10.0),
+    ),
+    FixedConcentrationBoundary(
+        boundary="right",
+        species_selector=lambda s: s.tracer,
+        fixed_concentration=lambda t: jnp.array(3.0),
+    ),
+]
+
+# Create the system
+system = System.build(
+    porosity=jnp.ones(n_cells) * 0.3,
+    discharge=lambda t: jnp.array(1 / 365) * 0.3,
+    cells=cells,
+    advection=advection,
+    dispersion=dispersion,
+    species_is_mobile=Species(tracer=True, reactive_tracer=True),
+    bcs=bcs,
+    reactions=[FirstOrderDecay(decay_coefficient=1/500)]
+)
+
+# Solve the system
+solver = make_solver(t_max=8000, rtol=1e-3, atol=1e-3)
+initial_state = Species(
+    tracer=jnp.zeros(n_cells),
+    reactive_tracer=jnp.zeros(n_cells)
+)
+solution = solver(initial_state, system)
+```
+
+## Applications
+
+Kinetix is designed for researchers and engineers working on:
+
+- **Environmental modeling**: Contaminant transport in groundwater
+- **Geochemistry**: Reactive transport in porous media
+- **Process engineering**: Chemical reactor modeling
+- **Parameter estimation**: Bayesian calibration of transport models
+
+## Getting Started
+
+1. [Install Kinetix](installation.qmd)
+2. Follow the [Quick Start Guide](quickstart.qmd)
+3. Explore the [Examples](examples/transport-model.qmd)
+4. Check out the [API Reference](api/index.qmd)
+
+## About
+
+Kinetix is developed by Anna Störiko and Adrian Seyboldt. It combines modern scientific computing tools to provide a powerful yet accessible framework for reactive transport modeling.
+
+The library leverages:
+- **JAX**: For automatic differentiation and high-performance computing
+- **PyMC**: For Bayesian statistical modeling
+- **Equinox**: For PyTree-compatible neural differential equations
+- **Diffrax**: For differential equation solving
