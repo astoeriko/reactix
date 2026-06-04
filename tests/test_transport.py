@@ -17,12 +17,48 @@ from reactix import (
     KineticReaction,
     reaction,
     SpatiallyVarying,
+    SpatiallyConst,
+    user_system_parameters,
 )
 
-TracerSpecies = declare_species(["tracer"])
-Species = declare_species(["tracer", "reactive_tracer"])
+TracerSpecies = declare_species(['tracer'])
+Species = declare_species(['tracer', 'reactive_tracer'])
 
 
+@user_system_parameters
+class SystemParameters:
+    solid_density: jax.Array
+
+
+def test_user_system_parameters_const():
+    """Test construction of user-defined system parameters with constant value."""
+    params = SystemParameters(solid_density=SpatiallyConst(jnp.array(2.65)))
+    # TODO: Does this need to be an array?
+    # If so, can I enforce this, or give an error if the user does not provide an array?
+    assert params.solid_density == 2.65
+    assert params.solid_density.shape == ()
+
+
+def test_user_system_parameters_varying():
+    """Test construction of user-defined system parameters with spatially varying value."""
+    params = SystemParameters(solid_density=SpatiallyVarying(jnp.array([2.65, 2.7, 2.5])))
+    assert params.solid_density.shape == (3,)
+
+
+def test_cells_equally_spaced_geometry():
+    """Test that equally_spaced creates correct cell geometry."""
+    cells = Cells.equally_spaced(length=10.0, n_cells=5)
+
+    assert cells.n_cells == 5
+    # Nodes should span [0, 10] with 6 nodes for 5 cells
+    assert len(cells.nodes) == 6
+    assert cells.nodes[0] == 0.0
+    assert cells.nodes[-1] == 10.0
+    # Check equal spacing
+    np.testing.assert_allclose(jnp.diff(cells.nodes), 2.0)
+    # Check cell centers are at midpoints
+    assert len(cells.centers) == 5
+    np.testing.assert_allclose(cells.centers, jnp.array([1.0, 3.0, 5.0, 7.0, 9.0]))
 
 
 def test_tracer():
