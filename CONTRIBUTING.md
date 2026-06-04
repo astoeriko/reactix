@@ -12,7 +12,7 @@ If you find a bug, encounter unexpected behavior, or want to propose a feature, 
 
 ## Share examples
 
-If you are using Reactix, we are curious to hear about it! You are welcome to share examples in the [Github Discussions under the _Show and tell_ category](https://github.com/astoeriko/reactix/discussions/categories/show-and-tell).
+If you are using Reactix, we are curious to hear about it! You are welcome to share examples in the [GitHub Discussions under the _Show and tell_ category](https://github.com/astoeriko/reactix/discussions/categories/show-and-tell).
 
 ## Contribute code
 
