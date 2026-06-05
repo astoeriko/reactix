@@ -27,29 +27,7 @@ Reactix might not be the right choice if…
 
 ## Main components
 
-The public API is organized around three main ideas:
-
-### Transport System
-- `System`- Main transport system container
-- `Cells` - Spatial discretization
-- `Advection` - Advective transport
-- `Dispersion`- Dispersive transport
-- Boundary Conditions (`BoundaryCondition` and `FixedConcentrationBoundary`) - Domain boundaries
-
-#### Solvers
-- `make_solver` - Solver factory function
-
-### Chemical Species
-- `declare_species` - Species declaration utility
-- `AbstractSpecies` - Base species class
-
-### Chemical Reactions
-- `KineticReaction`- Base reaction class
-- `reaction` - Reaction decorator
-- `SpatiallyConst` - Spatially constant parameters
-- `SpatiallyVarying` - Spatially varying parameters
-
-They are described in more detail in the [API reference](api/index.qmd).
+The library is organized around three concepts: a transport system, chemical species, and reactions. All components are documented in the [API reference](api/index.qmd).
 
 ## Start here
 
