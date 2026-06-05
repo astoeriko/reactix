@@ -42,16 +42,18 @@ website:
             - index.qmd
             - installation.qmd
             - quickstart.qmd
-
+        
+        - text: "---"
         - section: Examples
           contents:
             - examples/index.qmd
             - examples/transport-model.qmd
-            
-        - section: API reference
-          contents:
-            - api/index.qmd
-
+        
+        - text: "---"   
+        - href: api/index.qmd
+          text: API reference
+       
+        - text: "---"
         - section: Development
           contents:
             - contributing.qmd
@@ -64,6 +66,7 @@ quartodoc:
   style: pkgdown
   sidebar: api/_sidebar.yml
   css: api/_styles-quartodoc.css
+  title: "API reference"
   sections:
     - title: Transport
       desc: Core 1D reactive transport system objects and solver helpers.
