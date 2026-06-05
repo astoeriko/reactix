@@ -12,6 +12,7 @@ data_Qu_2015.nc
 # Quarto
 docs/.quarto/
 docs/_site/
+docs/_freeze/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
