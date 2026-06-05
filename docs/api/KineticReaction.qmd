@@ -1,0 +1,51 @@
+# KineticReaction { #reactix.KineticReaction }
+
+```python
+KineticReaction()
+```
+
+Abstract base class for kinetic reactions in reactive transport.
+
+This class defines the interface for implementing kinetic reactions
+that can be coupled with transport equations. Subclasses must implement
+the rate method and define stoichiometry.
+
+## Attributes {.doc-section .doc-section-attributes}
+
+| Name          | Type             | Description                                                                                                                                                  |
+|---------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| stoichiometry | dict or callable | Reaction stoichiometry mapping species names to coefficients. Can be a dict for constant stoichiometry or a callable for time/state-dependent stoichiometry. |
+
+## Notes {.doc-section .doc-section-notes}
+
+Reactions are evaluated using the _eval_dcdt method, which computes
+the rate of change of species concentrations based on the reaction rate
+and stoichiometry.
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [rate](#reactix.KineticReaction.rate) | Compute the reaction rate. |
+
+### rate { #reactix.KineticReaction.rate }
+
+```python
+KineticReaction.rate(time, state, system)
+```
+
+Compute the reaction rate.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type            | Description                     | Default    |
+|--------|-----------------|---------------------------------|------------|
+| time   | jax.Array       | Current time.                   | _required_ |
+| state  | AbstractSpecies | Current species concentrations. | _required_ |
+| system | System          | The transport system.           | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type      | Description        |
+|--------|-----------|--------------------|
+|        | jax.Array | The reaction rate. |

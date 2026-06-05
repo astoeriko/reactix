@@ -1,0 +1,24 @@
+website:
+  sidebar:
+  - contents:
+    - api/index.qmd
+    - contents:
+      - api/System.qmd
+      - api/Cells.qmd
+      - api/Advection.qmd
+      - api/Dispersion.qmd
+      - api/FixedConcentrationBoundary.qmd
+      - api/make_solver.qmd
+      - api/user_system_parameters.qmd
+      section: Transport
+    - contents:
+      - api/declare_species.qmd
+      section: Species
+    - contents:
+      - api/KineticReaction.qmd
+      - api/reaction.qmd
+      - api/SpatiallyConst.qmd
+      - api/SpatiallyVarying.qmd
+      section: Reactions
+    id: api
+  - id: dummy-sidebar

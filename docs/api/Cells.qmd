@@ -1,0 +1,55 @@
+# Cells { #reactix.Cells }
+
+```python
+Cells(n_cells, centers, nodes, interface_area, cell_area, face_distances)
+```
+
+Represents the spatial discretization of a 1D domain into cells.
+
+This class defines the geometry and discretization of the 1D transport domain,
+including cell centers, nodes, areas, and distances.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name           | Type      | Description                                                                                 | Default    |
+|----------------|-----------|---------------------------------------------------------------------------------------------|------------|
+| n_cells        | int       | Number of cells in the domain.                                                              | _required_ |
+| centers        | jax.Array | The x coordinate of the center of each cell. Shape = (n_cells,).                            | _required_ |
+| nodes          | jax.Array | The x coordinate of the points between cells, including boundaries. Shape = (n_cells + 1,). | _required_ |
+| interface_area | jax.Array | Cross-sectional area at cell interfaces. Shape = (n_cells + 1,).                            | _required_ |
+| cell_area      | jax.Array | Cross-sectional area of each cell. Shape = (n_cells,).                                      | _required_ |
+| face_distances | jax.Array | Distance between cell faces. Shape = (n_cells,).                                            | _required_ |
+
+## Attributes
+
+| Name | Description |
+| --- | --- |
+| [center_distances](#reactix.Cells.center_distances) | Return the distance between cell centers (dx for slope computation). |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [equally_spaced](#reactix.Cells.equally_spaced) | Create an equally spaced cell grid for the transport domain. |
+
+### equally_spaced { #reactix.Cells.equally_spaced }
+
+```python
+Cells.equally_spaced(length, n_cells, *, interface_area=None)
+```
+
+Create an equally spaced cell grid for the transport domain.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name           | Type      | Description                                                                   | Default    |
+|----------------|-----------|-------------------------------------------------------------------------------|------------|
+| length         | float     | Total length of the domain.                                                   | _required_ |
+| n_cells        | int       | Number of cells in the domain.                                                | _required_ |
+| interface_area | jax.Array | Cross-sectional area at cell interfaces. Default is a constant array of ones. | `None`     |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type   | Description                                   |
+|--------|--------|-----------------------------------------------|
+|        | Cells  | Spatial discretization object for the domain. |

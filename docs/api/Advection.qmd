@@ -1,0 +1,115 @@
+# Advection { #reactix.Advection }
+
+```python
+Advection(limiter_type='minmod')
+```
+
+Handles advection terms in the 1D transport equation using TVD schemes.
+
+This class implements numerical advection using Total Variation Diminishing (TVD)
+schemes with selectable limiters to prevent oscillations near discontinuities.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name         | Type   | Description                                                                           | Default    |
+|--------------|--------|---------------------------------------------------------------------------------------|------------|
+| limiter_type | str    | Type of slope limiter to use. Options: "minmod", "upwind", "MC". Default is "minmod". | `'minmod'` |
+
+## Notes {.doc-section .doc-section-notes}
+
+The advection scheme reconstructs interface values using slope limiters
+to maintain monotonicity and stability in the solution.
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [build](#reactix.Advection.build) | Build an Advection instance with a specified slope limiter. |
+| [choose_upwind_concentration](#reactix.Advection.choose_upwind_concentration) | Select the upwind concentration based on the direction of flow. |
+| [compute_slope](#reactix.Advection.compute_slope) | Compute limited slope with padding at boundaries. |
+| [mc_limiter](#reactix.Advection.mc_limiter) | Monotonized central (MC) limiter. |
+| [minmod](#reactix.Advection.minmod) | Return the standard minmod limited slope. |
+| [minmod3](#reactix.Advection.minmod3) | Minmod of three values, for MC limiter. |
+| [rate](#reactix.Advection.rate) | Compute the advection rate for mobile species. |
+
+### build { #reactix.Advection.build }
+
+```python
+Advection.build(limiter_type)
+```
+
+Build an Advection instance with a specified slope limiter.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name         | Type   | Description                                                            | Default    |
+|--------------|--------|------------------------------------------------------------------------|------------|
+| limiter_type | str    | Type of slope limiter to use. Options are "minmod", "upwind", or "MC". | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type      | Description                  |
+|--------|-----------|------------------------------|
+|        | Advection | Configured advection scheme. |
+
+### choose_upwind_concentration { #reactix.Advection.choose_upwind_concentration }
+
+```python
+Advection.choose_upwind_concentration(left_state, right_state, discharge)
+```
+
+Select the upwind concentration based on the direction of flow.
+
+### compute_slope { #reactix.Advection.compute_slope }
+
+```python
+Advection.compute_slope(concentration, dx_center)
+```
+
+Compute limited slope with padding at boundaries.
+
+### mc_limiter { #reactix.Advection.mc_limiter }
+
+```python
+Advection.mc_limiter(a, b)
+```
+
+Monotonized central (MC) limiter.
+
+### minmod { #reactix.Advection.minmod }
+
+```python
+Advection.minmod(a, b)
+```
+
+Return the standard minmod limited slope.
+
+### minmod3 { #reactix.Advection.minmod3 }
+
+```python
+Advection.minmod3(a, b, c)
+```
+
+Minmod of three values, for MC limiter.
+
+### rate { #reactix.Advection.rate }
+
+```python
+Advection.rate(time, state, system)
+```
+
+Compute the advection rate for mobile species.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type            | Description                     | Default    |
+|--------|-----------------|---------------------------------|------------|
+| time   | jax.Array       | Current simulation time.        | _required_ |
+| state  | AbstractSpecies | Current species concentrations. | _required_ |
+| system | System          | The reactive transport system.  | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type            | Description                                   |
+|--------|-----------------|-----------------------------------------------|
+|        | AbstractSpecies | Advection contribution to the rate of change. |
