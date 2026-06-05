@@ -2,121 +2,76 @@
 title: "Installation"
 ---
 
-# Installing Kinetix
+### Create an environment
 
-## Requirements
+To avoid possible dependency conflicts, we recommend installing Reactix in a dedicated environment. Reactix requires **Python 3.11 or later**.
 
-Kinetix requires Python 3.11 or later. The package depends on several scientific computing libraries:
+You can create an environment:
 
-- **JAX**: For automatic differentiation and JIT compilation
-- **NumPy**: For numerical arrays
-- **PyMC**: For Bayesian inference
-- **ArviZ**: For Bayesian data analysis
-- **Equinox**: For PyTree-compatible differential equations
-- **Diffrax**: For differential equation solving
-
-## Installation Methods
-
-### From Source (Recommended)
-
-Since Kinetix is currently in development, installation from source is recommended:
+**with uv:**
 
 ```bash
-git clone https://github.com/your-org/kinetix.git
-cd kinetix
-pip install -e .
+uv venv reactix-env
+source reactix-env/bin/activate  # Linux/macOS
+reactix-env\Scripts\activate     # Windows
 ```
 
-This will install Kinetix in development mode, allowing you to easily update the code and contribute changes.
-
-### Using Pixi (Development Environment)
-
-The project uses [Pixi](https://pixi.sh/) for dependency management. If you have Pixi installed:
+**with conda:**
 
 ```bash
-git clone https://github.com/your-org/kinetix.git
-cd kinetix
-pixi install
-pixi shell
+conda create -n reactix python=3.13
+conda activate reactix
 ```
 
-This will create an isolated environment with all dependencies properly configured.
-
-## Verify Installation
-
-You can verify that Kinetix is installed correctly by running:
-
-```python
-import kinetix
-print("Kinetix installed successfully!")
-
-# Test basic functionality
-from kinetix import declare_species, System
-Species = declare_species(["tracer"])
-print("Species declaration works!")
-```
-
-## GPU Support
-
-Kinetix leverages JAX, which can run on GPUs for enhanced performance. To enable GPU support:
-
-### NVIDIA GPUs (CUDA)
+**or alternatively with venv:**
 
 ```bash
-pip install --upgrade "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+python -m venv reactix-env
+source reactix-env/bin/activate   # Linux/macOS
+reactix-env\Scripts\activate      # Windows
 ```
 
-### AMD GPUs (ROCm)
+Activate the environment before installing the package.
+
+:::{.callout-note}
+If you don't have `uv` installed, you can get it with:
 
 ```bash
-pip install --upgrade "jax[rocm]" -f https://storage.googleapis.com/jax-releases/jax_rocm_releases.html
+# Linux/macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Or via pip
+pip install uv
 ```
+:::
 
-### Apple Silicon (Metal)
+### Install Reactix
 
-JAX has experimental Metal support for Apple Silicon Macs:
+To install the package you can use conda, pip or uv. The package is available on PyPI and conda-forge. 
+
+#### **uv** (from PyPI):
 
 ```bash
-pip install --upgrade "jax[metal]"
+uv pip install reactix
 ```
 
-## Development Installation
-
-If you plan to contribute to Kinetix development:
+#### **conda** (from conda-forge):
 
 ```bash
-git clone https://github.com/your-org/kinetix.git
-cd kinetix
-pip install -e ".[dev]"
+conda install -c conda-forge reactix
 ```
 
-This installs additional development dependencies for testing, linting, and documentation.
+#### **pip** (from PyPI):
 
-## Troubleshooting
-
-### Common Issues
-
-**Import errors**: Make sure all dependencies are installed. Try reinstalling with:
 ```bash
-pip install --upgrade kinetix
+pip install reactix
 ```
 
-**JAX installation issues**: JAX installation can be platform-specific. Refer to the [JAX installation guide](https://jax.readthedocs.io/en/latest/installation.html) for detailed instructions.
+### Dependencies
 
-**PyMC compatibility**: Ensure you have compatible versions of PyMC and its dependencies. The project is tested with PyMC 5.0+.
+Reactix depends on [JAX](https://jax.readthedocs.io), [diffrax](https://docs.kidger.site/diffrax/), and [PyMC](https://www.pymc.io). These are installed automatically when installing Reactix via pip, uv, or conda.
 
-### Getting Help
-
-If you encounter installation issues:
-
-1. Check the [GitHub Issues](https://github.com/your-org/kinetix/issues) for known problems
-2. Create a new issue with your system information and error messages
-3. Join the discussion in our community channels
-
-## Next Steps
-
-Once Kinetix is installed, you can:
-
-1. Follow the [Quick Start Guide](quickstart.qmd)
-2. Run the [Transport Model Example](examples/transport-model.qmd)
-3. Explore [Bayesian Inference](examples/transport-with-pymc.qmd)
+As reactix depends on JAX. The default install path is appropriate for CPU use, but GPU-enabled JAX setups often need platform-specific installation steps.
