@@ -1,115 +1,60 @@
 ---
-title: "Kinetix"
-subtitle: "Reaction kinetics with JAX and PyMC"
+title: "Reactix"
+subtitle: "Simulating 1-D reactive transport with differentiable models in JAX"
 ---
 
-# Welcome to Kinetix
+Reactix is a Python package for simulating reactive transport of chemical species suitable for one-dimensional systems with **advection, dispersion and kinetic reactions**. 
 
-Kinetix is a Python library for modeling reactive transport processes using JAX for high-performance computing and PyMC for Bayesian inference. It provides a flexible framework for simulating chemical species transport with advection, dispersion, and kinetic reactions.
+Reaction kinetics can be defined flexibly in plain Python. The package combines a finite volume discretization in space with advanced ODE solvers from [diffrax](https://docs.kidger.site/diffrax/) for efficient time integration.
 
-## Key Features
+Reactix is built on the JAX ecosystem which provides automatic differentiation, making the models **fully differentiable**.
+This enables the use of gradient-based methods for sensitivity analysis and uncertainty quantification. The package integrates seamlessly with [PyMC](https://docs.pymc.io/) for Bayesian modeling and parameter estimation.
 
-- **High Performance**: Built on JAX for automatic differentiation and JIT compilation
-- **Bayesian Inference**: Seamless integration with PyMC for uncertainty quantification
-- **Flexible Modeling**: Support for multiple species, boundary conditions, and reaction types
-- **Reactive Transport**: Combined modeling of physical transport and chemical reactions
+## What Reactix is for
 
-## Quick Example
+Use Reactix when you:
 
-Here's a simple example of setting up a transport model with first-order decay:
+- want to easily implement models with custom reaction kinetics,
+- can reasonably simplify the system to one spatial dimension (e.g., column experiment, groundwater transport along a flow line),
+- want to quantify parameter uncertainty with Bayesian methods,
+- like to script your model in Python instead of using graphical interfaces or input files.
 
-```python
-import jax.numpy as jnp
-from kinetix import (
-    System, Cells, Advection, Dispersion,
-    FixedConcentrationBoundary, declare_species,
-    KineticReaction, reaction, make_solver
-)
+Reactix might not be the right choice if…
 
-# Declare chemical species
-Species = declare_species(["tracer", "reactive_tracer"])
+- your model needs to be 2-D or 3-D,
+- the system involves a lot of equilibrium chemical reactions (like in PHREEQC),
+- you want to couple groundwater flow and transport simulations.
 
-# Define a first-order decay reaction
-@reaction
-class FirstOrderDecay(KineticReaction):
-    decay_coefficient: jnp.ndarray
+## Main components
 
-    def rate(self, time, state, system):
-        return self.decay_coefficient * state.reactive_tracer
+The public API is organized around three main ideas:
 
-    def stoichiometry(self, time, state, system):
-        return {"reactive_tracer": -1}
+### Transport System
+- `System`- Main transport system container
+- `Cells` - Spatial discretization
+- `Advection` - Advective transport
+- `Dispersion`- Dispersive transport
+- Boundary Conditions (`BoundaryCondition` and `FixedConcentrationBoundary`) - Domain boundaries
 
-# Set up the transport system
-n_cells = 200
-cells = Cells.equally_spaced(length=10, n_cells=n_cells)
-dispersion = Dispersion.build(
-    cells=cells,
-    dispersivity=jnp.array(0.1),
-    pore_diffusion=Species(
-        tracer=jnp.array(1e-9 * 3600 * 24),
-        reactive_tracer=jnp.array(1e-9 * 3600 * 24),
-    ),
-)
-advection = Advection.build(limiter_type="minmod")
+#### Solvers
+- `make_solver` - Solver factory function
 
-# Define boundary conditions
-bcs = [
-    FixedConcentrationBoundary(
-        boundary="left",
-        species_selector=lambda s: s.tracer,
-        fixed_concentration=lambda t: jnp.array(10.0),
-    ),
-    FixedConcentrationBoundary(
-        boundary="right",
-        species_selector=lambda s: s.tracer,
-        fixed_concentration=lambda t: jnp.array(3.0),
-    ),
-]
+### Chemical Species
+- `declare_species` - Species declaration utility
+- `AbstractSpecies` - Base species class
 
-# Create the system
-system = System.build(
-    porosity=jnp.ones(n_cells) * 0.3,
-    discharge=lambda t: jnp.array(1 / 365) * 0.3,
-    cells=cells,
-    advection=advection,
-    dispersion=dispersion,
-    species_is_mobile=Species(tracer=True, reactive_tracer=True),
-    bcs=bcs,
-    reactions=[FirstOrderDecay(decay_coefficient=1/500)]
-)
+### Chemical Reactions
+- `KineticReaction`- Base reaction class
+- `reaction` - Reaction decorator
+- `SpatiallyConst` - Spatially constant parameters
+- `SpatiallyVarying` - Spatially varying parameters
 
-# Solve the system
-solver = make_solver(t_max=8000, rtol=1e-3, atol=1e-3)
-initial_state = Species(
-    tracer=jnp.zeros(n_cells),
-    reactive_tracer=jnp.zeros(n_cells)
-)
-solution = solver(initial_state, system)
-```
+They are described in more detail in the [API reference](api/index.qmd).
 
-## Applications
+## Start here
 
-Kinetix is designed for researchers and engineers working on:
-
-- **Environmental modeling**: Contaminant transport in groundwater
-- **Geochemistry**: Reactive transport in porous media
-- **Process engineering**: Chemical reactor modeling
-- **Parameter estimation**: Bayesian calibration of transport models
-
-## Getting Started
-
-1. [Install Kinetix](installation.qmd)
-2. Follow the [Quick Start Guide](quickstart.qmd)
-3. Explore the [Examples](examples/transport-model.qmd)
-4. Check out the [API Reference](api/index.qmd)
-
-## About
-
-Kinetix is developed by Anna Störiko and Adrian Seyboldt. It combines modern scientific computing tools to provide a powerful yet accessible framework for reactive transport modeling.
-
-The library leverages:
-- **JAX**: For automatic differentiation and high-performance computing
-- **PyMC**: For Bayesian statistical modeling
-- **Equinox**: For PyTree-compatible neural differential equations
-- **Diffrax**: For differential equation solving
+1. Go to [Installation](installation.qmd) to set up Reactix.
+2. Continue to [Quickstart](quickstart.qmd) for a brief introduction to Reactix.
+3. Browse [Examples](examples/index.qmd) for longer workflows.
+4. Use the [API reference](api/index.qmd) for the full docstring-based reference.
+5. Check out the [Developer Guide](developer-guide.qmd) and [Contributing](contributing.qmd) if you want to contribute to the project.
