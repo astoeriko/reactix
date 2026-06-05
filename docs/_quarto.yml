@@ -47,17 +47,15 @@ website:
           contents:
             - examples/index.qmd
             - examples/transport-model.qmd
-            - examples/bayesian-inference.qmd
             
-
         - section: API reference
           contents:
             - api/index.qmd
 
         - section: Development
           contents:
-            - developer-guide.qmd
             - contributing.qmd
+            - developer-guide.qmd
 
 quartodoc:
   package: reactix
