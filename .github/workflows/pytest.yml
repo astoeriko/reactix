@@ -18,18 +18,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Set up Python 3.11
+    - name: Set up Python 3.13
       uses: actions/setup-python@v5
       with:
-        python-version: "3.11"
+        python-version: "3.13"
         
     - name: Cache pip dependencies
       uses: actions/cache@v4
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-python3.11-pip-${{ hashFiles('pyproject.toml') }}
+        key: ${{ runner.os }}-python3.13-pip-${{ hashFiles('pyproject.toml') }}
         restore-keys: |
-          ${{ runner.os }}-python3.11-pip-
+          ${{ runner.os }}-python3.13-pip-
 
     - name: Install dependencies
       run: |
@@ -50,18 +50,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
+    - name: Set up Python 3.13
       uses: actions/setup-python@v5
       with:
-        python-version: "3.11"
+        python-version: "3.13"
 
     - name: Cache pip dependencies
       uses: actions/cache@v4
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-python3.11-pip-${{ hashFiles('pyproject.toml') }}
+        key: ${{ runner.os }}-python3.13-pip-${{ hashFiles('pyproject.toml') }}
         restore-keys: |
-          ${{ runner.os }}-python3.11-pip-
+          ${{ runner.os }}-python3.13-pip-
 
     - name: Install dependencies
       run: |
