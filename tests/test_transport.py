@@ -85,7 +85,7 @@ def test_system_discharge_function_from_scalar():
     result = system.discharge(time=jnp.array(5.0))
     assert result == 0.5
 
-
+@pytest.mark.integration
 def test_tracer():
     cells = Cells.equally_spaced(10, 200)
     dispersion = Dispersion.build(
@@ -143,6 +143,7 @@ def ogata_banks_solution(t, x, u, D, c0):
     )
 
 
+@pytest.mark.integration
 def test_against_analytical_solution():
     """Compare numerical solution with analytical Ogata-Banks solution"""
     cells = Cells.equally_spaced(10, 200)
@@ -211,7 +212,7 @@ def test_against_analytical_solution():
         atol=1e-3,
     )
 
-
+@pytest.mark.integration
 def test_negative_velocity():
     cells = Cells.equally_spaced(10, 200)
     dispersion = Dispersion.build(
@@ -296,7 +297,7 @@ def test_duplicate_boundaries():
     with pytest.raises(eqx.EquinoxRuntimeError, match="Duplicate"):
         solver(state, system)
 
-
+@pytest.mark.integration
 def test_immobile_species():
     k_dec = 1 / 500
     reactions = [FirstOrderDecay(decay_coefficient=k_dec)]
@@ -384,7 +385,7 @@ def test_bc_for_immobile_species():
             species_is_mobile=TracerSpecies(tracer=False),
         )
 
-
+@pytest.mark.integration
 def test_mass_conservation():
     """Test that the total mass in the system does not change with no-flux boundaries
 
@@ -435,7 +436,7 @@ class FirstOrderDecay(KineticReaction):
             "reactive_tracer": -1,
         }
 
-
+@pytest.mark.integration
 def test_reactive_tracer_constant_param():
     reactions = [FirstOrderDecay(decay_coefficient=1 / 100)]
     n_cells = 200
@@ -499,7 +500,7 @@ def test_reactive_tracer_constant_param():
     analytical_solution = c0 * np.exp(-reactions[0].decay_coefficient * travel_time)
     np.testing.assert_allclose(solution.ys.reactive_tracer[-1, :], analytical_solution, rtol=0.1, atol=0.01)
 
-
+@pytest.mark.integration
 def test_reactive_tracer_variable_param():
     n_cells = 200
     decay_coefficient = jnp.ones(n_cells)
