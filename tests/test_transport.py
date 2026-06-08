@@ -143,6 +143,7 @@ def ogata_banks_solution(t, x, u, D, c0):
     )
 
 
+@pytest.mark.integration
 def test_against_analytical_solution():
     """Compare numerical solution with analytical Ogata-Banks solution"""
     cells = Cells.equally_spaced(10, 200)
