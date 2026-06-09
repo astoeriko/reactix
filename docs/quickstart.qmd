@@ -1,14 +1,12 @@
 ---
-title: "Quick Start Guide"
+title: "Quickstart"
 ---
 
-# Quick Start Guide
-
-This guide will walk you through the basics of using Kinetix to set up and solve reactive transport problems.
+This guide will walk you through the basics of using Reactix to set up and solve reactive transport problems.
 
 ## Basic Concepts
 
-Kinetix models reactive transport through three main components:
+Reactix models reactive transport through three main components:
 
 1. **Transport processes**: Advection and dispersion of chemical species
 2. **Chemical reactions**: Kinetic reactions that transform species
@@ -18,12 +16,12 @@ Kinetix models reactive transport through three main components:
 
 Let's build a simple 1D transport model with a conservative tracer:
 
-### Step 1: Import Kinetix
+### Step 1: Import Reactix
 
 ```python
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
-from kinetix import (
+from reactix import (
     System, Cells, Advection, Dispersion,
     FixedConcentrationBoundary, declare_species, make_solver
 )
@@ -124,7 +122,7 @@ Now let's extend the model to include a first-order decay reaction:
 ### Step 1: Define the Reaction
 
 ```python
-from kinetix import KineticReaction, reaction
+from reactix import KineticReaction, reaction
 
 @reaction
 class FirstOrderDecay(KineticReaction):
@@ -199,8 +197,7 @@ initial_state = Species(
 
 ## Next Steps
 
-- Explore the [Transport Model Example](examples/transport-model.qmd) for more complex scenarios
-- Learn about [Bayesian Inference](examples/transport-with-pymc.qmd) for parameter estimation
+- Explore the [Examples](examples/index.qmd) for more detailed workflows and use cases
 - Check the [API Reference](api/index.qmd) for detailed documentation
 
 ## Common Issues
