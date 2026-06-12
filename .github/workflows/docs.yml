@@ -1,0 +1,47 @@
+name: Publish docs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Install package and docs dependencies
+        run: |
+          pip install uv
+          uv pip install --system -e ".[dev,docs]"
+
+      - name: Build API reference
+        working-directory: docs
+        run: quartodoc build
+
+      - name: Render site
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/_site
+          publish_branch: gh-pages
