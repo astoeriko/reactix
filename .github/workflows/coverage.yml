@@ -40,12 +40,21 @@ jobs:
           pytest tests/ -v --tb=short \
             --cov=src/reactix \
             --cov-report=term-missing \
-            --cov-report=markdown >> coverage-report.md
+            --cov-report=xml:coverage.xml
 
-      - name: Add coverage to job summary
+      - name: Coverage Summary Report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: coverage.xml
+          badge: true
+          format: markdown
+          output: both
+          fail_below_min: false
+          hide_branch_rate: true
+
+      - name: Add Coverage to Job Summary
         run: |
-          echo "## Coverage report" >> $GITHUB_STEP_SUMMARY
-          cat coverage-report.md >> $GITHUB_STEP_SUMMARY
+          cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
 
       # If uploading the coverage report to Codecov:
       # uncomment the following lines and make sure you have a Codecov token set in your repository secrets.
