@@ -39,7 +39,13 @@ jobs:
         run: |
           pytest tests/ -v --tb=short \
             --cov=src/reactix \
-            --cov-report=term-missing
+            --cov-report=term-missing \
+            --cov-report=markdown >> coverage-report.md
+
+      - name: Add coverage to job summary
+        run: |
+          echo "## Coverage report" >> $GITHUB_STEP_SUMMARY
+          cat coverage-report.md >> $GITHUB_STEP_SUMMARY
 
       # If uploading the coverage report to Codecov:
       # uncomment the following lines and make sure you have a Codecov token set in your repository secrets.
