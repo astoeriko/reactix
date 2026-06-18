@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - develop
-  workflow_dispatch:
   push:
     branches:
       - develop
@@ -40,9 +39,8 @@ jobs:
         run: |
           pytest tests/ -v --tb=short \
             --cov=src/reactix \
-            --cov-report=term-missing \
-            --cov-report=xml:coverage.xml
-      
+            --cov-report=term-missing
+
       # If uploading the coverage report to Codecov:
       # uncomment the following lines and make sure you have a Codecov token set in your repository secrets.
       # More information: https://docs.codecov.com/docs/quick-start
@@ -51,9 +49,3 @@ jobs:
       #   uses: codecov/codecov-action@v5
       #   env:
       #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Upload coverage XML as artifact
-        uses: actions/upload-artifact@v5
-        with:
-          name: coverage-report
-          path: coverage.xml
