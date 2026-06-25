@@ -336,35 +336,14 @@ def transport_rhs(time, state, system: TransportSystem):
 
 
 def mixed_rhs(time, state, system: MixedSystem):
-    """
-    Compute the right-hand side of the mixed reactor ODE.
-
-    Evaluates inflow/outflow dilution and kinetic reactions for a well-mixed
-    reactor (no spatial transport).
-
-    Parameters
-    ----------
-    time : jax.Array
-        Current simulation time.
-    state : AbstractSpecies
-        Current species concentrations.
-    system : MixedSystem
-        The mixed reactor system configuration.
-
-    Returns
-    -------
-    AbstractSpecies
-        Rate of change of species concentrations (dc/dt).
-    """
     # TODO: add inflow outflow to the summation
-    discharge = system.discharge(time) if callable(system.discharge) else system.discharge
-    dilution_rate = jax.tree.map(
-        lambda c_in, c: discharge / system.volume * (c_in - c),
-        system.inflow_concentration,
-        state,
-    )
-    reaction_rates = _compute_pointwise_reaction_rates(time, state, system)
-    return jax.tree.map(lambda d, r: d + r, dilution_rate, reaction_rates)
+
+    def compute_in_outflow(time, state, system):
+        discharge = system.discharge(time)
+        return system.inflow_concentration - system.state 
+
+    system.discharge/system.volume * (system.inflow_concentration - state) + \
+    return _compute_pointwise_reaction_rates(time, state, system)
 
 
 def _rhs(time, state, system):
