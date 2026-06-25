@@ -11,12 +11,14 @@ import jax
 import jax.numpy as jnp
 import equinox as eqx
 
-from dataclasses import dataclass, field
-from typing import Callable, Literal, Any
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Callable, Literal
+
+# To avoid ruff errors 
+if TYPE_CHECKING:
+    from reactix.systems import TransportSystem
 
 from reactix.species import AbstractSpecies
-from reactix.reactions import KineticReaction
-
 
 @jax.tree_util.register_dataclass
 @dataclass(frozen=True)
@@ -173,7 +175,7 @@ class Advection:
         return cls(limiter_type=limiter_type)
 
     def rate(
-        self, time: jax.Array, state: AbstractSpecies, system: System
+        self, time: jax.Array, state: AbstractSpecies, system: TransportSystem
     ) -> AbstractSpecies:
         """
         Compute the advection rate for mobile species.
@@ -184,7 +186,7 @@ class Advection:
             Current simulation time.
         state : AbstractSpecies
             Current species concentrations.
-        system : System
+        system : TransportSystem
             The reactive transport system.
 
         Returns
@@ -345,7 +347,7 @@ class Dispersion:
         return cls(dispersivity=dispersivity, pore_diffusion=pore_diffusion)
 
     def get_dispersion_coefficient(
-        self, time: jax.Array, system: System
+        self, time: jax.Array, system: TransportSystem
     ) -> AbstractSpecies:
         """
         Compute dispersion coefficients for each species.
@@ -354,7 +356,7 @@ class Dispersion:
         ----------
         time : jax.Array
             Current simulation time.
-        system : System
+        system : TransportSystem
             The reactive transport system.
 
         Returns
@@ -370,7 +372,7 @@ class Dispersion:
         )
 
     def _get_interface_coefficient(
-        self, time: jax.Array, system: System
+        self, time: jax.Array, system: TransportSystem
     ) -> AbstractSpecies:
         """Compute dispersion coefficient times porosity for each interior interface.
 
@@ -394,7 +396,7 @@ class Dispersion:
         return jax.tree.map(inner, self.get_dispersion_coefficient(time, system))
 
     def rate(
-        self, time: jax.Array, state: AbstractSpecies, system: System
+        self, time: jax.Array, state: AbstractSpecies, system: TransportSystem
     ) -> AbstractSpecies:
         """
         Compute the dispersion contribution to the species rate of change.
@@ -405,7 +407,7 @@ class Dispersion:
             Current simulation time.
         state : AbstractSpecies
             Current species concentrations.
-        system : System
+        system : TransportSystem
             The reactive transport system.
 
         Returns
@@ -454,7 +456,7 @@ class BoundaryCondition:
     specific boundary condition behavior.
     """
 
-    is_active: Callable[[jax.Array, System], jax.Array] = lambda t, system: jnp.array(
+    is_active: Callable[[jax.Array, TransportSystem], jax.Array] = lambda t, system: jnp.array(
         True
     )
     species_selector: Callable
@@ -468,7 +470,7 @@ class BoundaryCondition:
         ----------
         t : jax.Array
             Current time.
-        system : System
+        system : TransportSystem
             The transport system.
         state : AbstractSpecies
             Current species concentrations.
@@ -547,7 +549,7 @@ class FixedConcentrationBoundary(BoundaryCondition):
     ----------
     fixed_concentration : float or Callable[[jax.Array], jax.Array]
         The fixed concentration value, either constant or time-dependent.
-    is_active : Callable[[jax.Array, System], jax.Array], optional
+    is_active : Callable[[jax.Array, TransportSystem], jax.Array], optional
         Function determining if the boundary condition is active. Inherited from BoundaryCondition.
     species_selector : Callable
         Function to select which species this applies to. Inherited from BoundaryCondition.
@@ -563,7 +565,7 @@ class FixedConcentrationBoundary(BoundaryCondition):
     fixed_concentration: float | Callable[[jax.Array], jax.Array]
 
     def compute_flux(
-        self, time: jax.Array, system: System, boundary_cell_state: jax.Array
+        self, time: jax.Array, system: TransportSystem, boundary_cell_state: jax.Array
     ):
         """
         Compute the advective and dispersive flux at the boundary.
@@ -572,7 +574,7 @@ class FixedConcentrationBoundary(BoundaryCondition):
         ----------
         time : jax.Array
             Current simulation time.
-        system : System
+        system : TransportSystem
             The reactive transport system.
         boundary_cell_state : jax.Array
             Concentration in the boundary cell.

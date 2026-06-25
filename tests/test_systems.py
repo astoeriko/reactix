@@ -1,14 +1,9 @@
 import jax.numpy as jnp
-import jax
 import numpy as np
-import pytest
 
 from reactix import (
     MixedSystem,
-    make_solver,
     declare_species,
-    KineticReaction,
-    reaction,
 )
 
 Species = declare_species(["tracer"])
