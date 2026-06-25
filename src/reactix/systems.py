@@ -336,14 +336,18 @@ def transport_rhs(time, state, system: TransportSystem):
 
 
 def mixed_rhs(time, state, system: MixedSystem):
-    # TODO: add inflow outflow to the summation
-
-    def compute_in_outflow(time, state, system):
-        discharge = system.discharge(time)
-        return system.inflow_concentration - system.state 
-
-    system.discharge/system.volume * (system.inflow_concentration - state) + \
-    return _compute_pointwise_reaction_rates(time, state, system)
+    #TODO check if the mass balance is implemented correctly
+    discharge = system.discharge(time)
+    inflow_outflow = jax.tree.map(
+        lambda c_in, c: discharge / system.volume * (c_in - c),
+        system.inflow_concentration,
+        state,
+    )
+    return jax.tree.map(
+        lambda io, r: io + r,
+        inflow_outflow,
+        _compute_pointwise_reaction_rates(time, state, system),
+    )
 
 
 def _rhs(time, state, system):
