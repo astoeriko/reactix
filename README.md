@@ -121,6 +121,65 @@ pip install -e ".[dev]"
 
 Make your changes and propose them as described in the [contributing guidelines](./CONTRIBUTING.md).
 
+### Installation verification
+
+After installing, run the following checks to confirm the environment is set up correctly.
+
+**1. Confirm the package is importable:**
+
+```python
+import reactix
+print(reactix.__version__)
+```
+
+**2. Confirm JAX is working:**
+
+```python
+import jax
+import jax.numpy as jnp
+
+x = jnp.array([1.0, 2.0, 3.0])
+print(jax.devices())  # e.g. [CpuDevice(id=0)]
+print(x.sum())        # 6.0
+```
+
+Note: JAX installs a CPU-only wheel by default; for GPU support follow the JAX installation guide to install the CUDA-enabled wheel that matches your setup.
+
+**3. Run a minimal simulation:**
+
+```python
+import jax.numpy as jnp
+from reactix.species import declare_species
+from reactix.transport import Cells, Advection, Dispersion, System, make_solver
+
+Species = declare_species(["tracer"])
+
+cells = Cells.equally_spaced(length=1.0, n_cells=10)
+advection = Advection.build(limiter_type="upwind")
+dispersion = Dispersion.build(
+    cells=cells,
+    dispersivity=jnp.array(0.0),
+    pore_diffusion=Species(tracer=jnp.zeros(10)),
+)
+system = System.build(
+    cells=cells,
+    advection=advection,
+    dispersion=dispersion,
+    bcs=[],
+    species_is_mobile=Species(tracer=True),
+    reactions=[],
+    discharge=jnp.array(1.0),
+    porosity=jnp.array(0.3),
+)
+
+y0 = Species(tracer=jnp.zeros(10).at[0].set(1.0))
+solver = make_solver(t_max=1.0, t_points=jnp.linspace(0.0, 1.0, 5))
+solution = solver(y0, system)
+print(solution.ts)   # expected: [0.0, 0.25, 0.5, 0.75, 1.0]
+```
+
+If all three steps complete without errors, Reactix is correctly installed and ready to use.
+
 ## Usage example
 
 [TODO]: Add a short code snippet and short description here.
