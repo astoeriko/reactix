@@ -13,7 +13,6 @@ from reactix.transport import (
 from reactix.systems import (
     TransportSystem,
     MixedSystem,
-    System,  # backward-compatible alias for TransportSystem
     make_solver,
     user_system_parameters,
 )
@@ -28,7 +27,6 @@ from reactix.reactions import (
 __all__ = [
     "TransportSystem",
     "MixedSystem",
-    "System",
     "Cells",
     "Advection",
     "Dispersion",

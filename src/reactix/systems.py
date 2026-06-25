@@ -277,10 +277,6 @@ class MixedSystem:
     parameters: Any | None = None
 
 
-# Backward-compatible alias
-System = TransportSystem
-
-
 def transport_rhs(time, state, system: TransportSystem):
     """
     Compute the right-hand side of the reactive transport ODE.
