@@ -123,6 +123,9 @@ Make your changes and propose them as described in the [contributing guidelines]
 
 ### Installation verification
 
+<details>
+<summary>Click to expand installation verification steps</summary>
+
 After installing, run the following checks to confirm the environment is set up correctly.
 
 **1. Confirm the package is importable:**
@@ -179,6 +182,7 @@ print(solution.ts)   # expected: [0.0, 0.25, 0.5, 0.75, 1.0]
 ```
 
 If all three steps complete without errors, Reactix is correctly installed and ready to use.
+</details>
 
 ## Usage example
 
