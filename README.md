@@ -123,7 +123,129 @@ Make your changes and propose them as described in the [contributing guidelines]
 
 ## Usage example
 
-[TODO]: Add a short code snippet and short description here.
+This example shows how to set up a simple reactive transport model with a tracer that undergoes first-order decay.
+
+### Step 1: Import Reactix
+
+```python
+import jax
+import jax.numpy as jnp
+import matplotlib.pyplot as plt
+from reactix import (
+    System, Cells, Advection, Dispersion,
+    FixedConcentrationBoundary, declare_species, make_solver
+)
+```
+
+### Step 2: Declare chemical species
+
+```python
+# Define the species in your system
+Species = declare_species(["tracer"])
+
+# Specify which species are mobile (can be transported)
+species_is_mobile = Species(tracer=True)
+```
+
+### Step 3: Set up the domain geometry and transport parameters
+
+```python
+# Create a 1-D domain with 100 cells over 10 length units
+n_cells = 100
+cells = Cells.equally_spaced(length=10.0, n_cells=n_cells)
+
+# Define transport properties
+advection = Advection.build(limiter_type="upwind")
+dispersion = Dispersion.build(
+    cells=cells,
+    dispersivity=jnp.array(0.1),  # Longitudinal dispersivity
+    pore_diffusion=Species(tracer=jnp.array(1e-9))  # Molecular diffusion
+)
+```
+
+### Step 4: Set boundary conditions
+
+```python
+# Fixed concentration at inlet (left) and outlet (right)
+boundary_conditions = [
+    FixedConcentrationBoundary(
+        boundary="left",
+        species_selector=lambda s: s.tracer,
+        fixed_concentration=lambda t: jnp.array(1.0)  # Constant injection
+    ),
+    FixedConcentrationBoundary(
+        boundary="right",
+        species_selector=lambda s: s.tracer,
+        fixed_concentration=lambda t: jnp.array(0.0)  # Clean boundary
+    )
+]
+```
+
+### Step 5: Define reactions
+
+```python
+from reactix import KineticReaction, reaction
+
+@reaction
+class FirstOrderDecay(KineticReaction):
+    decay_coefficient: jax.Array
+
+    def rate(self, time, state, system):
+        # Reaction rate proportional to concentration
+        return self.decay_coefficient * state.tracer
+
+    def stoichiometry(self, time, state, system):
+        # One mole of tracer consumed per reaction
+        return {"tracer": -1}
+
+# Create reaction instance
+decay_reaction = FirstOrderDecay(decay_coefficient=jnp.array(0.1))
+```
+
+### Step 6: Create the transport system
+
+```python
+# Define system properties
+porosity = jnp.ones(n_cells) * 0.3  # 30% porosity
+discharge_rate = lambda t: jnp.array(0.1)  # Constant flow rate
+
+# Build the complete system
+system = System.build(
+    porosity=porosity,
+    discharge=discharge_rate,
+    cells=cells,
+    advection=advection,
+    dispersion=dispersion,
+    species_is_mobile=species_is_mobile,
+    bcs=boundary_conditions,
+    reactions=[decay_reaction],
+)
+```
+
+### Step 6: Solve the model equations
+
+```python
+# Create solver
+t_max = 50
+t_points = jnp.linspace(0, t_max, num=200)
+solver = make_solver(t_points=t_points, t_max=t_max, rtol=1e-6, atol=1e-6)
+
+# Set initial conditions (clean system)
+initial_state = Species(tracer=jnp.zeros(n_cells))
+
+# Solve the transport equation
+solution = solver(initial_state, system)
+
+# Plot results
+plt.figure(figsize=(10, 6))
+# Plot every 10th time step
+plt.plot(
+    cells.centers,
+    solution.ys.tracer[::10, :].T,
+)
+plt.xlabel('Distance')
+plt.ylabel('Concentration')
+```
 
 [TODO]: Full API documentation is forthcoming.
 
