@@ -4,6 +4,13 @@ This package exposes the core transport, species, and reaction APIs
 for building and solving 1D reactive-transport systems.
 """
 
+from importlib.metadata import version, PackageNotFoundError
+
+try:
+    __version__ = version("reactix")
+except PackageNotFoundError:
+    __version__ = "unknown"
+
 from reactix.transport import (
     System,
     Cells,
