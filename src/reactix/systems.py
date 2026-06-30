@@ -304,6 +304,7 @@ def _sum_reaction_rates_per_species(time: jax.Array, state: AbstractSpecies, sys
     return jax.tree.map(lambda *args: sum(args), *rates)
 
 
+@jax.tree_util.register_dataclass
 @dataclass(frozen=True, kw_only=True)
 class MixedSystem:
     """
