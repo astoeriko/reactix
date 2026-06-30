@@ -1,37 +1,37 @@
 ---
-title: "Quickstart"
-jupyter: python3
+title: "Quick Start Guide"
 ---
 
-This guide will walk you through the basics of using Reactix to set up and solve reactive transport problems.
+# Quick Start Guide
+
+This guide will walk you through the basics of using Kinetix to set up and solve reactive transport problems.
 
 ## Basic Concepts
 
-A reactive transport model in Reactix consists three main components:
+Kinetix models reactive transport through three main components:
 
-1.  Transport processes: Advection and dispersion of chemical species
-2.  Chemical reactions: Kinetic reactions that transform species
-3.  Boundary conditions: Fixed concentrations or fluxes at domain boundaries
+1. **Transport processes**: Advection and dispersion of chemical species
+2. **Chemical reactions**: Kinetic reactions that transform species
+3. **Boundary conditions**: Fixed concentrations or fluxes at domain boundaries
 
 ## Your First Model
 
-Let's build a simple 1-D transport model with a conservative tracer:
+Let's build a simple 1D transport model with a conservative tracer:
 
-### Step 1: Import Reactix
+### Step 1: Import Kinetix
 
-```{python}
-import jax
+```python
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
-from reactix import (
+from kinetix import (
     System, Cells, Advection, Dispersion,
     FixedConcentrationBoundary, declare_species, make_solver
 )
 ```
 
-### Step 2: Declare chemical species
+### Step 2: Declare Chemical Species
 
-```{python}
+```python
 # Define the species in your system
 Species = declare_species(["tracer"])
 
@@ -39,10 +39,10 @@ Species = declare_species(["tracer"])
 species_is_mobile = Species(tracer=True)
 ```
 
-### Step 3: Set up the domain geometry and transport parameters
+### Step 3: Set Up the Physical Domain
 
-```{python}
-# Create a 1-D domain with 100 cells over 10 length units
+```python
+# Create a 1D domain with 100 cells over 10 length units
 n_cells = 100
 cells = Cells.equally_spaced(length=10.0, n_cells=n_cells)
 
@@ -55,9 +55,9 @@ dispersion = Dispersion.build(
 )
 ```
 
-### Step 4: Set boundary conditions
+### Step 4: Set Boundary Conditions
 
-```{python}
+```python
 # Fixed concentration at inlet (left) and outlet (right)
 boundary_conditions = [
     FixedConcentrationBoundary(
@@ -73,9 +73,9 @@ boundary_conditions = [
 ]
 ```
 
-### Step 5: Create the transport system
+### Step 5: Create the Transport System
 
-```{python}
+```python
 # Define system properties
 porosity = jnp.ones(n_cells) * 0.3  # 30% porosity
 discharge_rate = lambda t: jnp.array(0.1)  # Constant flow rate
@@ -93,13 +93,11 @@ system = System.build(
 )
 ```
 
-### Step 6: Solve the model equations
+### Step 6: Solve the Model
 
-```{python}
+```python
 # Create solver
-t_max = 50
-t_points = jnp.linspace(0, t_max, num=200)
-solver = make_solver(t_points=t_points, t_max=t_max, rtol=1e-6, atol=1e-6)
+solver = make_solver(t_max=50.0, rtol=1e-6, atol=1e-6)
 
 # Set initial conditions (clean system)
 initial_state = Species(tracer=jnp.zeros(n_cells))
@@ -109,28 +107,28 @@ solution = solver(initial_state, system)
 
 # Plot results
 plt.figure(figsize=(10, 6))
-# Plot every 10th time step
-plt.plot(
-    cells.centers,
-    solution.ys.tracer[::10, :].T,
-)
+for i in range(0, len(solution.ts), 10):  # Plot every 10th time step
+    plt.plot(cells.centers, solution.ys.tracer[i],
+             alpha=0.7, label=f't={solution.ts[i]:.1f}')
 plt.xlabel('Distance')
 plt.ylabel('Concentration')
 plt.title('Conservative Tracer Transport')
+plt.legend()
+plt.show()
 ```
 
 ## Adding Chemical Reactions
 
 Now let's extend the model to include a first-order decay reaction:
 
-### Step 1: Define the reaction
+### Step 1: Define the Reaction
 
-```{python}
-from reactix import KineticReaction, reaction
+```python
+from kinetix import KineticReaction, reaction
 
 @reaction
 class FirstOrderDecay(KineticReaction):
-    decay_coefficient: jax.Array
+    decay_coefficient: jnp.ndarray
 
     def rate(self, time, state, system):
         # Reaction rate proportional to concentration
@@ -141,9 +139,9 @@ class FirstOrderDecay(KineticReaction):
         return {"tracer": -1}
 ```
 
-### Step 2: Add reaction to system
+### Step 2: Add Reaction to System
 
-```{python}
+```python
 # Create reaction instance
 decay_reaction = FirstOrderDecay(decay_coefficient=jnp.array(0.1))
 
@@ -167,14 +165,14 @@ reactive_solution = solver(initial_state, reactive_system)
 
 For systems with multiple interacting species:
 
-```{python}
+```python
 # Declare multiple species
 Species = declare_species(["substrate", "product"])
 species_is_mobile = Species(substrate=True, product=True)
 
 @reaction
 class Transformation(KineticReaction):
-    rate_constant: jax.Array
+    rate_constant: jnp.ndarray
 
     def rate(self, time, state, system):
         return self.rate_constant * state.substrate
@@ -192,13 +190,25 @@ initial_state = Species(
 )
 ```
 
-## Some Tips
+## Key Tips
 
-- Units: Be consistent with units across all parameters (length, time, concentration)
-- Stability: Use appropriate spatial resolution and solver options (tolerances, type of solver, discretization scheme for the transport terms) for numerical stability.
-- Boundary conditions: Ensure boundary conditions are physically reasonable. Not specifying any boundary condition for a species implies a no-flux boundary.
+1. **Units**: Be consistent with units across all parameters (length, time, concentration)
+2. **Stability**: Use appropriate time steps and spatial resolution for numerical stability
+3. **Boundary conditions**: Ensure boundary conditions are physically reasonable
+4. **Species mobility**: Set `species_is_mobile` correctly for each species
 
 ## Next Steps
 
-- Explore the [Examples](examples/index.qmd) for more detailed workflows and use cases
+- Explore the [Transport Model Example](examples/transport-model.qmd) for more complex scenarios
+- Learn about [Bayesian Inference](examples/transport-with-pymc.qmd) for parameter estimation
 - Check the [API Reference](api/index.qmd) for detailed documentation
+
+## Common Issues
+
+**Numerical instability**: Try reducing time step size or increasing spatial resolution
+
+**Slow convergence**: Check that reaction rates and transport parameters are reasonable
+
+**Boundary condition errors**: Ensure boundary conditions match your species declarations
+
+**Memory issues**: Reduce the number of output time points or spatial cells for large problems

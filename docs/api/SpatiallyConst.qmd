@@ -1,0 +1,16 @@
+# SpatiallyConst { #reactix.SpatiallyConst }
+
+```python
+SpatiallyConst(value)
+```
+
+Marker for parameters that are constant across the domain.
+
+This class wraps a parameter value that does not vary spatially,
+indicating it should be treated as a scalar or constant array.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type      | Description                   | Default    |
+|--------|-----------|-------------------------------|------------|
+| value  | jax.Array | The constant parameter value. | _required_ |

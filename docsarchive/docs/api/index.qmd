@@ -1,0 +1,412 @@
+---
+title: "API Reference"
+---
+
+# API Reference
+
+This section provides detailed documentation for all Kinetix modules and functions.
+
+## Core Modules
+
+### Transport System
+- [**System**](#system) - Main transport system container
+- [**Cells**](#cells) - Spatial discretization
+- [**Advection**](#advection) - Advective transport
+- [**Dispersion**](#dispersion) - Dispersive transport
+- [**Boundary Conditions**](#boundary-conditions) - Domain boundaries
+
+### Chemical Species
+- [**declare_species**](#declare-species) - Species declaration utility
+- [**AbstractSpecies**](#abstract-species) - Base species class
+
+### Chemical Reactions
+- [**KineticReaction**](#kinetic-reaction) - Base reaction class
+- [**reaction**](#reaction) - Reaction decorator
+- [**SpatiallyConst**](#spatially-const) - Spatially constant parameters
+- [**SpatiallyVarying**](#spatially-varying) - Spatially varying parameters
+
+### Solvers
+- [**make_solver**](#make-solver) - Solver factory function
+
+---
+
+## System
+
+::: kinetix.transport.System
+
+The `System` class is the main container for reactive transport models. It combines physical properties, transport processes, boundary conditions, and chemical reactions into a complete system.
+
+### Attributes
+
+- `porosity`: Porosity field (scalar or array per cell)
+- `discharge`: Discharge function Q(t)
+- `cells`: Spatial discretization
+- `advection`: Advection operator
+- `dispersion`: Dispersion operator
+- `species_is_mobile`: Boolean flags for mobile species
+- `reactions`: List of chemical reactions
+- `bcs`: List of boundary conditions
+
+### Methods
+
+#### `build()`
+```python
+@classmethod
+def build(
+    cls,
+    *,
+    cells: Cells,
+    advection: Advection,
+    dispersion: Dispersion,
+    bcs: list[BoundaryCondition] | None = None,
+    species_is_mobile: AbstractSpecies,
+    reactions: list[KineticReaction] | None = None,
+    discharge: Callable[[jax.Array], jax.Array] | jax.Array,
+    porosity: jax.Array,
+) -> System
+```
+
+Build a complete transport system from components.
+
+**Parameters:**
+- `cells`: Spatial discretization
+- `advection`: Advection operator
+- `dispersion`: Dispersion operator
+- `bcs`: Boundary conditions (optional)
+- `species_is_mobile`: Boolean flags for transportable species
+- `reactions`: Chemical reactions (optional)
+- `discharge`: Discharge rate function or constant
+- `porosity`: Porosity values per cell
+
+**Returns:**
+A complete `System` instance ready for simulation.
+
+---
+
+## Cells
+
+::: kinetix.transport.Cells
+
+Spatial discretization for 1D transport problems.
+
+### Methods
+
+#### `equally_spaced()`
+```python
+@classmethod
+def equally_spaced(
+    cls,
+    length: float,
+    n_cells: int,
+    interface_area: jax.Array | None = None
+) -> Cells
+```
+
+Create equally-spaced cell discretization.
+
+**Parameters:**
+- `length`: Total domain length
+- `n_cells`: Number of cells
+- `interface_area`: Cross-sectional areas at interfaces
+
+**Returns:**
+`Cells` instance with uniform spacing.
+
+---
+
+## Advection
+
+::: kinetix.transport.Advection
+
+Advective transport operator using finite volume methods.
+
+### Methods
+
+#### `build()`
+```python
+@classmethod
+def build(
+    cls,
+    limiter_type: Literal["upwind", "minmod", "superbee"] = "upwind"
+) -> Advection
+```
+
+Build advection operator with flux limiting.
+
+**Parameters:**
+- `limiter_type`: Type of flux limiter for numerical stability
+
+**Returns:**
+`Advection` operator instance.
+
+---
+
+## Dispersion
+
+::: kinetix.transport.Dispersion
+
+Dispersive transport operator including mechanical dispersion and molecular diffusion.
+
+### Methods
+
+#### `build()`
+```python
+@classmethod
+def build(
+    cls,
+    cells: Cells,
+    dispersivity: jax.Array,
+    pore_diffusion: AbstractSpecies,
+) -> Dispersion
+```
+
+Build dispersion operator.
+
+**Parameters:**
+- `cells`: Spatial discretization
+- `dispersivity`: Longitudinal dispersivity
+- `pore_diffusion`: Molecular diffusion coefficients per species
+
+**Returns:**
+`Dispersion` operator instance.
+
+---
+
+## Boundary Conditions
+
+### FixedConcentrationBoundary
+
+::: kinetix.transport.FixedConcentrationBoundary
+
+Dirichlet boundary condition with fixed concentration.
+
+#### `__init__()`
+```python
+def __init__(
+    self,
+    boundary: Literal["left", "right"],
+    species_selector: Callable[[AbstractSpecies], jax.Array],
+    fixed_concentration: Callable[[jax.Array], jax.Array]
+)
+```
+
+**Parameters:**
+- `boundary`: Which boundary ("left" or "right")
+- `species_selector`: Function to select species from state
+- `fixed_concentration`: Function returning concentration vs time
+
+---
+
+## declare_species
+
+::: kinetix.species.declare_species
+
+```python
+def declare_species(
+    names: list[str],
+    *,
+    shapes: dict[str, tuple[int, ...]] | None = None
+) -> type[AbstractSpecies]
+```
+
+Declare chemical species for reactive transport models.
+
+**Parameters:**
+- `names`: List of species names
+- `shapes`: Optional shapes for each species (default: scalar)
+
+**Returns:**
+Dynamically created Species class with the specified names.
+
+**Example:**
+```python
+Species = declare_species(["tracer", "substrate", "product"])
+state = Species(tracer=1.0, substrate=2.0, product=0.0)
+```
+
+---
+
+## AbstractSpecies
+
+::: kinetix.species.AbstractSpecies
+
+Base class for chemical species containers.
+
+### Abstract Methods
+
+#### `zeros()`
+```python
+@classmethod
+@abstractmethod
+def zeros(cls) -> "AbstractSpecies"
+```
+Create instance with zero values for all species.
+
+#### `int_zeros()`
+```python
+@classmethod
+@abstractmethod
+def int_zeros(cls) -> "AbstractSpecies"
+```
+Create instance with integer zero values.
+
+### Methods
+
+#### `add()`
+```python
+def add(self, name: str, value: jax.Array) -> "AbstractSpecies"
+```
+Add value to named species.
+
+---
+
+## KineticReaction
+
+::: kinetix.reactions.KineticReaction
+
+Base class for chemical reactions.
+
+### Abstract Methods
+
+#### `rate()`
+```python
+@abstractmethod
+def rate(
+    self,
+    time: jax.Array,
+    state: AbstractSpecies,
+    system: System
+) -> jax.Array
+```
+Compute reaction rate.
+
+#### `stoichiometry()`
+```python
+@abstractmethod
+def stoichiometry(
+    self,
+    time: jax.Array,
+    state: AbstractSpecies,
+    system: System
+) -> dict[str, int]
+```
+Return stoichiometric coefficients.
+
+---
+
+## reaction
+
+::: kinetix.reactions.reaction
+
+```python
+def reaction(cls: type) -> type
+```
+
+Decorator to register a class as a kinetic reaction.
+
+**Usage:**
+```python
+@reaction
+class FirstOrderDecay(KineticReaction):
+    decay_coefficient: jax.Array
+
+    def rate(self, time, state, system):
+        return self.decay_coefficient * state.substrate
+
+    def stoichiometry(self, time, state, system):
+        return {"substrate": -1, "product": 1}
+```
+
+---
+
+## make_solver
+
+::: kinetix.transport.make_solver
+
+```python
+def make_solver(
+    t_max: float,
+    t_points: jax.Array | None = None,
+    rtol: float = 1e-6,
+    atol: float = 1e-6,
+    max_steps: int = 1000000,
+    solver: Any = None
+) -> Callable
+```
+
+Create ODE solver for transport equations.
+
+**Parameters:**
+- `t_max`: Maximum simulation time
+- `t_points`: Specific output times (optional)
+- `rtol`: Relative tolerance
+- `atol`: Absolute tolerance
+- `max_steps`: Maximum integration steps
+- `solver`: Diffrax solver instance (optional)
+
+**Returns:**
+Solver function `solve(initial_state, system) -> Solution`
+
+---
+
+## SpatiallyConst
+
+::: kinetix.reactions.SpatiallyConst
+
+Container for spatially constant reaction parameters.
+
+---
+
+## SpatiallyVarying
+
+::: kinetix.reactions.SpatiallyVarying
+
+Container for spatially varying reaction parameters.
+
+---
+
+## Examples
+
+### Basic Transport Model
+```python
+import jax.numpy as jnp
+from kinetix import *
+
+# Declare species
+Species = declare_species(["tracer"])
+
+# Create system
+cells = Cells.equally_spaced(10.0, 100)
+system = System.build(
+    cells=cells,
+    advection=Advection.build(),
+    dispersion=Dispersion.build(cells, jnp.array(0.1), Species(tracer=1e-9)),
+    species_is_mobile=Species(tracer=True),
+    porosity=jnp.ones(100) * 0.3,
+    discharge=lambda t: jnp.array(0.1)
+)
+
+# Solve
+solver = make_solver(t_max=100.0)
+initial = Species(tracer=jnp.zeros(100))
+solution = solver(initial, system)
+```
+
+### Reactive Transport
+```python
+@reaction
+class FirstOrderDecay(KineticReaction):
+    k: jax.Array
+
+    def rate(self, time, state, system):
+        return self.k * state.substrate
+
+    def stoichiometry(self, time, state, system):
+        return {"substrate": -1, "product": 1}
+
+# Add to system
+system = System.build(
+    # ... other parameters ...
+    reactions=[FirstOrderDecay(k=jnp.array(0.1))]
+)
+```

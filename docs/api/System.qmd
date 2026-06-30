@@ -1,0 +1,109 @@
+# System { #reactix.System }
+
+```python
+System(
+    porosity,
+    discharge,
+    cells,
+    advection,
+    dispersion,
+    species_is_mobile,
+    reactions=list(),
+    bcs=list(),
+    parameters=None,
+)
+```
+
+Represents a 1D reactive transport system.
+
+This class encapsulates all the components needed to model reactive transport
+in a 1D domain, including spatial discretization, advection, dispersion,
+species mobility, reactions, and boundary conditions.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name              | Type                                 | Description                                                                                                                              | Default    |
+|-------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|------------|
+| porosity          | jax.Array                            | Porosity of the medium, either scalar or per cell.                                                                                       | _required_ |
+| discharge         | Callable\[\[jax.Array\], jax.Array\] | Function that computes discharge given time.                                                                                             | _required_ |
+| cells             | Cells                                | Spatial discretization of the domain.                                                                                                    | _required_ |
+| advection         | Advection                            | Advection scheme parameters.                                                                                                             | _required_ |
+| dispersion        | Dispersion                           | Dispersion scheme parameters.                                                                                                            | _required_ |
+| species_is_mobile | AbstractSpecies                      | Species mobility information.                                                                                                            | _required_ |
+| reactions         | list\[KineticReaction\]              | List of kinetic reactions. Default is empty list.                                                                                        | `list()`   |
+| bcs               | list\[BoundaryCondition\]            | List of boundary conditions. Default is empty list.                                                                                      | `list()`   |
+| parameters        | Any                                  | Additional system parameters. Default is None. Must be created with @user_system_parameters for spatial awareness and JAX compatibility. | `None`     |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [build](#reactix.System.build) | Build a configured reactive transport system. |
+| [cell_velocity](#reactix.System.cell_velocity) | Compute the pore-water velocity in each cell. |
+
+### build { #reactix.System.build }
+
+```python
+System.build(
+    cells,
+    advection,
+    dispersion,
+    bcs=None,
+    species_is_mobile,
+    reactions=None,
+    discharge,
+    porosity,
+    parameters=None,
+)
+```
+
+Build a configured reactive transport system.
+
+This convenience constructor validates input shapes and
+normalizes scalar inputs before creating a System instance.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name              | Type                                              | Description                                                                                                         | Default    |
+|-------------------|---------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|------------|
+| cells             | Cells                                             | Spatial discretization of the domain.                                                                               | _required_ |
+| advection         | Advection                                         | Advection scheme parameters.                                                                                        | _required_ |
+| dispersion        | Dispersion                                        | Dispersion scheme parameters.                                                                                       | _required_ |
+| bcs               | list\[BoundaryCondition\] or None                 | List of boundary conditions. Default is None.                                                                       | `None`     |
+| species_is_mobile | AbstractSpecies                                   | Species mobility information.                                                                                       | _required_ |
+| reactions         | list\[BoundaryCondition\] or None                 | List of kinetic reactions. Default is None.                                                                         | `None`     |
+| discharge         | Callable\[\[jax.Array\], jax.Array\] or jax.Array | Discharge function or scalar discharge value.                                                                       | _required_ |
+| porosity          | jax.Array                                         | Porosity of the medium, either scalar or per cell.                                                                  | _required_ |
+| parameters        | Any or None                                       | Additional system parameters. Default is None. Must be created with @user_system_parameters for spatial operations. | `None`     |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type   | Description                           |
+|--------|--------|---------------------------------------|
+|        | System | Configured reactive transport system. |
+
+#### Raises {.doc-section .doc-section-raises}
+
+| Name   | Type       | Description                                                                                         |
+|--------|------------|-----------------------------------------------------------------------------------------------------|
+|        | ValueError | If porosity has an invalid shape or a boundary condition is incompatible with the selected species. |
+
+### cell_velocity { #reactix.System.cell_velocity }
+
+```python
+System.cell_velocity(t)
+```
+
+Compute the pore-water velocity in each cell.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type      | Description              | Default    |
+|--------|-----------|--------------------------|------------|
+| t      | jax.Array | Current simulation time. | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type      | Description            |
+|--------|-----------|------------------------|
+|        | jax.Array | Velocity in each cell. |

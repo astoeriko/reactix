@@ -1,0 +1,96 @@
+# Dispersion { #reactix.Dispersion }
+
+```python
+Dispersion(dispersivity, pore_diffusion)
+```
+
+Handles dispersion and diffusion terms in the transport equation.
+
+This class computes hydrodynamic dispersion coefficients combining
+mechanical dispersion and pore diffusion effects.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name           | Type            | Description                                           | Default    |
+|----------------|-----------------|-------------------------------------------------------|------------|
+| dispersivity   | jax.Array       | Longitudinal dispersivity, either scalar or per cell. | _required_ |
+| pore_diffusion | AbstractSpecies | Pore diffusion coefficient for each species.          | _required_ |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [build](#reactix.Dispersion.build) | Build a Dispersion instance and validate dispersivity shape. |
+| [get_dispersion_coefficient](#reactix.Dispersion.get_dispersion_coefficient) | Compute dispersion coefficients for each species. |
+| [rate](#reactix.Dispersion.rate) | Compute the dispersion contribution to the species rate of change. |
+
+### build { #reactix.Dispersion.build }
+
+```python
+Dispersion.build(cells, dispersivity, pore_diffusion)
+```
+
+Build a Dispersion instance and validate dispersivity shape.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name           | Type            | Description                                           | Default    |
+|----------------|-----------------|-------------------------------------------------------|------------|
+| cells          | Cells           | Spatial discretization of the domain.                 | _required_ |
+| dispersivity   | jax.Array       | Longitudinal dispersivity, either scalar or per cell. | _required_ |
+| pore_diffusion | AbstractSpecies | Pore diffusion coefficient for each species.          | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type       | Description                   |
+|--------|------------|-------------------------------|
+|        | Dispersion | Configured dispersion scheme. |
+
+#### Raises {.doc-section .doc-section-raises}
+
+| Name   | Type       | Description                                           |
+|--------|------------|-------------------------------------------------------|
+|        | ValueError | If `dispersivity` does not match the number of cells. |
+
+### get_dispersion_coefficient { #reactix.Dispersion.get_dispersion_coefficient }
+
+```python
+Dispersion.get_dispersion_coefficient(time, system)
+```
+
+Compute dispersion coefficients for each species.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type      | Description                    | Default    |
+|--------|-----------|--------------------------------|------------|
+| time   | jax.Array | Current simulation time.       | _required_ |
+| system | System    | The reactive transport system. | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type            | Description                               |
+|--------|-----------------|-------------------------------------------|
+|        | AbstractSpecies | Dispersion coefficients for each species. |
+
+### rate { #reactix.Dispersion.rate }
+
+```python
+Dispersion.rate(time, state, system)
+```
+
+Compute the dispersion contribution to the species rate of change.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type            | Description                     | Default    |
+|--------|-----------------|---------------------------------|------------|
+| time   | jax.Array       | Current simulation time.        | _required_ |
+| state  | AbstractSpecies | Current species concentrations. | _required_ |
+| system | System          | The reactive transport system.  | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type            | Description                                    |
+|--------|-----------------|------------------------------------------------|
+|        | AbstractSpecies | Dispersion contribution to the rate of change. |

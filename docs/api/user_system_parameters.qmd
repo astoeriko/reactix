@@ -1,0 +1,28 @@
+# user_system_parameters { #reactix.user_system_parameters }
+
+```python
+user_system_parameters(cls)
+```
+
+Decorate system parameter classes with spatial awareness.
+
+This decorator enables classes to handle spatially varying parameters
+by transforming them into dataclasses with JAX tree operations and
+spatial axis tracking.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type   | Description                | Default    |
+|--------|--------|----------------------------|------------|
+| cls    | type   | The class to be decorated. | _required_ |
+
+## Returns {.doc-section .doc-section-returns}
+
+| Name   | Type     | Description                                                               |
+|--------|----------|---------------------------------------------------------------------------|
+|        | callable | A factory function that creates instances with spatial parameter support. |
+
+## Notes {.doc-section .doc-section-notes}
+
+Similar to the @reaction decorator, this allows parameters to be marked
+as SpatiallyVarying or SpatiallyConst for vectorized computations.
