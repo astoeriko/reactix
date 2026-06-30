@@ -330,10 +330,57 @@ class MixedSystem:
     """
 
     reactions: list[KineticReaction] = field(default_factory=list)
-    discharge: Callable[[jax.Array], jax.Array]
-    inflow_concentration: AbstractSpecies
-    volume: jax.Array
+    discharge: Callable[[jax.Array], jax.Array] | None
+    inflow_concentration: AbstractSpecies | None
+    volume: jax.Array | None
     parameters: Any | None = None
+
+    @classmethod
+    def build(cls, *, reactions=None, discharge, inflow_concentration, volume, parameters=None):
+        """
+        Build a configured mixed reactor system.
+
+        This convenience constructor validates input shapes and
+        normalizes scalar inputs before creating a MixedSystem instance.
+
+        Parameters
+        ----------
+        reactions : list[KineticReaction] or None, optional
+            List of kinetic reactions. Default is None.
+        discharge : Callable[[jax.Array], jax.Array] or jax.Array
+            Discharge function or scalar discharge value.
+        inflow_concentration : AbstractSpecies
+            Concentration of species in the inflow.
+        volume : jax.Array
+            Volume of the mixed reactor.
+        parameters : Any or None, optional
+            Additional system parameters. Default is None.
+
+        Returns
+        -------
+        MixedSystem
+            Configured mixed reactor system.
+        """
+        if reactions is None:
+            reactions = []
+
+        if callable(discharge):
+            discharge_fn = discharge
+        elif discharge is None:
+            discharge_fn = None
+        else:
+            discharge = jnp.asarray(discharge)
+            assert discharge.ndim == 0
+            def discharge_fn(time):
+                return discharge
+
+        return cls(
+            reactions=reactions,
+            discharge=discharge_fn,
+            inflow_concentration=inflow_concentration,
+            volume=volume,
+            parameters=parameters,
+        )
 
     def compute_inflow_outflow(self, time, state):
         """
@@ -351,6 +398,12 @@ class MixedSystem:
         AbstractSpecies
             Rate of change due to inflow/outflow (dc/dt).
         """
+        if self.inflow_concentration is None or self.discharge is None or self.volume is None:
+            return jax.tree.map(
+                lambda x: jnp.zeros_like(x),
+                state,
+            )
+
         discharge = self.discharge(time)
         return jax.tree.map(
             lambda c_in, c: discharge / self.volume * (c_in - c),
