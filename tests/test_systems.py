@@ -23,7 +23,6 @@ def test_mixed_system_construction():
 
 def test_mixed_rhs_no_reaction():
     """Without reactions, dc/dt should equal Q/V * (c_in - c)."""
-    from reactix.systems import mixed_rhs
 
     Q = jnp.array(2.0)
     V = jnp.array(10.0)
@@ -36,7 +35,7 @@ def test_mixed_rhs_no_reaction():
         volume=V,
     )
     state = Species(tracer=c)
-    dcdt = mixed_rhs(jnp.array(0.0), state, system)
+    dcdt = system._rhs(jnp.array(0.0), state)
 
     expected = Q / V * (c_in - c)
     np.testing.assert_allclose(dcdt.tracer, expected)

@@ -18,7 +18,6 @@ from reactix.transport import (
     Dispersion,
     BoundaryCondition,
     apply_bcs,
-    _compute_pointwise_reaction_rates,
 )
 
 
@@ -245,6 +244,65 @@ class TransportSystem:
         discharge = self.discharge(t)
         return discharge / self.cells.cell_area / self.porosity
 
+    def _rhs(self, time, state):
+        """
+        Compute the right-hand side of the reactive transport ODE.
+
+        Evaluates the complete system of equations including advection,
+        dispersion, and reactions for all species, then applies boundary
+        conditions.
+
+        Parameters
+        ----------
+        time : jax.Array
+            Current simulation time.
+        state : AbstractSpecies
+            Current species concentrations across the domain.
+
+        Returns
+        -------
+        AbstractSpecies
+            Rate of change of species concentrations (dc/dt).
+        """
+        compute_spatial_reaction_rates = jax.vmap(
+            _sum_reaction_rates_per_species,
+            [
+                None,
+                type(state).int_zeros(),
+                self._spatial_axes,
+            ],
+        )
+
+        reaction_rates = compute_spatial_reaction_rates(time, state, self)
+
+        def sum_rhs_terms(
+            species_is_mobile: bool,
+            advection: jax.Array,
+            dispersion: jax.Array,
+            reactions: jax.Array,
+        ) -> jax.Array:
+            if species_is_mobile:
+                return advection + dispersion + reactions
+            else:
+                return reactions
+
+        rate = jax.tree.map(
+            sum_rhs_terms,
+            self.species_is_mobile,
+            self.advection.rate(time, state, self),
+            self.dispersion.rate(time, state, self),
+            reaction_rates,
+        )
+        return apply_bcs(self.bcs, time, self, state, rate)
+
+def _sum_reaction_rates_per_species(time: jax.Array, state: AbstractSpecies, system) -> AbstractSpecies:
+    reactions = system.reactions
+    if len(reactions) == 0:
+        return type(state).zeros()
+
+    rates = [reaction._eval_dcdt(time, state, system) for reaction in reactions]
+    return jax.tree.map(lambda *args: sum(args), *rates)
+
 
 @dataclass(frozen=True, kw_only=True)
 class MixedSystem:
@@ -276,14 +334,59 @@ class MixedSystem:
     volume: jax.Array
     parameters: Any | None = None
 
+    def compute_inflow_outflow(self, time, state):
+        """
+        Compute the inflow/outflow contribution to the rate of change of concentrations.
 
-def transport_rhs(time, state, system: TransportSystem):
+        Parameters
+        ----------
+        time : jax.Array
+            Current simulation time.
+        state : AbstractSpecies
+            Current species concentrations.
+
+        Returns
+        -------
+        AbstractSpecies
+            Rate of change due to inflow/outflow (dc/dt).
+        """
+        discharge = self.discharge(time)
+        return jax.tree.map(
+            lambda c_in, c: discharge / self.volume * (c_in - c),
+            self.inflow_concentration,
+            state,
+        )
+
+
+    def _rhs(self, time: jax.Array, state: AbstractSpecies) -> AbstractSpecies:
+        """
+        Compute the right-hand side of the mixed-system ODE.
+
+        Evaluates the complete system of equations including inflow/outflow and reactions.
+
+        Parameters
+        ----------
+        time : jax.Array
+            Current simulation time.
+        state : AbstractSpecies
+            Current species concentrations across the domain.
+
+        Returns
+        -------
+        AbstractSpecies
+            Rate of change of species concentrations (dc/dt).
+        """
+        inflow_outflow = self.compute_inflow_outflow(time, state)
+        return jax.tree.map(
+            lambda io, r: io + r,
+            inflow_outflow,
+            _sum_reaction_rates_per_species(time, state, self),
+        )
+
+
+def _rhs(time: jax.Array, state: AbstractSpecies, system: TransportSystem | MixedSystem) -> AbstractSpecies:
     """
-    Compute the right-hand side of the reactive transport ODE.
-
-    Evaluates the complete system of equations including advection,
-    dispersion, and reactions for all species, then applies boundary
-    conditions.
+    Compute the right-hand side of the ODE for either a TransportSystem or MixedSystem.
 
     Parameters
     ----------
@@ -291,65 +394,10 @@ def transport_rhs(time, state, system: TransportSystem):
         Current simulation time.
     state : AbstractSpecies
         Current species concentrations across the domain.
-    system : TransportSystem
-        The reactive transport system configuration.
-
-    Returns
-    -------
-    AbstractSpecies
-        Rate of change of species concentrations (dc/dt).
+    system : TransportSystem or MixedSystem
+        The system object (either reactive transport or mixed reactor).
     """
-    compute_spatial_reaction_rates = jax.vmap(
-        _compute_pointwise_reaction_rates,
-        [
-            None,
-            type(state).int_zeros(),
-            system._spatial_axes,
-        ],
-    )
-
-    reaction_rates = compute_spatial_reaction_rates(time, state, system)
-
-    def sum_rhs_terms(
-        species_is_mobile: bool,
-        advection: jax.Array,
-        dispersion: jax.Array,
-        reactions: jax.Array,
-    ) -> jax.Array:
-        if species_is_mobile:
-            return advection + dispersion + reactions
-        else:
-            return reactions
-
-    rate = jax.tree.map(
-        sum_rhs_terms,
-        system.species_is_mobile,
-        system.advection.rate(time, state, system),
-        system.dispersion.rate(time, state, system),
-        reaction_rates,
-    )
-    return apply_bcs(system.bcs, time, system, state, rate)
-
-
-def mixed_rhs(time, state, system: MixedSystem):
-    #TODO check if the mass balance is implemented correctly
-    discharge = system.discharge(time)
-    inflow_outflow = jax.tree.map(
-        lambda c_in, c: discharge / system.volume * (c_in - c),
-        system.inflow_concentration,
-        state,
-    )
-    return jax.tree.map(
-        lambda io, r: io + r,
-        inflow_outflow,
-        _compute_pointwise_reaction_rates(time, state, system),
-    )
-
-
-def _rhs(time, state, system):
-    if isinstance(system, MixedSystem):
-        return mixed_rhs(time, state, system)
-    return transport_rhs(time, state, system)
+    return system._rhs(time, state)
 
 
 def make_solver(
