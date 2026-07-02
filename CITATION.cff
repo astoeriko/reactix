@@ -1,0 +1,42 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Reactix
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Anna
+    family-names: Störiko
+    email: a.storiko@tudelft.nl
+    orcid: 'https://orcid.org/0000-0002-9281-0881'
+    affiliation: Delft University of Technology
+  - given-names: Adrian
+    family-names: Seyboldt
+    orcid: 'https://orcid.org/0000-0002-4239-4541'
+repository-code: 'https://github.com/astoeriko/reactix'
+abstract: >-
+  Reactix is a Python package for simulating reactive
+  transport of chemical species suitable for one-dimensional
+  systems with advection, dispersion and kinetic reactions.
+  Reaction kinetics can be defined flexibly in plain Python.
+  The package combines a finite volume discretization in
+  space with advanced ODE solvers from diffrax for efficient
+  time integration.
+
+  Reactix is built on the JAX ecosystem which provides
+  automatic differentiation, making the models fully
+  differentiable. This enables the use of gradient-based
+  methods for sensitivity analysis and uncertainty
+  quantification. The package integrates seamlessly with
+  PyMC for Bayesian modeling and parameter estimation.
+keywords:
+  - reactive-transport model
+  - chemical kinetics
+  - Python
+  - uncertainty quantification
+  - differentiable
+  - finite volume
+license: MIT

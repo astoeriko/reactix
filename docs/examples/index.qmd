@@ -1,0 +1,9 @@
+---
+title: "Examples"
+---
+
+This section collects worked examples [TODO: finish this introduction with a brief description of each example].
+
+- [Reactive transport model](transport-model.qmd) - demonstrates how to set up and run a simple reactive transport model with Reactix.
+- [TODO: Example 2]
+- [TODO: Example 3]

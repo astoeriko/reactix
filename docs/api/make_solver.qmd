@@ -1,0 +1,44 @@
+# make_solver { #reactix.make_solver }
+
+```python
+make_solver(
+    t_max,
+    t_points,
+    rtol=1e-08,
+    atol=1e-08,
+    solver=None,
+    t0=0,
+    dt0=None,
+    device=None,
+)
+```
+
+Create a JIT-compiled solver function for reactive transport simulations.
+
+This function sets up a differential equation solver using diffrax to solve
+the reactive transport system over time.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name     | Type                   | Description                                         | Default    |
+|----------|------------------------|-----------------------------------------------------|------------|
+| t_max    | float                  | Maximum simulation time.                            | _required_ |
+| t_points | jax.Array              | Time points at which to save the solution.          | _required_ |
+| rtol     | float                  | Relative tolerance for the solver. Default is 1e-8. | `1e-08`    |
+| atol     | float                  | Absolute tolerance for the solver. Default is 1e-8. | `1e-08`    |
+| solver   | diffrax.AbstractSolver | ODE solver to use. Default is Tsit5.                | `None`     |
+| t0       | float                  | Initial time. Default is 0.                         | `0`        |
+| dt0      | float                  | Initial time step. Default is None (auto).          | `None`     |
+| device   | jax.Device             | JAX device to run on. Default is CPU.               | `None`     |
+
+## Returns {.doc-section .doc-section-returns}
+
+| Name   | Type     | Description                                                                |
+|--------|----------|----------------------------------------------------------------------------|
+| solve  | callable | JIT-compiled function that takes initial state and args, returns solution. |
+
+## Notes {.doc-section .doc-section-notes}
+
+The returned solver function has signature solve(y0, args) where y0 is the
+initial species concentrations and args are additional arguments passed to
+the RHS function.

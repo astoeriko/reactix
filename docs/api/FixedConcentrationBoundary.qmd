@@ -1,0 +1,59 @@
+# FixedConcentrationBoundary { #reactix.FixedConcentrationBoundary }
+
+```python
+FixedConcentrationBoundary(
+    fixed_concentration,
+    *,
+    is_active=lambda t, system: jnp.array(True),
+    species_selector,
+    boundary,
+)
+```
+
+Boundary condition with fixed concentration at the domain boundary.
+
+This boundary condition maintains a specified concentration at the boundary
+by adjusting the flux. On outflow, dispersive flux is set to zero to avoid
+unphysical behavior.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name                | Type                                          | Description                                                                                 | Default                             |
+|---------------------|-----------------------------------------------|---------------------------------------------------------------------------------------------|-------------------------------------|
+| fixed_concentration | float or Callable\[\[jax.Array\], jax.Array\] | The fixed concentration value, either constant or time-dependent.                           | _required_                          |
+| is_active           | Callable\[\[jax.Array, System\], jax.Array\]  | Function determining if the boundary condition is active. Inherited from BoundaryCondition. | `lambda t, system: jnp.array(True)` |
+| species_selector    | Callable                                      | Function to select which species this applies to. Inherited from BoundaryCondition.         | _required_                          |
+| boundary            | Literal\[\'left\', \'right\'\]                | Which boundary this applies to. Inherited from BoundaryCondition.                           | _required_                          |
+
+## Notes {.doc-section .doc-section-notes}
+
+For inflow boundaries, both advective and dispersive fluxes contribute.
+For outflow boundaries, only advective flux is considered.
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [compute_flux](#reactix.FixedConcentrationBoundary.compute_flux) | Compute the advective and dispersive flux at the boundary. |
+
+### compute_flux { #reactix.FixedConcentrationBoundary.compute_flux }
+
+```python
+FixedConcentrationBoundary.compute_flux(time, system, boundary_cell_state)
+```
+
+Compute the advective and dispersive flux at the boundary.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name                | Type      | Description                         | Default    |
+|---------------------|-----------|-------------------------------------|------------|
+| time                | jax.Array | Current simulation time.            | _required_ |
+| system              | System    | The reactive transport system.      | _required_ |
+| boundary_cell_state | jax.Array | Concentration in the boundary cell. | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type      | Description                                              |
+|--------|-----------|----------------------------------------------------------|
+|        | jax.Array | The total flux (advective + dispersive) at the boundary. |

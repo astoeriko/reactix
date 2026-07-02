@@ -1,28 +1,21 @@
 ---
-title: "Transport Model Example"
-subtitle: "Basic reactive transport modeling with Kinetix"
-format:
-  html:
-    code-fold: false
-    toc: true
+title: Conservative tracer and first-order decay
 jupyter: python3
+execute: 
+  enabled: true
 ---
 
-# Transport Model Example
+# Example model
 
-This example demonstrates how to build a reactive transport model using Kinetix. We'll create a 1D transport system with advection, dispersion, and first-order decay reactions.
-
-## Setup
-
-First, let's import the necessary libraries and configure JAX:
+This notebook demonstrates how to set up and run a simple reactive transport model with Reactix.
+The model includes two chemical species – one conservative tracer and one compound that undergoes first-order decay.
 
 ```{python}
 import jax
 import jax.numpy as jnp
-import numpy as np
 import matplotlib.pyplot as plt
 
-from kinetix import (
+from reactix import (
     Advection,
     Cells,
     Dispersion,
@@ -32,31 +25,28 @@ from kinetix import (
     declare_species,
     KineticReaction,
     reaction,
-    SpatiallyConst,
-    SpatiallyVarying
 )
 
-from dataclasses import dataclass
-
-# Enable 64-bit precision
+# Enable 64-bit floating-point precision in JAX
+# See here: https://docs.kidger.site/diffrax/usage/how-to-choose-a-solver/#stiff-problems
 jax.config.update("jax_enable_x64", True)
 ```
 
-## Define Chemical Species
+## Define the species in the system
 
-We'll work with two species: a conservative tracer and a reactive tracer that undergoes first-order decay:
+The first step is to create a list of all species in the model with `declare_species`.
+This will create a `Species` object where the attributes are the different chemical species. This object can be used to hold to define properties or concentrations for each species in a structured way.
+Next, we will use it to indicate for each species if it is transported.
 
 ```{python}
-# Declare the species in our system
 Species = declare_species(["tracer", "reactive_tracer"])
-
-# Specify that both species are mobile (can be transported)
 species_is_mobile = Species(tracer=True, reactive_tracer=True)
 ```
 
-## Define Chemical Reactions
+## Define the reactions
 
-Let's create a first-order decay reaction for the reactive tracer:
+To set up the reactive system, we first need to define a class for each distinct reaction. In the class, we provide the rate law (in this case, first order decay) through the `rate` method and the corresponding coefficients as attributes of the class.
+In the `stoichiometry` method, we indicate to which species the reaction rate applies, and with which stoichiometric coefficient.
 
 ```{python}
 @reaction
@@ -64,225 +54,207 @@ class FirstOrderDecay(KineticReaction):
     decay_coefficient: jax.Array
 
     def rate(self, time, state, system):
-        """Reaction rate proportional to concentration"""
         return self.decay_coefficient * state.reactive_tracer
 
     def stoichiometry(self, time, state, system):
-        """One mole of reactive tracer consumed per reaction"""
         return {
             "reactive_tracer": -1,
         }
 ```
 
-## Set Up the Transport System
-
-Now we'll define the physical domain and transport properties:
+The value of the kinetic parameter is provided when we create an instance of the reaction class.
 
 ```{python}
-# System parameters
+reactions = [FirstOrderDecay(decay_coefficient=1 / 500)]
+```
+
+## Set up the discretization
+
+Next, we define the geometry of the cells. In this case, we create 200 equally spaced cells. The interface areas can be all equal or vary in size.
+
+```{python}
 n_cells = 200
-decay_rate = 1/500  # First-order decay coefficient
-
-# Create reactions list
-reactions = [
-    FirstOrderDecay(decay_coefficient=decay_rate)
-]
-
-# Set up spatial domain
 interface_areas = jnp.ones(n_cells + 1)
+# interface_areas = interface_areas.at[100:].set(2) # Make one interface area larger
 cells = Cells.equally_spaced(10, n_cells, interface_area=interface_areas)
+```
 
-# Define dispersion properties
+## Define advection and dispersion parameters and setting
+
+The `Advection` and `Dispersion` objects hold parameters and setting needed to compute the advective and dispersive fluxes.
+Note that the discharge will be saved in the `System` object (not in `Advection`) because it needs to be accessed by both `Advection` and `Dispersion` (in order to compute the hydrodynamic dispersivity).
+The advective flow velocity is computed internally from the discharge based on the cross-sectional areas of the cells and the porosity.
+
+```{python}
 dispersion = Dispersion.build(
     cells=cells,
-    dispersivity=jnp.array(0.1),  # Longitudinal dispersivity
+    dispersivity=jnp.array(0.1),
     pore_diffusion=Species(
-        tracer=jnp.array(1e-9 * 3600 * 24),        # Convert to daily units
+        tracer=jnp.array(1e-9 * 3600 * 24),
         reactive_tracer=jnp.array(1e-9 * 3600 * 24),
     ),
 )
-
-# Set up advection with flux limiter
-advection = Advection.build(limiter_type="minmod")
+advection = Advection.build(
+    limiter_type="minmod",
+)
 ```
 
-## Boundary Conditions
+## Define the boundary conditions
 
-Define fixed concentration boundaries at both ends of the domain:
+The code below shows how fixed-concentration boundaries can be set up for the different species.
+
+Each boundary condition needs to declare which of the two boundaries and which species it will be applied to.
+Selecting the species work with a selector function that takes a `Species` object as input and returns the species of interest.
+The fixed concentration can be either a constant value, or it can vary with time. In the latter case, it must be specified with a function that takes time as an input and returns the corresponding boundary concentration.
+
+If no boundary condition is specified for a species on a boundary this results implicitly in a no-flux condition.
 
 ```{python}
-# Boundary conditions
 bcs = [
-    # Left boundary (inlet) - tracer
     FixedConcentrationBoundary(
         boundary="left",
-        species_selector=lambda s: getattr(s, "tracer"),
+        species_selector=lambda s: s.tracer,
         fixed_concentration=lambda t: jnp.array(10.0),
     ),
-    # Right boundary (outlet) - tracer
     FixedConcentrationBoundary(
         boundary="right",
-        species_selector=lambda s: getattr(s, "tracer"),
+        species_selector=lambda s: s.tracer,
         fixed_concentration=lambda t: jnp.array(3.0),
     ),
-    # Left boundary (inlet) - reactive tracer
     FixedConcentrationBoundary(
         boundary="left",
-        species_selector=lambda s: getattr(s, "reactive_tracer"),
+        species_selector=lambda s: s.reactive_tracer,
         fixed_concentration=lambda t: jnp.array(10.0),
     ),
-    # Right boundary (outlet) - reactive tracer
     FixedConcentrationBoundary(
         boundary="right",
-        species_selector=lambda s: getattr(s, "reactive_tracer"),
+        species_selector=lambda s: s.reactive_tracer,
         fixed_concentration=lambda t: jnp.array(3.0),
-    )
+    ),
 ]
 ```
 
-## Create the Complete System
+## Set up the system
 
-Now we'll combine all components into a complete transport system:
+The next step is to create a `System` object that contains all the previous settings.
 
 ```{python}
-# Define porosity (with heterogeneity)
 porosity = jnp.ones(n_cells) * 0.3
-porosity = porosity.at[100:].set(0.1)  # Lower porosity in second half
-
-# Build the complete system
+porosity = porosity.at[100:].set(0.1)
 system = System.build(
     porosity=porosity,
-    discharge=lambda t: jnp.array(1 / 365) * 0.3,  # Constant discharge
+    discharge=lambda t: jnp.array(1 / 365) * 0.3,
     cells=cells,
     advection=advection,
     dispersion=dispersion,
     species_is_mobile=species_is_mobile,
     bcs=bcs,
-    reactions=reactions
+    reactions=reactions,
 )
 ```
 
-## Solve the Transport Equations
+## Configure the solver
 
-Set up the solver and run the simulation:
+Next, we set solver options: the end time of the simulation, the times when a solution should be returned, and tolerances.
 
 ```{python}
-# Time points for output
 t_points = jnp.linspace(0, 8000, 123)
-
-# Create solver with specified tolerances
 solver = make_solver(t_max=8000, t_points=t_points, rtol=1e-3, atol=1e-3)
-
-# Initial conditions (clean system)
-val0 = jnp.zeros(cells.n_cells)
-initial_state = Species(
-    tracer=val0,
-    reactive_tracer=val0
-)
-
-# Solve the system
-solution = solver(initial_state, system)
 ```
 
-## Visualize Results
+## Define initial conditions
 
-### Spatial Profiles
-
-Plot concentration profiles at different times:
+The initial conditions must be provided as a `Species` object. For each species, it contains an array of concentrations (one for each cell).
 
 ```{python}
-# Plot conservative tracer
-plt.figure(figsize=(12, 5))
+# Create an array of zeros with the length of the number of cells
+val0 = jnp.zeros(cells.n_cells)
+# val0 = val0.at[slice(10,20)].set(10.0)
 
-plt.subplot(1, 2, 1)
-plt.plot(cells.centers, solution.ys.tracer.T[:, 0::10])
-plt.xlabel('Distance')
-plt.ylabel('Concentration')
-plt.title('Conservative Tracer')
-plt.grid(True, alpha=0.3)
+# Set up the initial conditions (all zeros in this case)
+state = Species(tracer=val0, reactive_tracer=val0)
+```
 
-# Plot reactive tracer
-plt.subplot(1, 2, 2)
-plt.plot(cells.centers, solution.ys.reactive_tracer.T[:, 0::10])
-plt.xlabel('Distance')
-plt.ylabel('Concentration')
-plt.title('Reactive Tracer (with decay)')
-plt.grid(True, alpha=0.3)
+## Run the solver
 
-plt.tight_layout()
+Finally, we run the solver to obtain the solution of the system of equations.
+
+The output is a `Solution` object that contains the simulation results but also statistics on the solver run (e.g., number of steps).
+The attributes `ys` contains the output states as a `Species` object. It contains an array of size (n_times, n_cells) with concentrations for each species.
+The attribute `ts` of `solution` holds the corresponding times.
+
+```{python}
+solution = solver(state, system)
+# %timeit solution = solver(state, system)
+```
+
+```{python}
+solution.ys.tracer.shape
+```
+
+## Plot the results
+
+The following plots show the concentrations of the conservative and reactive tracer over space at different times.
+
+You can see how the conservative tracer travels through the domain until it reaches the inflow concentration everywhere.
+
+```{python}
+plt.plot(cells.centers[:], solution.ys.tracer.T[:, 0::10])
+plt.title("Conservative tracer")
+plt.ylabel("concentration")
+plt.xlabel("x")
 plt.show()
 ```
 
-### Animation
-
-Create an animated visualization showing the evolution of both species:
+The reactive tracer initially also travels through the domain but then reaches a constant profile that is shaped by the first-order decay.
 
 ```{python}
-# Create interactive animation
-%matplotlib widget
-from matplotlib import animation
+plt.plot(cells.centers[:], solution.ys.reactive_tracer.T[:, 0::10])
+plt.title("Reactive compound")
+plt.ylabel("concentration")
+plt.xlabel("x")
+plt.show()
+```
 
+The following plot animates the two concentration profiles over time.
+
+```{python}
+from IPython.display import HTML
+import matplotlib.pyplot as plt
+from matplotlib import animation, collections
+
+collections.Collection()
 fig, ax = plt.subplots()
 
 artists = []
-for tracer_data, reactive_data in zip(solution.ys.tracer, solution.ys.reactive_tracer):
-    containers = [
-        ax.plot(cells.centers, tracer_data, color="C0", label="Conservative"),
-        ax.plot(cells.centers, reactive_data, color="C1", label="Reactive")
-    ]
+for data in zip(solution.ys.tracer, solution.ys.reactive_tracer, strict=True):
+    containers = [ax.plot(cells.centers, y, color=f"C{i}") for i, y in enumerate(data)]
     artist = []
     for container in containers:
         artist.extend(container)
     artists.append(artist)
 
-ax.set_xlabel('Distance')
-ax.set_ylabel('Concentration')
-ax.set_title('Transport with Reaction')
-ax.legend()
-ax.grid(True, alpha=0.3)
 
 ani = animation.ArtistAnimation(fig=fig, artists=artists, interval=40)
-plt.show()
+plt.close()
+HTML(ani.to_jshtml())
 ```
 
-## Mass Balance Analysis
+## Check the mass balance
 
-Let's verify our solution by checking mass conservation:
+The following plot shows the mass of the conservative tracer present in the system over time, comparing it to the mass that entered the system. Up to the moment that the tracer reaches the outlet, they should be the same.
 
 ```{python}
-# Calculate mass input over time
-mass_in = system.discharge(solution.ts) * bcs[0].fixed_concentration(solution.ts) * solution.ts
+mass_in = (
+    system.discharge(solution.ts)
+    * bcs[0].fixed_concentration(solution.ts)
+    * solution.ts
+)
+mass_in_system = (
+    solution.ys.tracer * cells.cell_area * cells.face_distances * system.porosity
+).sum(axis=1)
 
-# Calculate mass in the system
-mass_in_system = (solution.ys.tracer * cells.cell_area *
-                  cells.face_distances * system.porosity).sum(axis=1)
-
-# Plot mass balance
-plt.figure(figsize=(10, 6))
-plt.plot(solution.ts, mass_in, label='Cumulative Mass Input', linewidth=2)
-plt.plot(solution.ts, mass_in_system, label='Mass in System', linewidth=2, linestyle='--')
-plt.xlabel('Time')
-plt.ylabel('Mass')
-plt.title('Mass Balance Check')
-plt.legend()
-plt.grid(True, alpha=0.3)
+plt.plot(solution.ts, mass_in)
+plt.plot(solution.ts, mass_in_system)
 plt.show()
 ```
-
-## Key Observations
-
-1. **Conservative tracer**: Reaches steady state as it's transported by advection and dispersion
-2. **Reactive tracer**: Shows lower concentrations due to first-order decay
-3. **Heterogeneity effect**: The change in porosity at x=5 affects the transport behavior
-4. **Mass balance**: The system conserves mass for the conservative tracer
-
-## Next Steps
-
-- Try modifying the decay coefficient or porosity distribution
-- Add more complex reactions or multiple species
-- Explore different boundary conditions
-- Use this model for [Bayesian parameter estimation](transport-with-pymc.qmd)
-
-## References
-
-This example demonstrates the basic capabilities of Kinetix for reactive transport modeling. For more advanced features and Bayesian inference capabilities, see the [PyMC integration example](transport-with-pymc.qmd).

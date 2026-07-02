@@ -1,0 +1,33 @@
+# Contributing to Reactix
+
+Thank you for your interest in contributing! Reactix welcomes contributions from users and developers of all experience levels.
+
+## Get help or ask questions
+
+If you have a question about usage or want to discuss an idea, please use [GitHub Discussions](https://github.com/astoeriko/reactix/discussions) or send an email to a.storiko@tudelft.nl.
+
+## Report issues
+
+If you find a bug, encounter unexpected behavior, or want to propose a feature, please [open an issue](https://github.com/astoeriko/reactix/issue) on GitHub.
+
+## Share examples
+
+If you are using Reactix, we are curious to hear about it! You are welcome to share examples in the [GitHub Discussions under the _Show and tell_ category](https://github.com/astoeriko/reactix/discussions/categories/show-and-tell).
+
+## Contribute code
+
+If you would like to contribute code or documentation, this is best done via a pull request. Please follow these steps:
+
+1. Fork the repository.
+2. Clone your fork of the repository.
+2. Create a feature branch to hold your development changes.
+3. Make your improvements, tests, and documentation updates.
+4. Open a pull request against `develop`.
+
+If you are planning major changes please consider opening an issue first to discuss.
+
+If you are not familiar with GitHub workflows but still want to contribute, feel free to reach out by email and we can find a way to collaborate.
+
+## Community guidelines
+
+Please be respectful and open-minded. See the [Code of Conduct](CODE_OF_CONDUCT.md) for community expectations.

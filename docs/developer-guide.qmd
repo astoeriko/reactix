@@ -1,0 +1,95 @@
+---
+title: "Developer guide"
+---
+
+The user instructions are mentioned in the [introduction](index.qmd) guide. This page is intended for developers who want to contribute to the codebase or documentation.
+
+## Development setup
+
+Create an environment, activate it, and install the package in editable mode with the relevant dependency groups.
+
+```bash
+uv pip install -e ".[dev]"
+uv pip install -e ".[dev,docs]" # if you want to build  and contribute to the documentation as well
+```
+
+## Before opening a pull request
+
+If commiting code:
+
+- Run the test suite.
+- Run Ruff and any formatting checks used by the repository.
+
+If commiting documentation:
+
+- Render the documentation locally and confirm that API reference pages still build correctly.
+
+## Documentation workflow
+
+### Prerequisites
+
+- [Quarto](https://quarto.org/) installed in your system
+- Python environment with Reactix and docs dependencies installed (`.[docs]`)
+- Jupyter kernel
+
+### Building the documentation
+
+The documentation site is built with Quarto, and the API reference is generated
+from package docstrings with [quartodoc](https://machow.github.io/quartodoc/).
+All documentation source files live in the `docs/` directory.
+
+A practical local workflow is:
+
+```bash
+# Navigate to the docs directory
+cd docs
+
+# Step 1: regenerate the API reference pages from docstrings
+quartodoc build
+
+# Step 2: preview the site with live reload
+quarto preview
+```
+
+Only re-run `quartodoc build` when you change docstrings or the `quartodoc`
+sections in `_quarto.yml`. For edits to `.qmd` pages only, `quarto preview`
+alone is sufficient since it watches for file changes automatically.
+
+To do a one-off full build without a live server:
+
+```bash
+quarto render
+```
+
+The rendered site is written to `docs/_site/`.
+
+### Adding or updating example notebooks
+
+Example notebooks live in the `notebooks/` folder at the repository root.
+To include a notebook in the documentation, convert it manually to a `.qmd`
+file and place it in `docs/examples/`:
+
+```bash
+quarto convert ../notebooks/reactix-notebook.ipynb --output docs/examples/reactix-notebook.qmd
+```
+
+### Updating the API reference
+
+The API reference is configured in the `quartodoc:` block of `docs/_quarto.yml`.
+To add a new public symbol to the reference, add its name under the relevant
+section in that block and re-run `quartodoc build`.
+
+## Publishing
+
+The documentation is published to GitHub Pages automatically via GitHub Actions
+on every push to the `main` branch. The workflow runs `quartodoc build` followed
+by `quarto render` from `docs/`, then deploys the contents of `docs/_site/`
+to the `gh-pages` branch.
+
+To publish manually from your local machine:
+
+```bash
+cd docs
+quartodoc build
+quarto publish gh-pages
+```
