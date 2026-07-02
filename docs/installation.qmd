@@ -74,4 +74,5 @@ pip install reactix
 
 Reactix depends on [JAX](https://jax.readthedocs.io), [diffrax](https://docs.kidger.site/diffrax/), and [PyMC](https://www.pymc.io). These are installed automatically when installing Reactix via pip, uv, or conda.
 
-As reactix depends on JAX. The default install path is appropriate for CPU use, but GPU-enabled JAX setups often need platform-specific installation steps.
+> **JAX and GPU support:** GPU support integration is considered for a future release. Currently, Reactix can only be used with CPU-based JAX installations.
+
