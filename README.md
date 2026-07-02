@@ -73,7 +73,7 @@ pip install uv
 
 Reactix depends on [JAX](https://jax.readthedocs.io), [diffrax](https://docs.kidger.site/diffrax/), and [PyMC](https://www.pymc.io). These are installed automatically when installing Reactix via pip, uv, or conda.
 
-> **JAX and GPU support:** [TODO: add info on GPU support/development/plans here]
+> **JAX and GPU support:** GPU support integration is considered for a future release. Currently, Reactix can only be used with CPU-based JAX installations.
 
 ### Install Reactix
 
@@ -310,11 +310,13 @@ plt.xlabel('Distance')
 plt.ylabel('Concentration')
 ```
 
-[TODO]: Full API documentation is forthcoming.
+### API reference
+
+The full API documentation can be found in the accompanying [documentation](https://astoeriko.github.io/reactix/api/).
 
 ### Jupyter notebook examples
 
-In the [`notebooks`](./notebooks) folder there are examples that demonstrate the use of Reactix.
+In the [`notebooks`](./notebooks) folder there are examples that demonstrate the use of Reactix. The notebooks can also be found on the [documentation site](https://astoeriko.github.io/reactix/examples/).
 
 
 ## Development status
