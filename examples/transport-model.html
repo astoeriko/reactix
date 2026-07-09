@@ -498,7 +498,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="example-model" class="level1">
 <h1>Example model</h1>
 <p>This notebook demonstrates how to set up and run a simple reactive transport model with Reactix. The model includes two chemical species – one conservative tracer and one compound that undergoes first-order decay.</p>
-<div id="cecadf26" class="cell" data-execution_count="1">
+<div id="73e12579" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -522,7 +522,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="define-the-species-in-the-system" class="level2">
 <h2 class="anchored" data-anchor-id="define-the-species-in-the-system">Define the species in the system</h2>
 <p>The first step is to create a list of all species in the model with <code>declare_species</code>. This will create a <code>Species</code> object where the attributes are the different chemical species. This object can be used to hold to define properties or concentrations for each species in a structured way. Next, we will use it to indicate for each species if it is transported.</p>
-<div id="3e1a7f86" class="cell" data-execution_count="2">
+<div id="f98b2f9f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Species <span class="op">=</span> declare_species([<span class="st">"tracer"</span>, <span class="st">"reactive_tracer"</span>])</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>species_is_mobile <span class="op">=</span> Species(tracer<span class="op">=</span><span class="va">True</span>, reactive_tracer<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -530,7 +530,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="define-the-reactions" class="level2">
 <h2 class="anchored" data-anchor-id="define-the-reactions">Define the reactions</h2>
 <p>To set up the reactive system, we first need to define a class for each distinct reaction. In the class, we provide the rate law (in this case, first order decay) through the <code>rate</code> method and the corresponding coefficients as attributes of the class. In the <code>stoichiometry</code> method, we indicate to which species the reaction rate applies, and with which stoichiometric coefficient.</p>
-<div id="8145050e" class="cell" data-execution_count="3">
+<div id="33544bf0" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@reaction</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FirstOrderDecay(KineticReaction):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    decay_coefficient: jax.Array</span>
@@ -544,14 +544,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The value of the kinetic parameter is provided when we create an instance of the reaction class.</p>
-<div id="b588d471" class="cell" data-execution_count="4">
+<div id="bc13108d" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>reactions <span class="op">=</span> [FirstOrderDecay(decay_coefficient<span class="op">=</span><span class="dv">1</span> <span class="op">/</span> <span class="dv">500</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="set-up-the-discretization" class="level2">
 <h2 class="anchored" data-anchor-id="set-up-the-discretization">Set up the discretization</h2>
 <p>Next, we define the geometry of the cells. In this case, we create 200 equally spaced cells. The interface areas can be all equal or vary in size.</p>
-<div id="65294b84" class="cell" data-execution_count="5">
+<div id="8926f8f4" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n_cells <span class="op">=</span> <span class="dv">200</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>interface_areas <span class="op">=</span> jnp.ones(n_cells <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># interface_areas = interface_areas.at[100:].set(2) # Make one interface area larger</span></span>
@@ -561,7 +561,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="define-advection-and-dispersion-parameters-and-setting" class="level2">
 <h2 class="anchored" data-anchor-id="define-advection-and-dispersion-parameters-and-setting">Define advection and dispersion parameters and setting</h2>
 <p>The <code>Advection</code> and <code>Dispersion</code> objects hold parameters and setting needed to compute the advective and dispersive fluxes. Note that the discharge will be saved in the <code>System</code> object (not in <code>Advection</code>) because it needs to be accessed by both <code>Advection</code> and <code>Dispersion</code> (in order to compute the hydrodynamic dispersivity). The advective flow velocity is computed internally from the discharge based on the cross-sectional areas of the cells and the porosity.</p>
-<div id="379a6097" class="cell" data-execution_count="6">
+<div id="8dca3fe9" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dispersion <span class="op">=</span> Dispersion.build(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    cells<span class="op">=</span>cells,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    dispersivity<span class="op">=</span>jnp.array(<span class="fl">0.1</span>),</span>
@@ -580,7 +580,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The code below shows how fixed-concentration boundaries can be set up for the different species.</p>
 <p>Each boundary condition needs to declare which of the two boundaries and which species it will be applied to. Selecting the species work with a selector function that takes a <code>Species</code> object as input and returns the species of interest. The fixed concentration can be either a constant value, or it can vary with time. In the latter case, it must be specified with a function that takes time as an input and returns the corresponding boundary concentration.</p>
 <p>If no boundary condition is specified for a species on a boundary this results implicitly in a no-flux condition.</p>
-<div id="c8504821" class="cell" data-execution_count="7">
+<div id="6e697b5c" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>bcs <span class="op">=</span> [</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    FixedConcentrationBoundary(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        boundary<span class="op">=</span><span class="st">"left"</span>,</span>
@@ -608,7 +608,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="set-up-the-system" class="level2">
 <h2 class="anchored" data-anchor-id="set-up-the-system">Set up the system</h2>
 <p>The next step is to create a <code>System</code> object that contains all the previous settings.</p>
-<div id="51022453" class="cell" data-execution_count="8">
+<div id="2676f8f2" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>porosity <span class="op">=</span> jnp.ones(n_cells) <span class="op">*</span> <span class="fl">0.3</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>porosity <span class="op">=</span> porosity.at[<span class="dv">100</span>:].<span class="bu">set</span>(<span class="fl">0.1</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>system <span class="op">=</span> System.build(</span>
@@ -626,7 +626,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="configure-the-solver" class="level2">
 <h2 class="anchored" data-anchor-id="configure-the-solver">Configure the solver</h2>
 <p>Next, we set solver options: the end time of the simulation, the times when a solution should be returned, and tolerances.</p>
-<div id="e1a11206" class="cell" data-execution_count="9">
+<div id="80c6379c" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>t_points <span class="op">=</span> jnp.linspace(<span class="dv">0</span>, <span class="dv">8000</span>, <span class="dv">123</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> make_solver(t_max<span class="op">=</span><span class="dv">8000</span>, t_points<span class="op">=</span>t_points, rtol<span class="op">=</span><span class="fl">1e-3</span>, atol<span class="op">=</span><span class="fl">1e-3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -634,7 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="define-initial-conditions" class="level2">
 <h2 class="anchored" data-anchor-id="define-initial-conditions">Define initial conditions</h2>
 <p>The initial conditions must be provided as a <code>Species</code> object. For each species, it contains an array of concentrations (one for each cell).</p>
-<div id="03d7e0e4" class="cell" data-execution_count="10">
+<div id="58e95402" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an array of zeros with the length of the number of cells</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>val0 <span class="op">=</span> jnp.zeros(cells.n_cells)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># val0 = val0.at[slice(10,20)].set(10.0)</span></span>
@@ -647,11 +647,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="run-the-solver">Run the solver</h2>
 <p>Finally, we run the solver to obtain the solution of the system of equations.</p>
 <p>The output is a <code>Solution</code> object that contains the simulation results but also statistics on the solver run (e.g., number of steps). The attributes <code>ys</code> contains the output states as a <code>Species</code> object. It contains an array of size (n_times, n_cells) with concentrations for each species. The attribute <code>ts</code> of <code>solution</code> holds the corresponding times.</p>
-<div id="3766b9c8" class="cell" data-execution_count="11">
+<div id="7b316919" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>solution <span class="op">=</span> solver(state, system)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %timeit solution = solver(state, system)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="d04af256" class="cell" data-execution_count="12">
+<div id="0f77c238" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>solution.ys.tracer.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>(123, 200)</code></pre>
@@ -662,7 +662,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="plot-the-results">Plot the results</h2>
 <p>The following plots show the concentrations of the conservative and reactive tracer over space at different times.</p>
 <p>You can see how the conservative tracer travels through the domain until it reaches the inflow concentration everywhere.</p>
-<div id="7bd6e0e3" class="cell" data-execution_count="13">
+<div id="98926c33" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>plt.plot(cells.centers[:], solution.ys.tracer.T[:, <span class="dv">0</span>::<span class="dv">10</span>])</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Conservative tracer"</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"concentration"</span>)</span>
@@ -677,7 +677,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The reactive tracer initially also travels through the domain but then reaches a constant profile that is shaped by the first-order decay.</p>
-<div id="3c88a546" class="cell" data-execution_count="14">
+<div id="e0f84dab" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plt.plot(cells.centers[:], solution.ys.reactive_tracer.T[:, <span class="dv">0</span>::<span class="dv">10</span>])</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Reactive compound"</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"concentration"</span>)</span>
@@ -692,7 +692,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The following plot animates the two concentration profiles over time.</p>
-<div id="0deaa8c0" class="cell" data-execution_count="15">
+<div id="ed9b833e" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> HTML</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> animation, collections</span>
@@ -897,36 +897,36 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_img6077ba3fbbe04aeeb496c484675b3bda">
+  <img id="_anim_imgd319fd96e0e84601a0887bd868ef47ef">
   <div class="anim-controls">
-    <input id="_anim_slider6077ba3fbbe04aeeb496c484675b3bda" type="range" class="anim-slider" name="points" min="0" max="1" step="1" value="0" oninput="anim6077ba3fbbe04aeeb496c484675b3bda.set_frame(parseInt(this.value));">
+    <input id="_anim_sliderd319fd96e0e84601a0887bd868ef47ef" type="range" class="anim-slider" name="points" min="0" max="1" step="1" value="0" oninput="animd319fd96e0e84601a0887bd868ef47ef.set_frame(parseInt(this.value));">
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim6077ba3fbbe04aeeb496c484675b3bda.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="animd319fd96e0e84601a0887bd868ef47ef.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="anim6077ba3fbbe04aeeb496c484675b3bda.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="animd319fd96e0e84601a0887bd868ef47ef.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="anim6077ba3fbbe04aeeb496c484675b3bda.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="animd319fd96e0e84601a0887bd868ef47ef.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="anim6077ba3fbbe04aeeb496c484675b3bda.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="animd319fd96e0e84601a0887bd868ef47ef.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="anim6077ba3fbbe04aeeb496c484675b3bda.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="animd319fd96e0e84601a0887bd868ef47ef.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="anim6077ba3fbbe04aeeb496c484675b3bda.play_animation()">
+      <button title="Play" aria-label="Play" onclick="animd319fd96e0e84601a0887bd868ef47ef.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="anim6077ba3fbbe04aeeb496c484675b3bda.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="animd319fd96e0e84601a0887bd868ef47ef.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="anim6077ba3fbbe04aeeb496c484675b3bda.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="animd319fd96e0e84601a0887bd868ef47ef.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="anim6077ba3fbbe04aeeb496c484675b3bda.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="animd319fd96e0e84601a0887bd868ef47ef.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select6077ba3fbbe04aeeb496c484675b3bda" class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_6077ba3fbbe04aeeb496c484675b3bda">
-      <label for="_anim_radio1_6077ba3fbbe04aeeb496c484675b3bda">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_6077ba3fbbe04aeeb496c484675b3bda" checked="">
-      <label for="_anim_radio2_6077ba3fbbe04aeeb496c484675b3bda">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_6077ba3fbbe04aeeb496c484675b3bda">
-      <label for="_anim_radio3_6077ba3fbbe04aeeb496c484675b3bda">Reflect</label>
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectd319fd96e0e84601a0887bd868ef47ef" class="anim-state">
+      <input type="radio" name="state" value="once" id="_anim_radio1_d319fd96e0e84601a0887bd868ef47ef">
+      <label for="_anim_radio1_d319fd96e0e84601a0887bd868ef47ef">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_d319fd96e0e84601a0887bd868ef47ef" checked="">
+      <label for="_anim_radio2_d319fd96e0e84601a0887bd868ef47ef">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_d319fd96e0e84601a0887bd868ef47ef">
+      <label for="_anim_radio3_d319fd96e0e84601a0887bd868ef47ef">Reflect</label>
     </form>
   </div>
 </div>
@@ -936,9 +936,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_img6077ba3fbbe04aeeb496c484675b3bda";
-    var slider_id = "_anim_slider6077ba3fbbe04aeeb496c484675b3bda";
-    var loop_select_id = "_anim_loop_select6077ba3fbbe04aeeb496c484675b3bda";
+    var img_id = "_anim_imgd319fd96e0e84601a0887bd868ef47ef";
+    var slider_id = "_anim_sliderd319fd96e0e84601a0887bd868ef47ef";
+    var loop_select_id = "_anim_loop_selectd319fd96e0e84601a0887bd868ef47ef";
     var frames = new Array(123);
     
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAHgCAYAAAB6jN80AAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -34049,7 +34049,7 @@ SYqVBVSSJEmx+v+4s9hjUafukwAAAABJRU5ErkJggg==\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anim6077ba3fbbe04aeeb496c484675b3bda = new Animation(frames, img_id, slider_id, 40.0,
+        animd319fd96e0e84601a0887bd868ef47ef = new Animation(frames, img_id, slider_id, 40.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -34060,7 +34060,7 @@ SYqVBVSSJEmx+v+4s9hjUafukwAAAABJRU5ErkJggg==\
 <section id="check-the-mass-balance" class="level2">
 <h2 class="anchored" data-anchor-id="check-the-mass-balance">Check the mass balance</h2>
 <p>The following plot shows the mass of the conservative tracer present in the system over time, comparing it to the mass that entered the system. Up to the moment that the tracer reaches the outlet, they should be the same.</p>
-<div id="26cd1a7d" class="cell" data-execution_count="16">
+<div id="f6569fe9" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mass_in <span class="op">=</span> (</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    system.discharge(solution.ts)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span> bcs[<span class="dv">0</span>].fixed_concentration(solution.ts)</span>
