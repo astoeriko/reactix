@@ -1,65 +1,114 @@
 project:
   type: website
-  title: "Kinetix"
   output-dir: _site
 
+metadata-files:
+  - api/_sidebar.yml
+
 website:
-  title: "Kinetix"
-  description: "Reaction kinetics with JAX and PyMC"
-  site-url: "https://kinetix.readthedocs.io"
-  repo-url: "https://github.com/your-org/kinetix"
+  title: "Reactix"
+  description: "Reactive transport modelling with JAX and PyMC"
+  site-url: "https://astoeriko.github.io/reactix/"
+  repo-url: "https://github.com/astoeriko/reactix"
   repo-actions: [edit, issue]
+  page-navigation: true
+  back-to-top-navigation: true
 
   navbar:
-    title: "Kinetix"
     left:
-      - text: "Home"
-        href: index.qmd
-      - text: "Examples"
-        menu:
-          - text: "Transport Model"
-            href: examples/transport-model.qmd
-          - text: "Bayesian Inference"
-            href: examples/transport-with-pymc.qmd
-      - text: "API Reference"
-        href: api/index.qmd
+      - href: index.qmd
+        text: Home
+      - href: installation.qmd
+        text: Installation
+      - href: quickstart.qmd
+        text: Quickstart
+      - href: examples/index.qmd
+        text: Examples
+      - href: api/index.qmd
+        text: API
+      - href: developer-guide.qmd
+        text: Development
+    right:
+      - icon: github
+        href: https://github.com/astoeriko/reactix
 
   sidebar:
-    - title: "Getting Started"
+    - id: docs
+      style: docked
+      search: true
       contents:
-        - index.qmd
-        - installation.qmd
-        - quickstart.qmd
+        - section: Get started
+          contents:
+            - index.qmd
+            - installation.qmd
+            - quickstart.qmd
+        
+        - text: "---"
+        - section: Examples
+          contents:
+            - examples/index.qmd
+            - examples/transport-model.qmd
+        
+        - text: "---"   
+        - href: api/index.qmd
+          text: API reference
+       
+        - text: "---"
+        - section: Development
+          contents:
+            - contributing.qmd
+            - developer-guide.qmd
 
-    - title: "Examples"
+quartodoc:
+  package: reactix
+  parser: numpy
+  dir: api
+  style: pkgdown
+  sidebar: api/_sidebar.yml
+  css: api/_styles-quartodoc.css
+  title: "API reference"
+  sections:
+    - title: Transport
+      desc: Core 1D reactive transport system objects and solver helpers.
       contents:
-        - examples/transport-model.qmd
-        - examples/transport-with-pymc.qmd
+        - System
+        - Cells
+        - Advection
+        - Dispersion
+        - FixedConcentrationBoundary
+        - make_solver
+        - user_system_parameters
 
-    - title: "API Reference"
+    - title: Species
+      desc: Species declarations and species container utilities.
       contents:
-        - api/index.qmd
+        - declare_species
+
+    - title: Reactions
+      desc: Kinetic reaction interfaces and spatial parameter helpers.
+      contents:
+        - KineticReaction
+        - reaction
+        - SpatiallyConst
+        - SpatiallyVarying
 
 format:
   html:
     theme:
-      - cosmo
-      - custom.scss
-    css: styles.css
+      light: cosmo
+      dark: solar
+    css:
+      - api/_styles-quartodoc.css
     toc: true
-    code-fold: false
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
     code-tools: true
-    number-sections: true
+    number-sections: false
+    smooth-scroll: true
 
 execute:
-  eval: false
-  #freeze: auto
-  #cache: true
-  #warning: false
-  #error: false
-
-jupyter:
-  kernels:
-    - name: pixi-kernel-python3
-      language: python
-      display_name: "Python (Pixi)"
+  freeze: auto
+  echo: true
+  warning: false
+  message: false

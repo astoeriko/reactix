@@ -1,0 +1,29 @@
+# reaction { #reactix.reaction }
+
+```python
+reaction(cls)
+```
+
+Decorate a class to create spatially-aware reaction classes.
+
+This decorator transforms a class into a dataclass that can handle
+spatially varying parameters using SpatiallyVarying and SpatiallyConst
+markers. It enables JAX tree operations and spatial axis tracking.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type   | Description                                                     | Default    |
+|--------|--------|-----------------------------------------------------------------|------------|
+| cls    | type   | The class to be decorated, typically a reaction implementation. | _required_ |
+
+## Returns {.doc-section .doc-section-returns}
+
+| Name   | Type     | Description                                                       |
+|--------|----------|-------------------------------------------------------------------|
+|        | callable | A factory function that creates instances with spatial awareness. |
+
+## Notes {.doc-section .doc-section-notes}
+
+The decorated class will automatically handle parameters marked with
+SpatiallyVarying or SpatiallyConst, enabling vectorized computations
+across spatial domains.

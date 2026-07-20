@@ -1,0 +1,47 @@
+# declare_species { #reactix.declare_species }
+
+```python
+declare_species(names, *, shapes=None)
+```
+
+Declare chemical species for reactive transport models.
+
+Creates a dataclass to hold concentrations of chemical species,
+with methods for creating zero-valued instances. Species can have
+different shapes for spatially varying concentrations.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type                           | Description                                                                                                                | Default    |
+|--------|--------------------------------|----------------------------------------------------------------------------------------------------------------------------|------------|
+| names  | list\[str\]                    | List of species names to declare.                                                                                          | _required_ |
+| shapes | dict\[str, tuple\[int, ...\]\] | Dictionary mapping species names to their concentration array shapes. Species not in this dict default to scalar shape (). | `None`     |
+
+## Returns {.doc-section .doc-section-returns}
+
+| Name   | Type   | Description                                                                                                           |
+|--------|--------|-----------------------------------------------------------------------------------------------------------------------|
+|        | type   | A dataclass subclass of AbstractSpecies with the specified species as attributes, registered for JAX tree operations. |
+
+## Notes {.doc-section .doc-section-notes}
+
+The returned class includes `zeros()` and `int_zeros()` class methods
+for creating zero-valued instances, and an `add(name, value)` method
+for updating species concentrations.
+
+For example, the call `declare_species(["tracer"])` is equivalent to:
+
+.. code-block:: python
+
+    @jax.tree_util.register_dataclass
+    @dataclass(frozen=True)
+    class Species(AbstractSpecies):
+        tracer: jax.Array
+
+        @classmethod
+        def zeros(cls) -> "Species":
+            return Species(tracer=jnp.zeros(()))
+
+        @classmethod
+        def int_zeros(cls):
+            return Species(tracer=0)

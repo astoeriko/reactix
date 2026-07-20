@@ -1,0 +1,17 @@
+# SpatiallyVarying { #reactix.SpatiallyVarying }
+
+```python
+SpatiallyVarying(value, *, axis=0)
+```
+
+Marker for parameters that vary spatially in the domain.
+
+This class wraps a parameter value that has spatial variation along
+a specified axis, enabling vectorized computations across the domain.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type      | Description                                                        | Default    |
+|--------|-----------|--------------------------------------------------------------------|------------|
+| value  | jax.Array | The parameter values, with shape including the spatial dimension.  | _required_ |
+| axis   | int       | The axis along which the parameter varies spatially. Default is 0. | `0`        |
