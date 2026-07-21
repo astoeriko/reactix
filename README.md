@@ -55,8 +55,7 @@ reactix-env\Scripts\activate      # Windows
 
 Activate the environment before installing the package.
 
-> [!NOTE]  
-> If you don't have `uv` installed, you can get it with:
+> **Note:** If you don't have `uv` installed, you can get it with:
 
 ```bash
 # Linux/macOS
