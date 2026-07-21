@@ -1,4 +1,5 @@
-# Reactix – Simulating 1-D reactive transport with differentiable models in JAX
+![](https://raw.githubusercontent.com/astoeriko/reactix/refs/heads/develop/img/logo.svg)
+# Simulating 1-D reactive transport with differentiable models in JAX
 
 Reactix is a Python package for simulating reactive transport of chemical species suitable for one-dimensional systems with **advection, dispersion and kinetic reactions**.
 
