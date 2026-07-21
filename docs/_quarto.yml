@@ -42,17 +42,17 @@ website:
             - index.qmd
             - installation.qmd
             - quickstart.qmd
-        
+
         - text: "---"
         - section: Examples
           contents:
             - examples/index.qmd
             - examples/transport-model.qmd
-        
-        - text: "---"   
+
+        - text: "---"
         - href: api/index.qmd
           text: API reference
-       
+
         - text: "---"
         - section: Development
           contents:
@@ -69,13 +69,18 @@ quartodoc:
   title: "API reference"
   sections:
     - title: Transport
-      desc: Core 1D reactive transport system objects and solver helpers.
+      desc: Spatial discretization, advection/dispersion schemes, and boundary conditions.
       contents:
-        - System
         - Cells
         - Advection
         - Dispersion
         - FixedConcentrationBoundary
+
+    - title: Systems
+      desc: Reactive transport and system containers, and solver helpers.
+      contents:
+        - TransportSystem
+        - MixedSystem
         - make_solver
         - user_system_parameters
 
