@@ -49,6 +49,9 @@ website:
           contents:
             - examples/index.qmd
             - examples/transport-model.qmd
+            - examples/pathogen-model.qmd
+            - examples/transport_with_pymc.qmd
+            - examples/mixed-reactor.qmd
 
         - text: "---"
         - href: api/index.qmd
