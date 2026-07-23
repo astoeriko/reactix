@@ -1,0 +1,38 @@
+         309 function calls (306 primitive calls) in 0.228 seconds
+
+   Ordered by: cumulative time
+   List reduced from 60 to 30 due to restriction <30>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.228    0.228 /home/aurhan/Work/Projects/Reactix/reactix/profiling/profile_reactix.py:132(solve)
+        1    0.000    0.000    0.228    0.228 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_jit.py:206(__call__)
+        1    0.227    0.227    0.228    0.228 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_jit.py:229(_call)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_jit.py:106(_postprocess)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_filters.py:203(combine)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/tree_util.py:365(tree_map)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_jit.py:73(_preprocess)
+    20/17    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_module/_module.py:585(__getattribute__)
+        3    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/tree_util.py:74(tree_flatten)
+        2    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_compile_utils.py:21(hashable_partition)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_jit.py:66(_bind)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_module/_prebuilt.py:105(value)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/inspect.py:3190(bind)
+       39    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/inspect.py:3059(_bind)
+        3    0.000    0.000    0.000    0.000 <generated_unflatten_Solution>:2(unflatten)
+       20    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_module/_module.py:605(_is_magic)
+        2    0.000    0.000    0.000    0.000 <generated_flatten_Solution>:2(flatten)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/tree_util.py:372(<listcomp>)
+        3    0.000    0.000    0.000    0.000 <generated_unflatten_EnumerationItem>:2(unflatten)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/api.py:3102(block_until_ready)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/tree_util.py:82(tree_unflatten)
+       21    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_filters.py:44(is_array)
+        2    0.000    0.000    0.000    0.000 <generated_flatten_EnumerationItem>:2(flatten)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/logging/__init__.py:2074(getLogger)
+       16    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/tree_util.py:373(<genexpr>)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/logging/__init__.py:1327(getLogger)
+        3    0.000    0.000    0.000    0.000 <string>:2(__init__)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/inspect.py:2822(args)
+        1    0.000    0.000    0.000    0.000 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/logging/__init__.py:808(removeFilter)
+
+

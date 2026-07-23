@@ -1,0 +1,38 @@
+         311346 function calls (297787 primitive calls) in 1.250 seconds
+
+   Ordered by: cumulative time
+   List reduced from 1240 to 30 due to restriction <30>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+      2/1    0.000    0.000    1.253    1.253 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_jit.py:206(__call__)
+      2/1    0.000    0.000    1.253    1.253 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/equinox/_jit.py:229(_call)
+     23/1    0.000    0.000    1.252    1.252 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/traceback_util.py:192(reraise_with_filtered_traceback)
+     23/1    0.000    0.000    1.252    1.252 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/pjit.py:247(cache_miss)
+     23/2    0.000    0.000    1.248    0.624 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/pjit.py:132(_run_python_pjit)
+        1    0.000    0.000    1.247    1.247 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/pjit.py:1122(_pjit_call_impl_python)
+     28/3    0.000    0.000    1.239    0.413 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/profiler.py:381(wrapper)
+        1    0.000    0.000    0.620    0.620 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py:2486(compile)
+        1    0.000    0.000    0.620    0.620 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py:3008(from_hlo)
+        1    0.000    0.000    0.619    0.619 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py:2827(_cached_compilation)
+        1    0.000    0.000    0.618    0.618 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/compiler.py:396(compile_or_get_cached)
+        1    0.000    0.000    0.613    0.613 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/compiler.py:736(_compile_and_write_cache)
+        1    0.612    0.612    0.612    0.612 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/compiler.py:312(backend_compile_and_load)
+        1    0.000    0.000    0.428    0.428 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/pjit.py:1067(_resolve_and_lower)
+        1    0.000    0.000    0.428    0.428 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/pjit.py:1239(_pjit_lower)
+        1    0.000    0.000    0.428    0.428 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py:2216(lower_sharding_computation)
+        1    0.000    0.000    0.426    0.426 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py:1923(_cached_lowering_to_hlo)
+        1    0.008    0.008    0.425    0.425 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/mlir.py:1192(lower_jaxpr_to_module)
+     24/1    0.003    0.000    0.413    0.413 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/mlir.py:1513(lower_jaxpr_to_fun)
+    180/1    0.035    0.000    0.411    0.411 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/mlir.py:1995(jaxpr_subcomp)
+    435/1    0.006    0.000    0.410    0.410 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/mlir.py:2262(_uncached_lowering)
+    435/1    0.006    0.000    0.410    0.410 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/mlir.py:2345(lower_per_platform)
+    147/1    0.007    0.000    0.410    0.410 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/pjit.py:1361(_pjit_lowering)
+    147/1    0.002    0.000    0.410    0.410 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/pjit.py:1321(_pjit_cached_lower_jaxpr_to_fun)
+ 1361/190    0.068    0.000    0.391    0.002 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/mlir.py:2124(_cached_lowering)
+  277/142    0.012    0.000    0.375    0.003 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/mlir.py:2185(_emit_lowering_rule_as_fun)
+  115/106    0.001    0.000    0.329    0.003 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/custom_derivatives.py:440(_custom_jvp_vjp_call_lowering)
+      3/1    0.000    0.000    0.251    0.251 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/lax/control_flow/loops.py:1920(_while_lowering)
+        1    0.199    0.199    0.199    0.199 /home/aurhan/miniconda3/envs/reactix/lib/python3.11/site-packages/jax/_src/interpreters/pxla.py:1340(__call__)
+     2957    0.004    0.000    0.043    0.000 {jaxlib.utils.safe_map}
+
+
