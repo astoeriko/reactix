@@ -1,0 +1,302 @@
+---
+title: Parameter estimation with PyMC
+jupyter: python3
+---
+
+
+This notebook demonstrates how Reactix can be coupled with PyMC for Bayesian inference of reaction parameter values.
+
+[PyMC](https://www.pymc.io/) is a library for Bayesian modeling and parameter inference. It can be used to define the prior distributions and likelihood, and offers a range of modern samplers, among them the No-U-turn sampler (NUTS). Using this sampler requires the computation of gradients of the posterior with respect to parameters. Since Reactix is built on JAX, this can be achieved through automatic differentiation. All this is done under the hood by PyMC, so the user only needs to define the model and run the sampler.
+
+This notebooks shows a toy example with a simple first-order decay reaction coupled to advective-dispersive transport.
+Based on an artificial concentration measurement, we will estimate the decay constant.
+
+## Package imports
+
+
+```{python}
+# Ensure that that the ODE solver return NaN values when it fails instead of raising an error.
+# This is important to prevent the NUTS sampler from crashing when the ODE solver fails to integrate the system of equations,
+# but rather registering a divergence for the given parameter combination.
+%env EQX_ON_ERROR=nan
+```
+
+```{python}
+import pytensor
+pytensor.config.exception_verbosity = "high"
+```
+
+```{python}
+import jax
+import jax.numpy as jnp
+import numpy as np
+import matplotlib.pyplot as plt
+import dataclasses
+import pandas as pd
+import xarray as xr
+
+from reactix import (
+    Advection,
+    Cells,
+    Dispersion,
+    FixedConcentrationBoundary,
+    TransportSystem,
+    make_solver,
+    declare_species,
+    KineticReaction,
+    reaction,
+)
+import pytensor.tensor as pt
+import pymc as pm
+import nutpie
+```
+
+```{python}
+# Enable 64-bit floating-point precision in JAX
+# See here: https://docs.kidger.site/diffrax/usage/how-to-choose-a-solver/#stiff-problems
+jax.config.update("jax_enable_x64", True)
+```
+
+## Define the reactive-transport model
+
+In this example, we will use a simple reactive transport model with a reactive compound that is degraded with first-order decay kinetics.
+
+### Reaction kinetics
+
+We define a custom first-order decay reaction with Reactix:
+
+```{python}
+@reaction
+class FirstOrderDecay(KineticReaction):
+    decay_coefficient: jax.Array
+
+    def rate(self, time, state, system):
+        return self.decay_coefficient * state.reactive_tracer
+
+    def stoichiometry(self, time, state, system):
+        return {
+            "reactive_tracer": -1,
+        }
+    
+Species = declare_species(["tracer", "reactive_tracer"])
+```
+
+### Transport system
+
+We set up a system with constant flow velocity and uniform discretization. At the inflow boundary, a constant-concentration boundary is applied with a time-invariant inflow concentration.
+
+To keep the code in the PyMC model definition concise, we define a function for setting up the reactive-transport system that takes all the parameters that we want to estimate as inputs. In this case, we want to estimate the first-order decay constant.
+Note that `make_system` takes an argument `decay_coefficient` which is then passed as a value to the `FirstOrderDecay` reaction object.
+
+```{python}
+def make_system(decay_coefficient):
+    # Define the set of species and reactions
+    species_is_mobile = Species(tracer=True, reactive_tracer=True)
+    n_cells = 200
+    reactions = [
+        FirstOrderDecay(
+            decay_coefficient=decay_coefficient
+        )
+    ]
+    # Define the cell geometry
+    interface_areas = jnp.ones(n_cells + 1)
+    cells = Cells.equally_spaced(10, n_cells, interface_area=interface_areas)
+
+    # Set transport process options
+    dispersion = Dispersion.build(
+        cells=cells,
+        dispersivity=jnp.array(0.1),
+        pore_diffusion=Species(
+            tracer=jnp.array(1e-9 * 3600 * 24),
+            reactive_tracer=jnp.array(1e-9 * 3600 * 24),
+        ),
+    )
+    advection = Advection.build(
+        limiter_type="upwind",
+    )
+    # Define the boundary conditions
+    bcs = [
+        FixedConcentrationBoundary(
+            boundary="left",
+            species_selector=lambda s: getattr(s, "tracer"),
+            fixed_concentration=lambda t: jnp.array(10.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="right",
+            species_selector=lambda s: getattr(s, "tracer"),
+            fixed_concentration=lambda t: jnp.array(3.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="left",
+            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            fixed_concentration=lambda t: jnp.array(1.0),
+        ),
+        FixedConcentrationBoundary(
+            boundary="right",
+            species_selector=lambda s: getattr(s, "reactive_tracer"),
+            fixed_concentration=lambda t: jnp.array(3.0),
+        )
+    ]
+
+    # Set up the system
+    porosity= jnp.ones(n_cells) * 0.3
+    #porosity = porosity.at[100:].set(0.1)
+    return TransportSystem.build(
+        porosity=porosity,
+        # velocity=lambda t: jnp.array(1 / 365) * jnp.sin(np.pi * 2 * 1 / 5000 * t),
+        discharge=lambda t: jnp.array(1 / 365) * 0.3,
+        cells=cells,
+        advection=advection,
+        dispersion=dispersion,
+        species_is_mobile=species_is_mobile,
+        bcs=bcs,
+        reactions=reactions
+    )
+```
+
+## Define the PyMC model
+
+### Measurement point
+
+Below, we create an concentration data point that will be used for parameter estimation.
+We set a concentration of 0.5 at the 40th cell at the 20th time point.
+
+```{python}
+idx_time = np.array([20,])
+idx_space = np.array([40,])
+
+measurement = xr.DataArray(
+    data=[0.5],
+    name="concentration_measurement",
+    dims="measurement_nr",
+    coords={"measurement_nr": pd.RangeIndex(len(idx_time))}
+)
+```
+
+### Passing coordinates and defining prior distributions
+
+PyMC return an `InferenceData` object with named arrays that have dimensions and coordinates (based on Xarray).
+In order to save the time as a coordinate for the simulated concentrations, we need to create a dictionary with all the coodinates.
+
+```{python}
+t_points = jnp.linspace(0, 8000, 123)
+
+coords = {
+    "time_dense": np.array(t_points),
+    **measurement.coords
+}
+```
+
+We can then pass these coordinates to the PyMC model. The first step in the model is to define prior distributions for all parameters that we would like to estimate.
+
+Here, we chose a half-normal distribution with a standard deviation of 0.01 for the decay coefficient and pass it to the function that builds the reactive-transport system.
+
+Finally, we also add the cell center locations as a coordinate to the PyMC `model`. This can only be done after creating the `system`, when the cell geometry is known.
+
+```{python}
+
+with pm.Model(coords=coords) as model:
+    decay_coefficient = pm.HalfNormal("k_dec", 0.01)
+    system = make_system(decay_coefficient)
+    model.add_coord("x", np.array(system.cells.centers))
+
+```
+
+### Setting up the solver
+
+PyMC is built around the PyTensor library, whereas Reactix uses JAX. In order to be able to use JAX together with PyMC, the JAX code needs to be wrapped with the `pytensor.wrap_jax` decorator.
+
+```{python}
+
+with model:
+    # Initial conditions: all species start at zero concentration
+    zeros = jnp.zeros(system.cells.n_cells)
+    initial_state = Species(
+        tracer=zeros,
+        reactive_tracer=zeros
+    )
+
+
+    # Wrap the solver function with PyTensor to make it compatible with PyMC
+    @pytensor.wrap_jax
+    def solve_pt(y0, system):
+        solve_fn_dense = make_solver(t_max=8000, t_points=t_points, rtol=1e-6, atol=1e-6)
+        return solve_fn_dense(y0, system).ys
+    
+    # Solve the system of ODEs using the initial state and the system definition
+    solution = solve_pt(initial_state, system)
+```
+
+### Saving outputs and defining the likelihood
+
+```{python}
+
+with model:
+    # Save all concentrations as deterministic variables in the PyMC model for later analysis
+    fields = dataclasses.fields(solution)
+    for field in fields:
+        pm.Deterministic(
+            field.name,
+            getattr(solution, field.name),
+            dims=("time_dense", "x"),
+        )
+
+    # Define a normal likelihood for the observations, using the model's predicted concentration at the specified time and space indices as the mean
+    pm.Normal("made_up_point", mu=solution.reactive_tracer[idx_time, idx_space], sigma=0.1, observed=measurement.values, dims=("measurement_nr"))
+```
+
+## Sample the prior distribution
+
+```{python}
+with model:
+    prior = pm.sample_prior_predictive(draws=50)
+```
+
+### Prior predictive checks
+
+The following plots show several draws from the prior of the simulated concentrations. This is a good check to assess if the chosen prior distributions for the parameters are reasonable. The measured concentrations is plotted alongside as a black dot.
+
+#### Concentration profile at the time of measurement
+
+```{python}
+prior.prior.reactive_tracer.isel(chain=0, time_dense=idx_time[0]).plot.line(x="x", hue="draw", add_legend=False);
+plt.scatter(system.cells.centers[idx_space], measurement.values, color="k", label="measurement")
+```
+
+#### Breakthrough curve at the measurement location
+
+```{python}
+prior.prior.reactive_tracer.isel(chain=0, x=idx_space[0]).plot.line(x="time_dense", hue="draw", add_legend=False);
+plt.scatter(t_points[idx_time], prior.observed_data.made_up_point, color="k", label="measurement")
+```
+
+## Sample the posterior distribution
+
+Finally, we can sample the posterior distribution. We can use a state-of-the-art HMC sampler since gradient calculations are provided through automatic differentiation by JAX under the hood. Here we use the Nutpie sampler for PyMC. Note that you need to specify that JAX should be used as a backend for the posterior and gradient evaluation.
+
+Note that sampling can take a while since thousands of model runs are needed. In order to be able to see intermediate results while the sampler is still running, we let the sampler run in the background by using nutpie's option `blocking=False`. 
+
+```{python}
+compiled = nutpie.compile_pymc_model(model, backend="jax", gradient_backend="jax")
+sampler = nutpie.sample(compiled, chains=2, blocking=False)
+
+```
+
+After a while, we can use `sampler.inspect()` to obtain the intermediate results of the sampler and inspect them.
+
+```{python}
+# Inspect intermediate results of the sampler
+trace = sampler.inspect()
+```
+
+```{python}
+# Plot the evolution of the decay coefficient during the warmup phase of the sampler
+trace.warmup_posterior.k_dec.plot.line(x="draw")
+```
+
+```{python}
+# Plot concentration profiles in the warmup posterior
+trace.warmup_posterior.reactive_tracer.isel(chain=0, time_dense=20, draw=slice(20, None)).plot.line(x="x", hue="draw", add_legend=False);
+```
+
+
