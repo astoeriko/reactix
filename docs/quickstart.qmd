@@ -24,7 +24,7 @@ import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
 from reactix import (
-    System, Cells, Advection, Dispersion,
+    TransportSystem, Cells, Advection, Dispersion,
     FixedConcentrationBoundary, declare_species, make_solver
 )
 ```
@@ -81,7 +81,7 @@ porosity = jnp.ones(n_cells) * 0.3  # 30% porosity
 discharge_rate = lambda t: jnp.array(0.1)  # Constant flow rate
 
 # Build the complete system
-system = System.build(
+system = TransportSystem.build(
     porosity=porosity,
     discharge=discharge_rate,
     cells=cells,
@@ -148,7 +148,7 @@ class FirstOrderDecay(KineticReaction):
 decay_reaction = FirstOrderDecay(decay_coefficient=jnp.array(0.1))
 
 # Build system with reactions
-reactive_system = System.build(
+reactive_system = TransportSystem.build(
     porosity=porosity,
     discharge=discharge_rate,
     cells=cells,

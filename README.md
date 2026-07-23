@@ -1,4 +1,5 @@
-# Reactix – Simulating 1-D reactive transport with differentiable models in JAX
+![](https://raw.githubusercontent.com/astoeriko/reactix/refs/heads/develop/img/logo.svg)
+# Simulating 1-D reactive transport with differentiable models in JAX
 
 [![PyPI](https://img.shields.io/pypi/v/reactix)](https://pypi.org/project/reactix/)
 [![Python](https://img.shields.io/pypi/pyversions/reactix)](https://pypi.org/project/reactix/)
@@ -62,8 +63,7 @@ reactix-env\Scripts\activate      # Windows
 
 Activate the environment before installing the package.
 
-> [!NOTE]  
-> If you don't have `uv` installed, you can get it with:
+> **Note:** If you don't have `uv` installed, you can get it with:
 
 ```bash
 # Linux/macOS

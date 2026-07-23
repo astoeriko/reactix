@@ -20,7 +20,7 @@ from reactix import (
     Cells,
     Dispersion,
     FixedConcentrationBoundary,
-    System,
+    TransportSystem,
     make_solver,
     declare_species,
     KineticReaction,
@@ -82,7 +82,7 @@ cells = Cells.equally_spaced(10, n_cells, interface_area=interface_areas)
 ## Define advection and dispersion parameters and setting
 
 The `Advection` and `Dispersion` objects hold parameters and setting needed to compute the advective and dispersive fluxes.
-Note that the discharge will be saved in the `System` object (not in `Advection`) because it needs to be accessed by both `Advection` and `Dispersion` (in order to compute the hydrodynamic dispersivity).
+Note that the discharge will be saved in the `TransportSystem` object (not in `Advection`) because it needs to be accessed by both `Advection` and `Dispersion` (in order to compute the hydrodynamic dispersivity).
 The advective flow velocity is computed internally from the discharge based on the cross-sectional areas of the cells and the porosity.
 
 ```{python}
@@ -136,12 +136,12 @@ bcs = [
 
 ## Set up the system
 
-The next step is to create a `System` object that contains all the previous settings.
+The next step is to create a `TransportSystem` object that contains all the previous settings.
 
 ```{python}
 porosity = jnp.ones(n_cells) * 0.3
 porosity = porosity.at[100:].set(0.1)
-system = System.build(
+system = TransportSystem.build(
     porosity=porosity,
     discharge=lambda t: jnp.array(1 / 365) * 0.3,
     cells=cells,
