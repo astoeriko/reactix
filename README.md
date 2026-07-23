@@ -1,5 +1,12 @@
 # Reactix – Simulating 1-D reactive transport with differentiable models in JAX
 
+[![PyPI](https://img.shields.io/pypi/v/reactix)](https://pypi.org/project/reactix/)
+[![Python](https://img.shields.io/pypi/pyversions/reactix)](https://pypi.org/project/reactix/)
+[![PyTest](https://github.com/astoeriko/reactix/actions/workflows/pytest.yml/badge.svg)](https://github.com/astoeriko/reactix/actions/workflows/pytest.yml)
+[![Coverage](https://raw.githubusercontent.com/astoeriko/reactix/develop/badges/coverage-badge.svg)](https://github.com/astoeriko/reactix/actions/workflows/coverage.yml)
+[![License](https://img.shields.io/github/license/astoeriko/reactix)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-latest-blue)](https://astoeriko.github.io/reactix/)
+
 Reactix is a Python package for simulating reactive transport of chemical species suitable for one-dimensional systems with **advection, dispersion and kinetic reactions**.
 
 Reaction kinetics can be defined flexibly in plain Python. The package combines a finite volume discretization in space with advanced ODE solvers from [diffrax](https://docs.kidger.site/diffrax/) for efficient time integration.
