@@ -4,7 +4,7 @@
 [![PyPI](https://img.shields.io/pypi/v/reactix)](https://pypi.org/project/reactix/)
 [![Python](https://img.shields.io/pypi/pyversions/reactix)](https://pypi.org/project/reactix/)
 [![PyTest](https://github.com/astoeriko/reactix/actions/workflows/pytest.yml/badge.svg)](https://github.com/astoeriko/reactix/actions/workflows/pytest.yml)
-[![Coverage](https://raw.githubusercontent.com/astoeriko/reactix/develop/badges/coverage-badge.svg)](https://github.com/astoeriko/reactix/actions/workflows/coverage.yml)
+[![codecov](https://codecov.io/gh/astoeriko/reactix/branch/develop/graph/badge.svg)](https://codecov.io/gh/astoeriko/reactix)
 [![License](https://img.shields.io/github/license/astoeriko/reactix)](LICENSE)
 [![Docs](https://img.shields.io/badge/docs-latest-blue)](https://astoeriko.github.io/reactix/)
 
