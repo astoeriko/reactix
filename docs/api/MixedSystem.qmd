@@ -1,0 +1,88 @@
+# MixedSystem { #reactix.MixedSystem }
+
+```python
+MixedSystem(
+    reactions=list(),
+    discharge,
+    inflow_concentration,
+    volume,
+    parameters=None,
+)
+```
+
+Represents a mixed (batch) reactor system without spatial transport.
+
+This class models a well-mixed reactor where species concentrations are
+uniform throughout the volume. It supports kinetic reactions, inflow/outflow,
+and user-defined parameters.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name                 | Type                                              | Description                                                                                        | Default    |
+|----------------------|---------------------------------------------------|----------------------------------------------------------------------------------------------------|------------|
+| reactions            | list\[KineticReaction\]                           | List of kinetic reactions. Default is empty list.                                                  | `list()`   |
+| discharge            | Callable\[\[jax.Array\], jax.Array\] or jax.Array | Function that computes discharge (volumetric flow rate) given time, or a constant discharge value. | _required_ |
+| inflow_concentration | AbstractSpecies                                   | Concentration of species in the inflow.                                                            | _required_ |
+| volume               | jax.Array                                         | Volume of the mixed reactor.                                                                       | _required_ |
+| parameters           | Any                                               | Additional system parameters. Default is None.                                                     | `None`     |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [build](#reactix.MixedSystem.build) | Build a configured mixed reactor system. |
+| [compute_inflow_outflow](#reactix.MixedSystem.compute_inflow_outflow) | Compute the inflow/outflow contribution to the rate of change of concentrations. |
+
+### build { #reactix.MixedSystem.build }
+
+```python
+MixedSystem.build(
+    reactions=None,
+    discharge,
+    inflow_concentration,
+    volume,
+    parameters=None,
+)
+```
+
+Build a configured mixed reactor system.
+
+This convenience constructor validates input shapes and
+normalizes scalar inputs before creating a MixedSystem instance.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name                 | Type                                              | Description                                    | Default    |
+|----------------------|---------------------------------------------------|------------------------------------------------|------------|
+| reactions            | list\[KineticReaction\] or None                   | List of kinetic reactions. Default is None.    | `None`     |
+| discharge            | Callable\[\[jax.Array\], jax.Array\] or jax.Array | Discharge function or scalar discharge value.  | _required_ |
+| inflow_concentration | AbstractSpecies                                   | Concentration of species in the inflow.        | _required_ |
+| volume               | jax.Array                                         | Volume of the mixed reactor.                   | _required_ |
+| parameters           | Any or None                                       | Additional system parameters. Default is None. | `None`     |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type        | Description                      |
+|--------|-------------|----------------------------------|
+|        | MixedSystem | Configured mixed reactor system. |
+
+### compute_inflow_outflow { #reactix.MixedSystem.compute_inflow_outflow }
+
+```python
+MixedSystem.compute_inflow_outflow(time, state)
+```
+
+Compute the inflow/outflow contribution to the rate of change of concentrations.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type            | Description                     | Default    |
+|--------|-----------------|---------------------------------|------------|
+| time   | jax.Array       | Current simulation time.        | _required_ |
+| state  | AbstractSpecies | Current species concentrations. | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type            | Description                                   |
+|--------|-----------------|-----------------------------------------------|
+|        | AbstractSpecies | Rate of change due to inflow/outflow (dc/dt). |

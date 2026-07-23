@@ -13,10 +13,10 @@ make_solver(
 )
 ```
 
-Create a JIT-compiled solver function for reactive transport simulations.
+Create a JIT-compiled solver function for reactix simulations.
 
 This function sets up a differential equation solver using diffrax to solve
-the reactive transport system over time.
+either a TransportSystem or a MixedSystem over time.
 
 ## Parameters {.doc-section .doc-section-parameters}
 

@@ -40,7 +40,7 @@ jobs:
           pytest tests/ -v --tb=short \
             --cov=src/reactix \
             --cov-report=term-missing \
-            --cov-report=
+            --cov-report=xml:reports/coverage/coverage.xml
 
       - name: Add coverage to job summary
         run: |
@@ -50,11 +50,7 @@ jobs:
           coverage report --show-missing >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
-      # If uploading the coverage report to Codecov:
-      # uncomment the following lines and make sure you have a Codecov token set in your repository secrets.
-      # More information: https://docs.codecov.com/docs/quick-start
-      #
-      # - name: Upload coverage reports to Codecov with GitHub Action
-      #   uses: codecov/codecov-action@v5
-      #   env:
-      #     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload coverage reports to Codecov with GitHub Action
+        uses: codecov/codecov-action@v5
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

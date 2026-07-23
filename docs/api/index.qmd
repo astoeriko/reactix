@@ -2,16 +2,24 @@
 
 ## Transport
 
-Core 1D reactive transport system objects and solver helpers.
+Spatial discretization, advection/dispersion schemes, and boundary conditions.
 
 | | |
 | --- | --- |
-| [System](System.qmd#reactix.System) | Represents a 1D reactive transport system. |
 | [Cells](Cells.qmd#reactix.Cells) | Represents the spatial discretization of a 1D domain into cells. |
 | [Advection](Advection.qmd#reactix.Advection) | Handles advection terms in the 1D transport equation using TVD schemes. |
 | [Dispersion](Dispersion.qmd#reactix.Dispersion) | Handles dispersion and diffusion terms in the transport equation. |
 | [FixedConcentrationBoundary](FixedConcentrationBoundary.qmd#reactix.FixedConcentrationBoundary) | Boundary condition with fixed concentration at the domain boundary. |
-| [make_solver](make_solver.qmd#reactix.make_solver) | Create a JIT-compiled solver function for reactive transport simulations. |
+
+## Systems
+
+Reactive transport and system containers, and solver helpers.
+
+| | |
+| --- | --- |
+| [TransportSystem](TransportSystem.qmd#reactix.TransportSystem) | Represents a 1D reactive transport system. |
+| [MixedSystem](MixedSystem.qmd#reactix.MixedSystem) | Represents a mixed (batch) reactor system without spatial transport. |
+| [make_solver](make_solver.qmd#reactix.make_solver) | Create a JIT-compiled solver function for reactix simulations. |
 | [user_system_parameters](user_system_parameters.qmd#reactix.user_system_parameters) | Decorate system parameter classes with spatial awareness. |
 
 ## Species
