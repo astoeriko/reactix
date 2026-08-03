@@ -11,7 +11,7 @@ from reactix import (
     Cells,
     Dispersion,
     FixedConcentrationBoundary,
-    System,
+    TransportSystem,
     make_solver,
     declare_species,
     KineticReaction,
@@ -66,7 +66,7 @@ def test_system_discharge_function_from_scalar():
     Species = declare_species(["tracer"])
     cells = Cells.equally_spaced(10.0, 5)
 
-    system = System.build(
+    system = TransportSystem.build(
         cells=cells,
         advection=Advection(),
         dispersion=Dispersion.build(
@@ -103,7 +103,7 @@ def test_tracer():
             fixed_concentration=lambda t: jnp.array(10.0),
         ),
     ]
-    system = System.build(
+    system = TransportSystem.build(
         porosity=jnp.array(0.3),
         discharge=lambda t: jnp.array(1 / 365),
         cells=cells,
@@ -172,7 +172,7 @@ def test_against_analytical_solution():
     ]
     porosity = 0.3
     discharge = 1 / 365
-    system = System.build(
+    system = TransportSystem.build(
         porosity=jnp.array(porosity),
         discharge=lambda t: jnp.array(discharge),
         cells=cells,
@@ -235,7 +235,7 @@ def test_negative_velocity():
             fixed_concentration=lambda t: jnp.array(5.0),
         ),
     ]
-    system = System.build(
+    system = TransportSystem.build(
         porosity=jnp.array(0.3),
         discharge=lambda t: jnp.array(-1 / 365),
         cells=cells,
@@ -279,7 +279,7 @@ def test_duplicate_boundaries():
             fixed_concentration=lambda t: jnp.array(3.0),
         ),
     ]
-    system = System.build(
+    system = TransportSystem.build(
         porosity=jnp.array(0.3),
         discharge=lambda t: jnp.array(1 / 365),
         cells=cells,
@@ -326,7 +326,7 @@ def test_immobile_species():
             fixed_concentration=lambda t: jnp.array(3.0),
         ),
     ]
-    system = System.build(
+    system = TransportSystem.build(
         porosity=jnp.array(0.3),
         discharge=lambda t: jnp.array(k_dec),
         cells=cells,
@@ -375,7 +375,7 @@ def test_bc_for_immobile_species():
         ),
     ]
     with pytest.raises(ValueError, match="Cannot apply boundary condition to immobile species."):
-        System.build(
+        TransportSystem.build(
             porosity=jnp.array(0.3),
             discharge=lambda t: jnp.array(1 / 365),
             cells=cells,
@@ -402,7 +402,7 @@ def test_mass_conservation():
     )
     advection = Advection(limiter_type="minmod")
     bcs = []
-    system = System.build(
+    system = TransportSystem.build(
         porosity=jnp.array(0.3),
         discharge=lambda t: jnp.array(1 / 100) * jnp.cos(2 * np.pi * 1 / 100 * t),
         cells=cells,
@@ -474,7 +474,7 @@ def test_reactive_tracer_constant_param():
             fixed_concentration=lambda t: jnp.array(3.0),
         ),
     ]
-    system = System.build(
+    system = TransportSystem.build(
         porosity=jnp.array(0.3),
         discharge=lambda t: jnp.array(1 / 100),
         cells=cells,
@@ -540,7 +540,7 @@ def test_reactive_tracer_variable_param():
             fixed_concentration=lambda t: jnp.array(3.0),
         ),
     ]
-    system = System.build(
+    system = TransportSystem.build(
         porosity=jnp.array(0.3),
         discharge=lambda t: jnp.array(1 / 100),
         cells=cells,

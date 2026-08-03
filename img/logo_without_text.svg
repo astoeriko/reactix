@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="50mm"
+   height="50mm"
+   viewBox="0 0 50 50"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <g
+     id="layer1">
+    <path
+       style="fill:none;stroke:#00a6d6;stroke-width:3.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 41.5,25 25,8.4999998 m 0,0 L 8.4999999,25 25,41.5"
+       id="path1108" />
+    <path
+       style="fill:#00a6d6;stroke-width:2.13543;fill-opacity:1"
+       id="path914"
+       d="M 49.146427,58.072483 30.080814,65.281952 11.501526,56.898392 4.2920571,37.832779 12.675617,19.25349 31.74123,12.044022 l 18.579289,8.38356 7.209468,19.065613 z"
+       transform="matrix(0.281754,0,0,0.281754,16.290696,-2.3934514)" />
+    <path
+       style="fill:#80d3eb;stroke-width:2.13543;fill-opacity:1"
+       id="path914-7"
+       transform="matrix(0.281754,0,0,0.281754,16.290696,30.606549)"
+       d="M 49.146427,58.072483 30.080814,65.281952 11.501526,56.898392 4.2920571,37.832779 12.675617,19.25349 31.74123,12.044022 l 18.579289,8.38356 7.209468,19.065613 z" />
+    <path
+       style="fill:#80d3eb;stroke-width:2.13543;fill-opacity:1"
+       id="path914-5"
+       transform="matrix(0.281754,0,0,0.281754,32.790696,14.106549)"
+       d="M 49.146427,58.072483 30.080814,65.281952 11.501526,56.898392 4.2920571,37.832779 12.675617,19.25349 31.74123,12.044022 l 18.579289,8.38356 7.209468,19.065613 z" />
+    <path
+       style="fill:#00a6d6;stroke-width:2.13543;fill-opacity:1"
+       id="path914-8"
+       transform="matrix(0.281754,0,0,0.281754,-0.20930427,14.106549)"
+       d="M 49.146427,58.072483 30.080814,65.281952 11.501526,56.898392 4.2920571,37.832779 12.675617,19.25349 31.74123,12.044022 l 18.579289,8.38356 7.209468,19.065613 z" />
+    <path
+       style="fill:none;stroke:#80d3eb;stroke-width:3.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 25,41.5 41.5,25"
+       id="path4237" />
+  </g>
+</svg>

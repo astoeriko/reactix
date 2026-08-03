@@ -1,7 +1,7 @@
-# System { #reactix.System }
+# TransportSystem { #reactix.TransportSystem }
 
 ```python
-System(
+TransportSystem(
     porosity,
     discharge,
     cells,
@@ -38,13 +38,13 @@ species mobility, reactions, and boundary conditions.
 
 | Name | Description |
 | --- | --- |
-| [build](#reactix.System.build) | Build a configured reactive transport system. |
-| [cell_velocity](#reactix.System.cell_velocity) | Compute the pore-water velocity in each cell. |
+| [build](#reactix.TransportSystem.build) | Build a configured reactive transport system. |
+| [cell_velocity](#reactix.TransportSystem.cell_velocity) | Compute the pore-water velocity in each cell. |
 
-### build { #reactix.System.build }
+### build { #reactix.TransportSystem.build }
 
 ```python
-System.build(
+TransportSystem.build(
     cells,
     advection,
     dispersion,
@@ -60,7 +60,7 @@ System.build(
 Build a configured reactive transport system.
 
 This convenience constructor validates input shapes and
-normalizes scalar inputs before creating a System instance.
+normalizes scalar inputs before creating a TransportSystem instance.
 
 #### Parameters {.doc-section .doc-section-parameters}
 
@@ -71,16 +71,16 @@ normalizes scalar inputs before creating a System instance.
 | dispersion        | Dispersion                                        | Dispersion scheme parameters.                                                                                       | _required_ |
 | bcs               | list\[BoundaryCondition\] or None                 | List of boundary conditions. Default is None.                                                                       | `None`     |
 | species_is_mobile | AbstractSpecies                                   | Species mobility information.                                                                                       | _required_ |
-| reactions         | list\[BoundaryCondition\] or None                 | List of kinetic reactions. Default is None.                                                                         | `None`     |
+| reactions         | list\[KineticReaction\] or None                   | List of kinetic reactions. Default is None.                                                                         | `None`     |
 | discharge         | Callable\[\[jax.Array\], jax.Array\] or jax.Array | Discharge function or scalar discharge value.                                                                       | _required_ |
 | porosity          | jax.Array                                         | Porosity of the medium, either scalar or per cell.                                                                  | _required_ |
 | parameters        | Any or None                                       | Additional system parameters. Default is None. Must be created with @user_system_parameters for spatial operations. | `None`     |
 
 #### Returns {.doc-section .doc-section-returns}
 
-| Name   | Type   | Description                           |
-|--------|--------|---------------------------------------|
-|        | System | Configured reactive transport system. |
+| Name   | Type            | Description                           |
+|--------|-----------------|---------------------------------------|
+|        | TransportSystem | Configured reactive transport system. |
 
 #### Raises {.doc-section .doc-section-raises}
 
@@ -88,10 +88,10 @@ normalizes scalar inputs before creating a System instance.
 |--------|------------|-----------------------------------------------------------------------------------------------------|
 |        | ValueError | If porosity has an invalid shape or a boundary condition is incompatible with the selected species. |
 
-### cell_velocity { #reactix.System.cell_velocity }
+### cell_velocity { #reactix.TransportSystem.cell_velocity }
 
 ```python
-System.cell_velocity(t)
+TransportSystem.cell_velocity(t)
 ```
 
 Compute the pore-water velocity in each cell.

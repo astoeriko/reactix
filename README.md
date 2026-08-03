@@ -1,4 +1,12 @@
-# Reactix – Simulating 1-D reactive transport with differentiable models in JAX
+![](https://raw.githubusercontent.com/astoeriko/reactix/refs/heads/develop/img/logo.svg)
+# Simulating 1-D reactive transport with differentiable models in JAX
+
+[![PyPI](https://img.shields.io/pypi/v/reactix)](https://pypi.org/project/reactix/)
+[![Python](https://img.shields.io/pypi/pyversions/reactix)](https://pypi.org/project/reactix/)
+[![PyTest](https://github.com/astoeriko/reactix/actions/workflows/pytest.yml/badge.svg)](https://github.com/astoeriko/reactix/actions/workflows/pytest.yml)
+[![codecov](https://codecov.io/gh/astoeriko/reactix/branch/develop/graph/badge.svg)](https://codecov.io/gh/astoeriko/reactix)
+[![License](https://img.shields.io/github/license/astoeriko/reactix)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-latest-blue)](https://astoeriko.github.io/reactix/)
 
 Reactix is a Python package for simulating reactive transport of chemical species suitable for one-dimensional systems with **advection, dispersion and kinetic reactions**.
 
@@ -55,8 +63,7 @@ reactix-env\Scripts\activate      # Windows
 
 Activate the environment before installing the package.
 
-> [!NOTE]  
-> If you don't have `uv` installed, you can get it with:
+> **Note:** If you don't have `uv` installed, you can get it with:
 
 ```bash
 # Linux/macOS

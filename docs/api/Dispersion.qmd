@@ -62,10 +62,10 @@ Compute dispersion coefficients for each species.
 
 #### Parameters {.doc-section .doc-section-parameters}
 
-| Name   | Type      | Description                    | Default    |
-|--------|-----------|--------------------------------|------------|
-| time   | jax.Array | Current simulation time.       | _required_ |
-| system | System    | The reactive transport system. | _required_ |
+| Name   | Type            | Description                    | Default    |
+|--------|-----------------|--------------------------------|------------|
+| time   | jax.Array       | Current simulation time.       | _required_ |
+| system | TransportSystem | The reactive transport system. | _required_ |
 
 #### Returns {.doc-section .doc-section-returns}
 
@@ -87,7 +87,7 @@ Compute the dispersion contribution to the species rate of change.
 |--------|-----------------|---------------------------------|------------|
 | time   | jax.Array       | Current simulation time.        | _required_ |
 | state  | AbstractSpecies | Current species concentrations. | _required_ |
-| system | System          | The reactive transport system.  | _required_ |
+| system | TransportSystem | The reactive transport system.  | _required_ |
 
 #### Returns {.doc-section .doc-section-returns}
 

@@ -3,14 +3,17 @@ website:
   - contents:
     - api/index.qmd
     - contents:
-      - api/System.qmd
       - api/Cells.qmd
       - api/Advection.qmd
       - api/Dispersion.qmd
       - api/FixedConcentrationBoundary.qmd
+      section: Transport
+    - contents:
+      - api/TransportSystem.qmd
+      - api/MixedSystem.qmd
       - api/make_solver.qmd
       - api/user_system_parameters.qmd
-      section: Transport
+      section: Systems
     - contents:
       - api/declare_species.qmd
       section: Species

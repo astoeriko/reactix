@@ -1,0 +1,101 @@
+---
+title: Mixed reactor example
+jupyter: python3
+---
+
+
+This notebook shows how to use Reactix to simulate an mixed reactor system.
+
+The system is described by the following ordinary differential equation:
+
+$$\frac{dc}{dt} = \frac{Q}{V}\left(c - c_{\mathrm{in}}\right) + r$$
+
+where $c$ is the concentration, $Q$ is the flow rate of the reactor, $V$ its volume, $c_{\mathrm{in}}$ the inflowing concentration, and $r$ the reaction rates. Initially the concentration in the system is $c_0$.
+
+In this example, we will consider a first order decay reaction:
+
+$$r = - k c$$
+
+However, more complicated reaction kinetics can easily be implemented with Reactix.
+
+
+```{python}
+import jax
+import jax.numpy as jnp
+import matplotlib.pyplot as plt
+import numpy as np
+
+from reactix import MixedSystem, declare_species, make_solver, KineticReaction, reaction
+
+jax.config.update("jax_enable_x64", True)
+```
+
+```{python}
+Species = declare_species(["tracer"])
+```
+
+## Define the reactions
+
+```{python}
+@reaction
+class FirstOrderDecay(KineticReaction):
+    decay_coefficient: jax.Array
+
+    def rate(self, time, state, system):
+        return self.decay_coefficient * state.tracer
+
+    def stoichiometry(self, time, state, system):
+        return {
+            "tracer": -1,
+        }
+
+k = 0.02
+reactions = [FirstOrderDecay(decay_coefficient=k)]
+```
+
+## Set up the system
+
+```{python}
+c_in = jnp.array(1.0)
+Q = jnp.array(0.5)
+V = jnp.array(10.0)
+reactor_system = MixedSystem.build(
+    reactions=reactions,
+    discharge=Q,
+    volume=V,
+    inflow_concentration=Species(tracer=c_in),
+)
+```
+
+## Run the solver
+
+```{python}
+t_points = jnp.linspace(0, 200, 123)
+solve = make_solver(t_max=200, t_points=t_points, rtol=1e-6, atol=1e-18)
+```
+
+```{python}
+# Create an array of zeros with the length of the number of cells
+val0 = jnp.zeros(())
+
+# Set up the initial conditions (all zeros in this case)
+state = Species(tracer=val0)
+```
+
+```{python}
+solution = solve(state, reactor_system)
+```
+
+## Compare the solution against an analytical solution
+
+```{python}
+c_0 = val0
+c_steady = Q / (Q + k * V) * c_in
+c_analytical = c_steady + (c_0 - c_steady) * np.exp(-(Q / V + k) * t_points)
+
+plt.plot(t_points, solution.ys.tracer, label="Numerical Solution")
+plt.plot(t_points, c_analytical, label="Analytical Solution", linestyle="--")
+plt.legend()
+```
+
+

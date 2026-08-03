@@ -106,7 +106,7 @@ Compute the advection rate for mobile species.
 |--------|-----------------|---------------------------------|------------|
 | time   | jax.Array       | Current simulation time.        | _required_ |
 | state  | AbstractSpecies | Current species concentrations. | _required_ |
-| system | System          | The reactive transport system.  | _required_ |
+| system | TransportSystem | The reactive transport system.  | _required_ |
 
 #### Returns {.doc-section .doc-section-returns}
 
