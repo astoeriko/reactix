@@ -13,6 +13,7 @@ website:
   repo-actions: [edit, issue]
   page-navigation: true
   back-to-top-navigation: true
+  favicon: img/logo_without_text.svg
 
   navbar:
     logo: img/logo_without_text.svg
