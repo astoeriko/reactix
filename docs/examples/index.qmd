@@ -1,9 +1,10 @@
 ---
-title: "Examples"
+title: "Overview"
 ---
 
-This section collects worked examples [TODO: finish this introduction with a brief description of each example].
+This section collects worked examples:
 
-- [Reactive transport model](transport-model.qmd) - demonstrates how to set up and run a simple reactive transport model with Reactix.
-- [TODO: Example 2]
-- [TODO: Example 3]
+- [Reactive transport model](transport-model.qmd) -- demonstrates how to set up and run a simple reactive transport model with Reactix.
+- [Pathogen transport model](pathogen-model.qmd) -- a more complex example showing reactive transport of pathogens with attachment and detachment.
+- [PyMC integration](transport_with_pymc.qmd) -- demonstrates integration of Reactix models with PyMC for Bayesian parameter estimation
+- [Mixed-reactor model](mixed-reactor.qmd) -- show how to set up a model for a mixed system (without transport)
