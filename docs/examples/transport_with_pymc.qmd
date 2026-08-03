@@ -275,18 +275,9 @@ plt.scatter(t_points[idx_time], prior.observed_data.made_up_point, color="k", la
 
 Finally, we can sample the posterior distribution. We can use a state-of-the-art HMC sampler since gradient calculations are provided through automatic differentiation by JAX under the hood. Here we use the Nutpie sampler for PyMC. Note that you need to specify that JAX should be used as a backend for the posterior and gradient evaluation.
 
-Note that sampling can take a while since thousands of model runs are needed. In order to be able to see intermediate results while the sampler is still running, we let the sampler run in the background by using nutpie's option `blocking=False`. 
-
 ```{python}
 compiled = nutpie.compile_pymc_model(model, backend="jax", gradient_backend="jax")
-sampler = nutpie.sample(compiled, chains=2, blocking=False, seed=33)
-```
-
-After a while, we can use `sampler.inspect()` to obtain the intermediate results of the sampler and inspect them.
-
-```{python}
-# Inspect intermediate results of the sampler
-trace = sampler.inspect()
+sampler = nutpie.sample(compiled, chains=2, blocking=True, seed=33)
 ```
 
 ### Trace plot during the warm-up phase
