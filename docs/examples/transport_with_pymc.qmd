@@ -277,7 +277,7 @@ Finally, we can sample the posterior distribution. We can use a state-of-the-art
 
 ```{python}
 compiled = nutpie.compile_pymc_model(model, backend="jax", gradient_backend="jax")
-sampler = nutpie.sample(compiled, chains=2, blocking=True, seed=33)
+trace = nutpie.sample(compiled, chains=2, blocking=True, seed=33, draws=500)
 ```
 
 ### Trace plot during the warm-up phase
