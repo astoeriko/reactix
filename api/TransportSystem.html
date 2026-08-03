@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>dispersion – Reactix</title>
+<title>transportsystem – Reactix</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,8 +71,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../api/FixedConcentrationBoundary.html" rel="next">
-<link href="../api/Advection.html" rel="prev">
+<link href="../api/MixedSystem.html" rel="next">
+<link href="../api/FixedConcentrationBoundary.html" rel="prev">
 <link href="../img/logo_without_text.svg" rel="icon" type="image/svg+xml">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -347,7 +347,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../api/Cells.html">Transport</a></li><li class="breadcrumb-item"><a href="../api/Dispersion.html">Dispersion</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../api/TransportSystem.html">Systems</a></li><li class="breadcrumb-item"><a href="../api/TransportSystem.html">TransportSystem</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -396,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../api/Dispersion.html" class="sidebar-item-text sidebar-link active">
+  <a href="../api/Dispersion.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Dispersion</span></a>
   </div>
 </li>
@@ -419,7 +419,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../api/TransportSystem.html" class="sidebar-item-text sidebar-link">
+  <a href="../api/TransportSystem.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">TransportSystem</span></a>
   </div>
 </li>
@@ -505,39 +505,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#reactix.Dispersion" id="toc-reactix.Dispersion" class="nav-link active" data-scroll-target="#reactix.Dispersion">Dispersion</a>
+  <li><a href="#reactix.TransportSystem" id="toc-reactix.TransportSystem" class="nav-link active" data-scroll-target="#reactix.TransportSystem">TransportSystem</a>
   <ul class="collapse">
   <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
-  <li><a href="#reactix.Dispersion.build" id="toc-reactix.Dispersion.build" class="nav-link" data-scroll-target="#reactix.Dispersion.build">build</a></li>
-  <li><a href="#reactix.Dispersion.get_dispersion_coefficient" id="toc-reactix.Dispersion.get_dispersion_coefficient" class="nav-link" data-scroll-target="#reactix.Dispersion.get_dispersion_coefficient">get_dispersion_coefficient</a></li>
-  <li><a href="#reactix.Dispersion.rate" id="toc-reactix.Dispersion.rate" class="nav-link" data-scroll-target="#reactix.Dispersion.rate">rate</a></li>
+  <li><a href="#reactix.TransportSystem.build" id="toc-reactix.TransportSystem.build" class="nav-link" data-scroll-target="#reactix.TransportSystem.build">build</a></li>
+  <li><a href="#reactix.TransportSystem.cell_velocity" id="toc-reactix.TransportSystem.cell_velocity" class="nav-link" data-scroll-target="#reactix.TransportSystem.cell_velocity">cell_velocity</a></li>
   </ul></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/astoeriko/reactix/edit/main/api/Dispersion.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astoeriko/reactix/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/astoeriko/reactix/edit/main/api/TransportSystem.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astoeriko/reactix/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../api/Cells.html">Transport</a></li><li class="breadcrumb-item"><a href="../api/Dispersion.html">Dispersion</a></li></ol></nav><h1 class="title display-7"></h1></header><div class="quarto-title-block"><div class="quarto-title-tools-only"><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../api/TransportSystem.html">Systems</a></li><li class="breadcrumb-item"><a href="../api/TransportSystem.html">TransportSystem</a></li></ol></nav><h1 class="title display-7"></h1></header><div class="quarto-title-block"><div class="quarto-title-tools-only"><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 
 
 
 
 
-<section id="reactix.Dispersion" class="level1">
-<h1>Dispersion</h1>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Dispersion(dispersivity, pore_diffusion)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Handles dispersion and diffusion terms in the transport equation.</p>
-<p>This class computes hydrodynamic dispersion coefficients combining mechanical dispersion and pore diffusion effects.</p>
+<section id="reactix.TransportSystem" class="level1">
+<h1>TransportSystem</h1>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>TransportSystem(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    porosity,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    discharge,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    cells,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    advection,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    dispersion,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    species_is_mobile,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    reactions<span class="op">=</span><span class="bu">list</span>(),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    bcs<span class="op">=</span><span class="bu">list</span>(),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Represents a 1D reactive transport system.</p>
+<p>This class encapsulates all the components needed to model reactive transport in a 1D domain, including spatial discretization, advection, dispersion, species mobility, reactions, and boundary conditions.</p>
 <section id="parameters" class="level2 doc-section doc-section-parameters">
 <h2 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 16%">
-<col style="width: 17%">
-<col style="width: 55%">
-<col style="width: 12%">
+<col style="width: 9%">
+<col style="width: 18%">
+<col style="width: 66%">
+<col style="width: 5%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -549,16 +558,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>dispersivity</td>
+<td>porosity</td>
 <td>jax.Array</td>
-<td>Longitudinal dispersivity, either scalar or per cell.</td>
+<td>Porosity of the medium, either scalar or per cell.</td>
 <td><em>required</em></td>
 </tr>
 <tr class="even">
-<td>pore_diffusion</td>
-<td>AbstractSpecies</td>
-<td>Pore diffusion coefficient for each species.</td>
+<td>discharge</td>
+<td>Callable[[jax.Array], jax.Array]</td>
+<td>Function that computes discharge given time.</td>
 <td><em>required</em></td>
+</tr>
+<tr class="odd">
+<td>cells</td>
+<td>Cells</td>
+<td>Spatial discretization of the domain.</td>
+<td><em>required</em></td>
+</tr>
+<tr class="even">
+<td>advection</td>
+<td>Advection</td>
+<td>Advection scheme parameters.</td>
+<td><em>required</em></td>
+</tr>
+<tr class="odd">
+<td>dispersion</td>
+<td>Dispersion</td>
+<td>Dispersion scheme parameters.</td>
+<td><em>required</em></td>
+</tr>
+<tr class="even">
+<td>species_is_mobile</td>
+<td>AbstractSpecies</td>
+<td>Species mobility information.</td>
+<td><em>required</em></td>
+</tr>
+<tr class="odd">
+<td>reactions</td>
+<td>list[KineticReaction]</td>
+<td>List of kinetic reactions. Default is empty list.</td>
+<td><code>list()</code></td>
+</tr>
+<tr class="even">
+<td>bcs</td>
+<td>list[BoundaryCondition]</td>
+<td>List of boundary conditions. Default is empty list.</td>
+<td><code>list()</code></td>
+</tr>
+<tr class="odd">
+<td>parameters</td>
+<td>Any</td>
+<td>Additional system parameters. Default is None. Must be created with <span class="citation" data-cites="user_system_parameters">@user_system_parameters</span> for spatial awareness and JAX compatibility.</td>
+<td><code>None</code></td>
 </tr>
 </tbody>
 </table>
@@ -574,31 +625,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="#reactix.Dispersion.build">build</a></td>
-<td>Build a Dispersion instance and validate dispersivity shape.</td>
+<td><a href="#reactix.TransportSystem.build">build</a></td>
+<td>Build a configured reactive transport system.</td>
 </tr>
 <tr class="even">
-<td><a href="#reactix.Dispersion.get_dispersion_coefficient">get_dispersion_coefficient</a></td>
-<td>Compute dispersion coefficients for each species.</td>
-</tr>
-<tr class="odd">
-<td><a href="#reactix.Dispersion.rate">rate</a></td>
-<td>Compute the dispersion contribution to the species rate of change.</td>
+<td><a href="#reactix.TransportSystem.cell_velocity">cell_velocity</a></td>
+<td>Compute the pore-water velocity in each cell.</td>
 </tr>
 </tbody>
 </table>
-<section id="reactix.Dispersion.build" class="level3">
-<h3 class="anchored" data-anchor-id="reactix.Dispersion.build">build</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Dispersion.build(cells, dispersivity, pore_diffusion)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Build a Dispersion instance and validate dispersivity shape.</p>
+<section id="reactix.TransportSystem.build" class="level3">
+<h3 class="anchored" data-anchor-id="reactix.TransportSystem.build">build</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>TransportSystem.build(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    cells,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    advection,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    dispersion,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    bcs<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    species_is_mobile,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    reactions<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    discharge,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    porosity,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Build a configured reactive transport system.</p>
+<p>This convenience constructor validates input shapes and normalizes scalar inputs before creating a TransportSystem instance.</p>
 <section id="parameters-1" class="level4 doc-section doc-section-parameters">
 <h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-1">Parameters</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 16%">
-<col style="width: 17%">
-<col style="width: 55%">
-<col style="width: 12%">
+<col style="width: 9%">
+<col style="width: 25%">
+<col style="width: 58%">
+<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -616,16 +674,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><em>required</em></td>
 </tr>
 <tr class="even">
-<td>dispersivity</td>
-<td>jax.Array</td>
-<td>Longitudinal dispersivity, either scalar or per cell.</td>
+<td>advection</td>
+<td>Advection</td>
+<td>Advection scheme parameters.</td>
 <td><em>required</em></td>
 </tr>
 <tr class="odd">
-<td>pore_diffusion</td>
-<td>AbstractSpecies</td>
-<td>Pore diffusion coefficient for each species.</td>
+<td>dispersion</td>
+<td>Dispersion</td>
+<td>Dispersion scheme parameters.</td>
 <td><em>required</em></td>
+</tr>
+<tr class="even">
+<td>bcs</td>
+<td>list[BoundaryCondition] or None</td>
+<td>List of boundary conditions. Default is None.</td>
+<td><code>None</code></td>
+</tr>
+<tr class="odd">
+<td>species_is_mobile</td>
+<td>AbstractSpecies</td>
+<td>Species mobility information.</td>
+<td><em>required</em></td>
+</tr>
+<tr class="even">
+<td>reactions</td>
+<td>list[KineticReaction] or None</td>
+<td>List of kinetic reactions. Default is None.</td>
+<td><code>None</code></td>
+</tr>
+<tr class="odd">
+<td>discharge</td>
+<td>Callable[[jax.Array], jax.Array] or jax.Array</td>
+<td>Discharge function or scalar discharge value.</td>
+<td><em>required</em></td>
+</tr>
+<tr class="even">
+<td>porosity</td>
+<td>jax.Array</td>
+<td>Porosity of the medium, either scalar or per cell.</td>
+<td><em>required</em></td>
+</tr>
+<tr class="odd">
+<td>parameters</td>
+<td>Any or None</td>
+<td>Additional system parameters. Default is None. Must be created with <span class="citation" data-cites="user_system_parameters">@user_system_parameters</span> for spatial operations.</td>
+<td><code>None</code></td>
 </tr>
 </tbody>
 </table>
@@ -643,8 +737,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td></td>
-<td>Dispersion</td>
-<td>Configured dispersion scheme.</td>
+<td>TransportSystem</td>
+<td>Configured reactive transport system.</td>
 </tr>
 </tbody>
 </table>
@@ -653,9 +747,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h4 class="doc-section doc-section-raises anchored" data-anchor-id="raises">Raises</h4>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 10%">
-<col style="width: 16%">
-<col style="width: 73%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 83%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -668,25 +762,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td></td>
 <td>ValueError</td>
-<td>If <code>dispersivity</code> does not match the number of cells.</td>
+<td>If porosity has an invalid shape or a boundary condition is incompatible with the selected species.</td>
 </tr>
 </tbody>
 </table>
 </section>
 </section>
-<section id="reactix.Dispersion.get_dispersion_coefficient" class="level3">
-<h3 class="anchored" data-anchor-id="reactix.Dispersion.get_dispersion_coefficient">get_dispersion_coefficient</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Dispersion.get_dispersion_coefficient(time, system)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Compute dispersion coefficients for each species.</p>
+<section id="reactix.TransportSystem.cell_velocity" class="level3">
+<h3 class="anchored" data-anchor-id="reactix.TransportSystem.cell_velocity">cell_velocity</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>TransportSystem.cell_velocity(t)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Compute the pore-water velocity in each cell.</p>
 <section id="parameters-2" class="level4 doc-section doc-section-parameters">
 <h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-2">Parameters</h4>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 24%">
-<col style="width: 46%">
-<col style="width: 17%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -697,15 +785,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>time</td>
+<td>t</td>
 <td>jax.Array</td>
 <td>Current simulation time.</td>
-<td><em>required</em></td>
-</tr>
-<tr class="even">
-<td>system</td>
-<td>TransportSystem</td>
-<td>The reactive transport system.</td>
 <td><em>required</em></td>
 </tr>
 </tbody>
@@ -724,76 +806,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td></td>
-<td>AbstractSpecies</td>
-<td>Dispersion coefficients for each species.</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="reactix.Dispersion.rate" class="level3">
-<h3 class="anchored" data-anchor-id="reactix.Dispersion.rate">rate</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Dispersion.rate(time, state, system)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Compute the dispersion contribution to the species rate of change.</p>
-<section id="parameters-3" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-3">Parameters</h4>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 24%">
-<col style="width: 47%">
-<col style="width: 17%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>time</td>
 <td>jax.Array</td>
-<td>Current simulation time.</td>
-<td><em>required</em></td>
-</tr>
-<tr class="even">
-<td>state</td>
-<td>AbstractSpecies</td>
-<td>Current species concentrations.</td>
-<td><em>required</em></td>
-</tr>
-<tr class="odd">
-<td>system</td>
-<td>TransportSystem</td>
-<td>The reactive transport system.</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="returns-2" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-2">Returns</h4>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 23%">
-<col style="width: 65%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>AbstractSpecies</td>
-<td>Dispersion contribution to the rate of change.</td>
+<td>Velocity in each cell.</td>
 </tr>
 </tbody>
 </table>
@@ -1273,117 +1287,130 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../api/Advection.html" class="pagination-link" aria-label="Advection">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Advection</span>
+      <a href="../api/FixedConcentrationBoundary.html" class="pagination-link" aria-label="FixedConcentrationBoundary">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">FixedConcentrationBoundary</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../api/FixedConcentrationBoundary.html" class="pagination-link" aria-label="FixedConcentrationBoundary">
-        <span class="nav-page-text">FixedConcentrationBoundary</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../api/MixedSystem.html" class="pagination-link" aria-label="MixedSystem">
+        <span class="nav-page-text">MixedSystem</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Dispersion { #reactix.Dispersion }</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Dispersion(dispersivity, pore_diffusion)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Handles dispersion and diffusion terms in the transport equation.</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>This class computes hydrodynamic dispersion coefficients combining</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>mechanical dispersion and pore diffusion effects.</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Parameters {.doc-section .doc-section-parameters}</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name           <span class="pp">|</span> Type            <span class="pp">|</span> Description                                           <span class="pp">|</span> Default    <span class="pp">|</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="pp">|----------------|-----------------|-------------------------------------------------------|------------|</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> dispersivity   <span class="pp">|</span> jax.Array       <span class="pp">|</span> Longitudinal dispersivity, either scalar or per cell. <span class="pp">|</span> _required_ <span class="pp">|</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> pore_diffusion <span class="pp">|</span> AbstractSpecies <span class="pp">|</span> Pore diffusion coefficient for each species.          <span class="pp">|</span> _required_ <span class="pp">|</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Methods</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name <span class="pp">|</span> Description <span class="pp">|</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">build</span><span class="co">](#reactix.Dispersion.build)</span> <span class="pp">|</span> Build a Dispersion instance and validate dispersivity shape. <span class="pp">|</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">get_dispersion_coefficient</span><span class="co">](#reactix.Dispersion.get_dispersion_coefficient)</span> <span class="pp">|</span> Compute dispersion coefficients for each species. <span class="pp">|</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">rate</span><span class="co">](#reactix.Dispersion.rate)</span> <span class="pp">|</span> Compute the dispersion contribution to the species rate of change. <span class="pp">|</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="fu">### build { #reactix.Dispersion.build }</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>Dispersion.build(cells, dispersivity, pore_diffusion)</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>Build a Dispersion instance and validate dispersivity shape.</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Parameters {.doc-section .doc-section-parameters}</span></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name           <span class="pp">|</span> Type            <span class="pp">|</span> Description                                           <span class="pp">|</span> Default    <span class="pp">|</span></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="pp">|----------------|-----------------|-------------------------------------------------------|------------|</span></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> cells          <span class="pp">|</span> Cells           <span class="pp">|</span> Spatial discretization of the domain.                 <span class="pp">|</span> _required_ <span class="pp">|</span></span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> dispersivity   <span class="pp">|</span> jax.Array       <span class="pp">|</span> Longitudinal dispersivity, either scalar or per cell. <span class="pp">|</span> _required_ <span class="pp">|</span></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> pore_diffusion <span class="pp">|</span> AbstractSpecies <span class="pp">|</span> Pore diffusion coefficient for each species.          <span class="pp">|</span> _required_ <span class="pp">|</span></span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Returns {.doc-section .doc-section-returns}</span></span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name   <span class="pp">|</span> Type       <span class="pp">|</span> Description                   <span class="pp">|</span></span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|------------|-------------------------------|</span></span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>        <span class="pp">|</span> Dispersion <span class="pp">|</span> Configured dispersion scheme. <span class="pp">|</span></span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Raises {.doc-section .doc-section-raises}</span></span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name   <span class="pp">|</span> Type       <span class="pp">|</span> Description                                           <span class="pp">|</span></span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|------------|-------------------------------------------------------|</span></span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>        <span class="pp">|</span> ValueError <span class="pp">|</span> If <span class="in">`dispersivity`</span> does not match the number of cells. <span class="pp">|</span></span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="fu">### get_dispersion_coefficient { #reactix.Dispersion.get_dispersion_coefficient }</span></span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>Dispersion.get_dispersion_coefficient(time, system)</span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>Compute dispersion coefficients for each species.</span>
-<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Parameters {.doc-section .doc-section-parameters}</span></span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name   <span class="pp">|</span> Type            <span class="pp">|</span> Description                    <span class="pp">|</span> Default    <span class="pp">|</span></span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|-----------------|--------------------------------|------------|</span></span>
-<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> time   <span class="pp">|</span> jax.Array       <span class="pp">|</span> Current simulation time.       <span class="pp">|</span> _required_ <span class="pp">|</span></span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> system <span class="pp">|</span> TransportSystem <span class="pp">|</span> The reactive transport system. <span class="pp">|</span> _required_ <span class="pp">|</span></span>
-<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Returns {.doc-section .doc-section-returns}</span></span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name   <span class="pp">|</span> Type            <span class="pp">|</span> Description                               <span class="pp">|</span></span>
-<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|-----------------|-------------------------------------------|</span></span>
-<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>        <span class="pp">|</span> AbstractSpecies <span class="pp">|</span> Dispersion coefficients for each species. <span class="pp">|</span></span>
-<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a><span class="fu">### rate { #reactix.Dispersion.rate }</span></span>
-<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>Dispersion.rate(time, state, system)</span>
-<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>Compute the dispersion contribution to the species rate of change.</span>
-<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Parameters {.doc-section .doc-section-parameters}</span></span>
-<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name   <span class="pp">|</span> Type            <span class="pp">|</span> Description                     <span class="pp">|</span> Default    <span class="pp">|</span></span>
-<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|-----------------|---------------------------------|------------|</span></span>
-<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> time   <span class="pp">|</span> jax.Array       <span class="pp">|</span> Current simulation time.        <span class="pp">|</span> _required_ <span class="pp">|</span></span>
-<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> state  <span class="pp">|</span> AbstractSpecies <span class="pp">|</span> Current species concentrations. <span class="pp">|</span> _required_ <span class="pp">|</span></span>
-<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> system <span class="pp">|</span> TransportSystem <span class="pp">|</span> The reactive transport system.  <span class="pp">|</span> _required_ <span class="pp">|</span></span>
-<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Returns {.doc-section .doc-section-returns}</span></span>
-<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name   <span class="pp">|</span> Type            <span class="pp">|</span> Description                                    <span class="pp">|</span></span>
-<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|-----------------|------------------------------------------------|</span></span>
-<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>        <span class="pp">|</span> AbstractSpecies <span class="pp">|</span> Dispersion contribution to the rate of change. <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># TransportSystem { #reactix.TransportSystem }</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>TransportSystem(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    porosity,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    discharge,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    cells,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    advection,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    dispersion,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    species_is_mobile,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    reactions<span class="op">=</span><span class="bu">list</span>(),</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    bcs<span class="op">=</span><span class="bu">list</span>(),</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>Represents a 1D reactive transport system.</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>This class encapsulates all the components needed to model reactive transport</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>in a 1D domain, including spatial discretization, advection, dispersion,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>species mobility, reactions, and boundary conditions.</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Parameters {.doc-section .doc-section-parameters}</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name              <span class="pp">|</span> Type                                 <span class="pp">|</span> Description                                                                                                                              <span class="pp">|</span> Default    <span class="pp">|</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="pp">|-------------------|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|------------|</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> porosity          <span class="pp">|</span> jax.Array                            <span class="pp">|</span> Porosity of the medium, either scalar or per cell.                                                                                       <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> discharge         <span class="pp">|</span> Callable<span class="sc">\[\[</span>jax.Array<span class="sc">\]</span>, jax.Array<span class="sc">\]</span> <span class="pp">|</span> Function that computes discharge given time.                                                                                             <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> cells             <span class="pp">|</span> Cells                                <span class="pp">|</span> Spatial discretization of the domain.                                                                                                    <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> advection         <span class="pp">|</span> Advection                            <span class="pp">|</span> Advection scheme parameters.                                                                                                             <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> dispersion        <span class="pp">|</span> Dispersion                           <span class="pp">|</span> Dispersion scheme parameters.                                                                                                            <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> species_is_mobile <span class="pp">|</span> AbstractSpecies                      <span class="pp">|</span> Species mobility information.                                                                                                            <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> reactions         <span class="pp">|</span> list<span class="sc">\[</span>KineticReaction<span class="sc">\]</span>              <span class="pp">|</span> List of kinetic reactions. Default is empty list.                                                                                        <span class="pp">|</span> <span class="in">`list()`</span>   <span class="pp">|</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> bcs               <span class="pp">|</span> list<span class="sc">\[</span>BoundaryCondition<span class="sc">\]</span>            <span class="pp">|</span> List of boundary conditions. Default is empty list.                                                                                      <span class="pp">|</span> <span class="in">`list()`</span>   <span class="pp">|</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> parameters        <span class="pp">|</span> Any                                  <span class="pp">|</span> Additional system parameters. Default is None. Must be created with @user_system_parameters for spatial awareness and JAX compatibility. <span class="pp">|</span> <span class="in">`None`</span>     <span class="pp">|</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## Methods</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name <span class="pp">|</span> Description <span class="pp">|</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">build</span><span class="co">](#reactix.TransportSystem.build)</span> <span class="pp">|</span> Build a configured reactive transport system. <span class="pp">|</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">cell_velocity</span><span class="co">](#reactix.TransportSystem.cell_velocity)</span> <span class="pp">|</span> Compute the pore-water velocity in each cell. <span class="pp">|</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="fu">### build { #reactix.TransportSystem.build }</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>TransportSystem.build(</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    cells,</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    advection,</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    dispersion,</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    bcs<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    species_is_mobile,</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    reactions<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    discharge,</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    porosity,</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>Build a configured reactive transport system.</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>This convenience constructor validates input shapes and</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>normalizes scalar inputs before creating a TransportSystem instance.</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Parameters {.doc-section .doc-section-parameters}</span></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name              <span class="pp">|</span> Type                                              <span class="pp">|</span> Description                                                                                                         <span class="pp">|</span> Default    <span class="pp">|</span></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="pp">|-------------------|---------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|------------|</span></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> cells             <span class="pp">|</span> Cells                                             <span class="pp">|</span> Spatial discretization of the domain.                                                                               <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> advection         <span class="pp">|</span> Advection                                         <span class="pp">|</span> Advection scheme parameters.                                                                                        <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> dispersion        <span class="pp">|</span> Dispersion                                        <span class="pp">|</span> Dispersion scheme parameters.                                                                                       <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> bcs               <span class="pp">|</span> list<span class="sc">\[</span>BoundaryCondition<span class="sc">\]</span> or None                 <span class="pp">|</span> List of boundary conditions. Default is None.                                                                       <span class="pp">|</span> <span class="in">`None`</span>     <span class="pp">|</span></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> species_is_mobile <span class="pp">|</span> AbstractSpecies                                   <span class="pp">|</span> Species mobility information.                                                                                       <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> reactions         <span class="pp">|</span> list<span class="sc">\[</span>KineticReaction<span class="sc">\]</span> or None                   <span class="pp">|</span> List of kinetic reactions. Default is None.                                                                         <span class="pp">|</span> <span class="in">`None`</span>     <span class="pp">|</span></span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> discharge         <span class="pp">|</span> Callable<span class="sc">\[\[</span>jax.Array<span class="sc">\]</span>, jax.Array<span class="sc">\]</span> or jax.Array <span class="pp">|</span> Discharge function or scalar discharge value.                                                                       <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> porosity          <span class="pp">|</span> jax.Array                                         <span class="pp">|</span> Porosity of the medium, either scalar or per cell.                                                                  <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> parameters        <span class="pp">|</span> Any or None                                       <span class="pp">|</span> Additional system parameters. Default is None. Must be created with @user_system_parameters for spatial operations. <span class="pp">|</span> <span class="in">`None`</span>     <span class="pp">|</span></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Returns {.doc-section .doc-section-returns}</span></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name   <span class="pp">|</span> Type            <span class="pp">|</span> Description                           <span class="pp">|</span></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|-----------------|---------------------------------------|</span></span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>        <span class="pp">|</span> TransportSystem <span class="pp">|</span> Configured reactive transport system. <span class="pp">|</span></span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Raises {.doc-section .doc-section-raises}</span></span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name   <span class="pp">|</span> Type       <span class="pp">|</span> Description                                                                                         <span class="pp">|</span></span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|------------|-----------------------------------------------------------------------------------------------------|</span></span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>        <span class="pp">|</span> ValueError <span class="pp">|</span> If porosity has an invalid shape or a boundary condition is incompatible with the selected species. <span class="pp">|</span></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="fu">### cell_velocity { #reactix.TransportSystem.cell_velocity }</span></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>TransportSystem.cell_velocity(t)</span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>Compute the pore-water velocity in each cell.</span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Parameters {.doc-section .doc-section-parameters}</span></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name   <span class="pp">|</span> Type      <span class="pp">|</span> Description              <span class="pp">|</span> Default    <span class="pp">|</span></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|-----------|--------------------------|------------|</span></span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> t      <span class="pp">|</span> jax.Array <span class="pp">|</span> Current simulation time. <span class="pp">|</span> _required_ <span class="pp">|</span></span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Returns {.doc-section .doc-section-returns}</span></span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Name   <span class="pp">|</span> Type      <span class="pp">|</span> Description            <span class="pp">|</span></span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|-----------|------------------------|</span></span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>        <span class="pp">|</span> jax.Array <span class="pp">|</span> Velocity in each cell. <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/astoeriko/reactix/edit/main/api/Dispersion.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astoeriko/reactix/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/astoeriko/reactix/edit/main/api/TransportSystem.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/astoeriko/reactix/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer><script src="../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

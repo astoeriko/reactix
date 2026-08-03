@@ -1,83 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://astoeriko.github.io/reactix/installation.html</loc>
-    <lastmod>2026-07-09T08:58:45.467Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/examples/transport-model.html</loc>
-    <lastmod>2026-07-09T08:58:45.467Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/quickstart.html</loc>
-    <lastmod>2026-07-09T08:58:45.467Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/api/Advection.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/api/System.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/api/FixedConcentrationBoundary.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/api/SpatiallyConst.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
+    <loc>https://astoeriko.github.io/reactix/contributing.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
   </url>
   <url>
     <loc>https://astoeriko.github.io/reactix/api/Cells.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/api/Dispersion.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/developer-guide.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/contributing.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/api/SpatiallyVarying.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/api/declare_species.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/api/KineticReaction.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://astoeriko.github.io/reactix/api/reaction.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
   </url>
   <url>
     <loc>https://astoeriko.github.io/reactix/api/user_system_parameters.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/api/TransportSystem.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/api/FixedConcentrationBoundary.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
   </url>
   <url>
     <loc>https://astoeriko.github.io/reactix/api/make_solver.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
   </url>
   <url>
-    <loc>https://astoeriko.github.io/reactix/api/index.html</loc>
-    <lastmod>2026-07-09T08:59:19.614Z</lastmod>
+    <loc>https://astoeriko.github.io/reactix/api/SpatiallyConst.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
   </url>
   <url>
-    <loc>https://astoeriko.github.io/reactix/index.html</loc>
-    <lastmod>2026-07-09T08:58:45.467Z</lastmod>
+    <loc>https://astoeriko.github.io/reactix/api/MixedSystem.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/installation.html</loc>
+    <lastmod>2026-08-03T13:19:37.246Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/examples/mixed-reactor.html</loc>
+    <lastmod>2026-08-03T13:19:37.246Z</lastmod>
   </url>
   <url>
     <loc>https://astoeriko.github.io/reactix/examples/index.html</loc>
-    <lastmod>2026-07-09T08:58:45.466Z</lastmod>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/examples/pathogen-model.html</loc>
+    <lastmod>2026-08-03T13:19:37.246Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/quickstart.html</loc>
+    <lastmod>2026-08-03T13:19:37.246Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/examples/transport_with_pymc.html</loc>
+    <lastmod>2026-08-03T13:19:37.246Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/examples/transport-model.html</loc>
+    <lastmod>2026-08-03T13:19:37.246Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/developer-guide.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/index.html</loc>
+    <lastmod>2026-08-03T13:19:37.246Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/api/reaction.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/api/KineticReaction.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/api/SpatiallyVarying.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/api/declare_species.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/api/Advection.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/api/index.html</loc>
+    <lastmod>2026-08-03T13:20:04.063Z</lastmod>
+  </url>
+  <url>
+    <loc>https://astoeriko.github.io/reactix/api/Dispersion.html</loc>
+    <lastmod>2026-08-03T13:19:37.245Z</lastmod>
   </url>
 </urlset>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -68,20 +71,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../img/logo_without_text.svg" rel="icon" type="image/svg+xml">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-29cebc34efabe65204eb70c28f5eb0b8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-b7198d988978144cbbef329474cbaf9c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-29cebc34efabe65204eb70c28f5eb0b8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fb5f3b3fb26a177c4af78adf70c87a98.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b37018c1bb136ad2c3f564bc6f1689ea.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-fb5f3b3fb26a177c4af78adf70c87a98.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -284,6 +288,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../img/logo_without_text.svg" alt="" class="navbar-logo light-content">
+    <img src="../img/logo_without_text.svg" alt="" class="navbar-logo dark-content">
+    </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Reactix</span>
     </a>
@@ -399,13 +407,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Examples</span></a>
+ <span class="menu-text">Overview</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../examples/transport-model.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Conservative tracer and first-order decay</span></a>
+ <span class="menu-text">Conservative transport and first-order decay</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/pathogen-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pathogen transport model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/transport_with_pymc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Parameter estimation with PyMC</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/mixed-reactor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Mixed reactor example</span></a>
   </div>
 </li>
       </ul>
@@ -454,6 +480,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#api-reference" id="toc-api-reference" class="nav-link active" data-scroll-target="#api-reference">API reference</a>
   <ul class="collapse">
   <li><a href="#transport" id="toc-transport" class="nav-link" data-scroll-target="#transport">Transport</a></li>
+  <li><a href="#systems" id="toc-systems" class="nav-link" data-scroll-target="#systems">Systems</a></li>
   <li><a href="#species" id="toc-species" class="nav-link" data-scroll-target="#species">Species</a></li>
   <li><a href="#reactions" id="toc-reactions" class="nav-link" data-scroll-target="#reactions">Reactions</a></li>
   </ul></li>
@@ -471,34 +498,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1 class="doc doc-index">API reference</h1>
 <section id="transport" class="level2">
 <h2 class="anchored" data-anchor-id="transport">Transport</h2>
-<p>Core 1D reactive transport system objects and solver helpers.</p>
+<p>Spatial discretization, advection/dispersion schemes, and boundary conditions.</p>
 <table class="caption-top table">
 <tbody>
 <tr class="odd">
-<td><a href="../api/System.html#reactix.System">System</a></td>
-<td>Represents a 1D reactive transport system.</td>
-</tr>
-<tr class="even">
 <td><a href="../api/Cells.html#reactix.Cells">Cells</a></td>
 <td>Represents the spatial discretization of a 1D domain into cells.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="../api/Advection.html#reactix.Advection">Advection</a></td>
 <td>Handles advection terms in the 1D transport equation using TVD schemes.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="../api/Dispersion.html#reactix.Dispersion">Dispersion</a></td>
 <td>Handles dispersion and diffusion terms in the transport equation.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="../api/FixedConcentrationBoundary.html#reactix.FixedConcentrationBoundary">FixedConcentrationBoundary</a></td>
 <td>Boundary condition with fixed concentration at the domain boundary.</td>
 </tr>
+</tbody>
+</table>
+</section>
+<section id="systems" class="level2">
+<h2 class="anchored" data-anchor-id="systems">Systems</h2>
+<p>Reactive transport and system containers, and solver helpers.</p>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td><a href="../api/TransportSystem.html#reactix.TransportSystem">TransportSystem</a></td>
+<td>Represents a 1D reactive transport system.</td>
+</tr>
 <tr class="even">
-<td><a href="../api/make_solver.html#reactix.make_solver">make_solver</a></td>
-<td>Create a JIT-compiled solver function for reactive transport simulations.</td>
+<td><a href="../api/MixedSystem.html#reactix.MixedSystem">MixedSystem</a></td>
+<td>Represents a mixed (batch) reactor system without spatial transport.</td>
 </tr>
 <tr class="odd">
+<td><a href="../api/make_solver.html#reactix.make_solver">make_solver</a></td>
+<td>Create a JIT-compiled solver function for reactix simulations.</td>
+</tr>
+<tr class="even">
 <td><a href="../api/user_system_parameters.html#reactix.user_system_parameters">user_system_parameters</a></td>
 <td>Decorate system parameter classes with spatial awareness.</td>
 </tr>
@@ -653,16 +692,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
     function toggleCodeHandler(show) {
       return function(e) {
-        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
-        for (let i=0; i<detailsSrc.length; i++) {
-          const details = detailsSrc[i].parentElement;
+        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
+        for (let i=0; i<cellDetails.length; i++) {
+          const details = cellDetails[i];
           if (show) {
             details.open = true;
           } else {
             details.removeAttribute("open");
           }
         }
-        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
         const fromCls = show ? "hidden" : "unhidden";
         const toCls = show ? "unhidden" : "hidden";
         for (let i=0; i<cellCodeDivs.length; i++) {
@@ -1016,36 +1055,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Transport</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Core 1D reactive transport system objects and solver helpers.</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Spatial discretization, advection/dispersion schemes, and boundary conditions.</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="pp">|</span> <span class="pp">|</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">System</span><span class="co">](System.qmd#reactix.System)</span> <span class="pp">|</span> Represents a 1D reactive transport system. <span class="pp">|</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">Cells</span><span class="co">](Cells.qmd#reactix.Cells)</span> <span class="pp">|</span> Represents the spatial discretization of a 1D domain into cells. <span class="pp">|</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">Advection</span><span class="co">](Advection.qmd#reactix.Advection)</span> <span class="pp">|</span> Handles advection terms in the 1D transport equation using TVD schemes. <span class="pp">|</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">Dispersion</span><span class="co">](Dispersion.qmd#reactix.Dispersion)</span> <span class="pp">|</span> Handles dispersion and diffusion terms in the transport equation. <span class="pp">|</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">FixedConcentrationBoundary</span><span class="co">](FixedConcentrationBoundary.qmd#reactix.FixedConcentrationBoundary)</span> <span class="pp">|</span> Boundary condition with fixed concentration at the domain boundary. <span class="pp">|</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">make_solver</span><span class="co">](make_solver.qmd#reactix.make_solver)</span> <span class="pp">|</span> Create a JIT-compiled solver function for reactive transport simulations. <span class="pp">|</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">user_system_parameters</span><span class="co">](user_system_parameters.qmd#reactix.user_system_parameters)</span> <span class="pp">|</span> Decorate system parameter classes with spatial awareness. <span class="pp">|</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Species</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>Species declarations and species container utilities.</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="pp">|</span> <span class="pp">|</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">declare_species</span><span class="co">](declare_species.qmd#reactix.declare_species)</span> <span class="pp">|</span> Declare chemical species for reactive transport models. <span class="pp">|</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">Cells</span><span class="co">](Cells.qmd#reactix.Cells)</span> <span class="pp">|</span> Represents the spatial discretization of a 1D domain into cells. <span class="pp">|</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">Advection</span><span class="co">](Advection.qmd#reactix.Advection)</span> <span class="pp">|</span> Handles advection terms in the 1D transport equation using TVD schemes. <span class="pp">|</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">Dispersion</span><span class="co">](Dispersion.qmd#reactix.Dispersion)</span> <span class="pp">|</span> Handles dispersion and diffusion terms in the transport equation. <span class="pp">|</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">FixedConcentrationBoundary</span><span class="co">](FixedConcentrationBoundary.qmd#reactix.FixedConcentrationBoundary)</span> <span class="pp">|</span> Boundary condition with fixed concentration at the domain boundary. <span class="pp">|</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Systems</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Reactive transport and system containers, and solver helpers.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="pp">|</span> <span class="pp">|</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">TransportSystem</span><span class="co">](TransportSystem.qmd#reactix.TransportSystem)</span> <span class="pp">|</span> Represents a 1D reactive transport system. <span class="pp">|</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">MixedSystem</span><span class="co">](MixedSystem.qmd#reactix.MixedSystem)</span> <span class="pp">|</span> Represents a mixed (batch) reactor system without spatial transport. <span class="pp">|</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">make_solver</span><span class="co">](make_solver.qmd#reactix.make_solver)</span> <span class="pp">|</span> Create a JIT-compiled solver function for reactix simulations. <span class="pp">|</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">user_system_parameters</span><span class="co">](user_system_parameters.qmd#reactix.user_system_parameters)</span> <span class="pp">|</span> Decorate system parameter classes with spatial awareness. <span class="pp">|</span></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reactions</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Species</span></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>Kinetic reaction interfaces and spatial parameter helpers.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>Species declarations and species container utilities.</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="pp">|</span> <span class="pp">|</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">KineticReaction</span><span class="co">](KineticReaction.qmd#reactix.KineticReaction)</span> <span class="pp">|</span> Abstract base class for kinetic reactions in reactive transport. <span class="pp">|</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">reaction</span><span class="co">](reaction.qmd#reactix.reaction)</span> <span class="pp">|</span> Decorate a class to create spatially-aware reaction classes. <span class="pp">|</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">SpatiallyConst</span><span class="co">](SpatiallyConst.qmd#reactix.SpatiallyConst)</span> <span class="pp">|</span> Marker for parameters that are constant across the domain. <span class="pp">|</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">SpatiallyVarying</span><span class="co">](SpatiallyVarying.qmd#reactix.SpatiallyVarying)</span> <span class="pp">|</span> Marker for parameters that vary spatially in the domain. <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">declare_species</span><span class="co">](declare_species.qmd#reactix.declare_species)</span> <span class="pp">|</span> Declare chemical species for reactive transport models. <span class="pp">|</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reactions</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>Kinetic reaction interfaces and spatial parameter helpers.</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="pp">|</span> <span class="pp">|</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="pp">| ---</span> <span class="pp">| ---</span> <span class="pp">|</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">KineticReaction</span><span class="co">](KineticReaction.qmd#reactix.KineticReaction)</span> <span class="pp">|</span> Abstract base class for kinetic reactions in reactive transport. <span class="pp">|</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">reaction</span><span class="co">](reaction.qmd#reactix.reaction)</span> <span class="pp">|</span> Decorate a class to create spatially-aware reaction classes. <span class="pp">|</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">SpatiallyConst</span><span class="co">](SpatiallyConst.qmd#reactix.SpatiallyConst)</span> <span class="pp">|</span> Marker for parameters that are constant across the domain. <span class="pp">|</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">SpatiallyVarying</span><span class="co">](SpatiallyVarying.qmd#reactix.SpatiallyVarying)</span> <span class="pp">|</span> Marker for parameters that vary spatially in the domain. <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
