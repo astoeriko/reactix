@@ -34,6 +34,7 @@ import matplotlib.pyplot as plt
 import dataclasses
 import pandas as pd
 import xarray as xr
+import arviz as az
 
 from reactix import (
     Advection,
@@ -183,7 +184,7 @@ t_points = jnp.linspace(0, 8000, 123)
 
 coords = {
     "time_dense": np.array(t_points),
-    **measurement.coords
+    **{coord.name: coord.values for coord in measurement.coords.values()}
 }
 ```
 
@@ -249,7 +250,7 @@ with model:
 
 ```{python}
 with model:
-    prior = pm.sample_prior_predictive(draws=50)
+    prior = pm.sample_prior_predictive(draws=100, backend="jax", random_seed=33)
 ```
 
 ### Prior predictive checks
@@ -278,8 +279,7 @@ Note that sampling can take a while since thousands of model runs are needed. In
 
 ```{python}
 compiled = nutpie.compile_pymc_model(model, backend="jax", gradient_backend="jax")
-sampler = nutpie.sample(compiled, chains=2, blocking=False)
-
+sampler = nutpie.sample(compiled, chains=2, blocking=False, seed=33)
 ```
 
 After a while, we can use `sampler.inspect()` to obtain the intermediate results of the sampler and inspect them.
@@ -289,14 +289,33 @@ After a while, we can use `sampler.inspect()` to obtain the intermediate results
 trace = sampler.inspect()
 ```
 
+### Trace plot during the warm-up phase
+
 ```{python}
-# Plot the evolution of the decay coefficient during the warmup phase of the sampler
+# Plot the evolution of the decay coefficient during the warm-up phase of the sampler
 trace.warmup_posterior.k_dec.plot.line(x="draw")
 ```
 
 ```{python}
-# Plot concentration profiles in the warmup posterior
-trace.warmup_posterior.reactive_tracer.isel(chain=0, time_dense=20, draw=slice(20, None)).plot.line(x="x", hue="draw", add_legend=False);
+az.plot_trace(trace, var_names=["k_dec"])
 ```
 
+### Posterior distribution of the decay parameter
+
+```{python}
+az.plot_dist(trace, var_names=["k_dec"])
+```
+
+### Posterior concentration profile and breakthrough curve
+
+```{python}
+# Plot concentration profiles in the posterior
+trace.posterior.reactive_tracer.isel(chain=1, time_dense=20).plot.line(x="x", hue="draw", add_legend=False, alpha=0.1, color="C0");
+plt.scatter(system.cells.centers[idx_space], measurement.values, color="k", label="measurement", zorder=2)
+```
+
+```{python}
+trace.posterior.reactive_tracer.isel(chain=0, x=idx_space[0]).plot.line(x="time_dense", hue="draw", add_legend=False, alpha=0.1, color="C0");
+plt.scatter(t_points[idx_time], prior.observed_data.made_up_point, color="k", label="measurement", zorder=2)
+```
 
