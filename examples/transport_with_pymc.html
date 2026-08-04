@@ -536,7 +536,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This notebooks shows a toy example with a simple first-order decay reaction coupled to advective-dispersive transport. Based on an artificial concentration measurement, we will estimate the decay constant.</p>
 <section id="package-imports" class="level2">
 <h2 class="anchored" data-anchor-id="package-imports">Package imports</h2>
-<div id="18625e33" class="cell" data-execution_count="1">
+<div id="0d8469be" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure that that the ODE solver return NaN values when it fails instead of raising an error.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This is important to prevent the NUTS sampler from crashing when the ODE solver fails to integrate the system of equations,</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># but rather registering a divergence for the given parameter combination.</span></span>
@@ -545,11 +545,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>env: EQX_ON_ERROR=nan</code></pre>
 </div>
 </div>
-<div id="6f19c7b4" class="cell" data-execution_count="2">
+<div id="2f305dd1" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytensor</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pytensor.config.exception_verbosity <span class="op">=</span> <span class="st">"high"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="112dd325" class="cell" data-execution_count="3">
+<div id="130d41f9" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -574,7 +574,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc <span class="im">as</span> pm</span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nutpie</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="7363aeee" class="cell" data-execution_count="4">
+<div id="c24cb30b" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Enable 64-bit floating-point precision in JAX</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># See here: https://docs.kidger.site/diffrax/usage/how-to-choose-a-solver/#stiff-problems</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>jax.config.update(<span class="st">"jax_enable_x64"</span>, <span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -586,7 +586,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="reaction-kinetics" class="level3">
 <h3 class="anchored" data-anchor-id="reaction-kinetics">Reaction kinetics</h3>
 <p>We define a custom first-order decay reaction with Reactix:</p>
-<div id="178ed071" class="cell" data-execution_count="5">
+<div id="49714527" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">@reaction</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FirstOrderDecay(KineticReaction):</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    decay_coefficient: jax.Array</span>
@@ -606,7 +606,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="transport-system">Transport system</h3>
 <p>We set up a system with constant flow velocity and uniform discretization. At the inflow boundary, a constant-concentration boundary is applied with a time-invariant inflow concentration.</p>
 <p>To keep the code in the PyMC model definition concise, we define a function for setting up the reactive-transport system that takes all the parameters that we want to estimate as inputs. In this case, we want to estimate the first-order decay constant. Note that <code>make_system</code> takes an argument <code>decay_coefficient</code> which is then passed as a value to the <code>FirstOrderDecay</code> reaction object.</p>
-<div id="5f86b872" class="cell" data-execution_count="6">
+<div id="75e9e600" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_system(decay_coefficient):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the set of species and reactions</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    species_is_mobile <span class="op">=</span> Species(tracer<span class="op">=</span><span class="va">True</span>, reactive_tracer<span class="op">=</span><span class="va">True</span>)</span>
@@ -678,7 +678,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="measurement-point" class="level3">
 <h3 class="anchored" data-anchor-id="measurement-point">Measurement point</h3>
 <p>Below, we create an concentration data point that will be used for parameter estimation. We set a concentration of 0.5 at the 40th cell at the 20th time point.</p>
-<div id="57d4374d" class="cell" data-execution_count="7">
+<div id="62d2040b" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>idx_time <span class="op">=</span> np.array([<span class="dv">20</span>,])</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>idx_space <span class="op">=</span> np.array([<span class="dv">40</span>,])</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -693,7 +693,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="passing-coordinates-and-defining-prior-distributions" class="level3">
 <h3 class="anchored" data-anchor-id="passing-coordinates-and-defining-prior-distributions">Passing coordinates and defining prior distributions</h3>
 <p>PyMC return an <code>InferenceData</code> object with named arrays that have dimensions and coordinates (based on Xarray). In order to save the time as a coordinate for the simulated concentrations, we need to create a dictionary with all the coodinates.</p>
-<div id="4ade5fef" class="cell" data-execution_count="8">
+<div id="08633942" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>t_points <span class="op">=</span> jnp.linspace(<span class="dv">0</span>, <span class="dv">8000</span>, <span class="dv">123</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>coords <span class="op">=</span> {</span>
@@ -704,7 +704,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We can then pass these coordinates to the PyMC model. The first step in the model is to define prior distributions for all parameters that we would like to estimate.</p>
 <p>Here, we chose a half-normal distribution with a standard deviation of 0.01 for the decay coefficient and pass it to the function that builds the reactive-transport system.</p>
 <p>Finally, we also add the cell center locations as a coordinate to the PyMC <code>model</code>. This can only be done after creating the <code>system</code>, when the cell geometry is known.</p>
-<div id="7b22a259" class="cell" data-execution_count="9">
+<div id="c9a1fa40" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model(coords<span class="op">=</span>coords) <span class="im">as</span> model:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    decay_coefficient <span class="op">=</span> pm.HalfNormal(<span class="st">"k_dec"</span>, <span class="fl">0.01</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    system <span class="op">=</span> make_system(decay_coefficient)</span>
@@ -714,7 +714,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="setting-up-the-solver" class="level3">
 <h3 class="anchored" data-anchor-id="setting-up-the-solver">Setting up the solver</h3>
 <p>PyMC is built around the PyTensor library, whereas Reactix uses JAX. In order to be able to use JAX together with PyMC, the JAX code needs to be wrapped with the <code>pytensor.wrap_jax</code> decorator.</p>
-<div id="141c8c15" class="cell" data-execution_count="10">
+<div id="03947120" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> model:</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Initial conditions: all species start at zero concentration</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    zeros <span class="op">=</span> jnp.zeros(system.cells.n_cells)</span>
@@ -736,7 +736,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="saving-outputs-and-defining-the-likelihood" class="level3">
 <h3 class="anchored" data-anchor-id="saving-outputs-and-defining-the-likelihood">Saving outputs and defining the likelihood</h3>
-<div id="ccb989b3" class="cell" data-execution_count="11">
+<div id="f3727a0a" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> model:</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Save all concentrations as deterministic variables in the PyMC model for later analysis</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    fields <span class="op">=</span> dataclasses.fields(solution)</span>
@@ -754,7 +754,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sample-the-prior-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="sample-the-prior-distribution">Sample the prior distribution</h2>
-<div id="95e29287" class="cell" data-execution_count="12">
+<div id="aaad0ad0" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> model:</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    prior <span class="op">=</span> pm.sample_prior_predictive(draws<span class="op">=</span><span class="dv">100</span>, backend<span class="op">=</span><span class="st">"jax"</span>, random_seed<span class="op">=</span><span class="dv">33</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -763,7 +763,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The following plots show several draws from the prior of the simulated concentrations. This is a good check to assess if the chosen prior distributions for the parameters are reasonable. The measured concentrations is plotted alongside as a black dot.</p>
 <section id="concentration-profile-at-the-time-of-measurement" class="level4">
 <h4 class="anchored" data-anchor-id="concentration-profile-at-the-time-of-measurement">Concentration profile at the time of measurement</h4>
-<div id="dd3f3c1f" class="cell" data-execution_count="13">
+<div id="c0ad822c" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>prior.prior.reactive_tracer.isel(chain<span class="op">=</span><span class="dv">0</span>, time_dense<span class="op">=</span>idx_time[<span class="dv">0</span>]).plot.line(x<span class="op">=</span><span class="st">"x"</span>, hue<span class="op">=</span><span class="st">"draw"</span>, add_legend<span class="op">=</span><span class="va">False</span>)<span class="op">;</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>plt.scatter(system.cells.centers[idx_space], measurement.values, color<span class="op">=</span><span class="st">"k"</span>, label<span class="op">=</span><span class="st">"measurement"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -777,7 +777,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="breakthrough-curve-at-the-measurement-location" class="level4">
 <h4 class="anchored" data-anchor-id="breakthrough-curve-at-the-measurement-location">Breakthrough curve at the measurement location</h4>
-<div id="807ced3b" class="cell" data-execution_count="14">
+<div id="ff0adf98" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>prior.prior.reactive_tracer.isel(chain<span class="op">=</span><span class="dv">0</span>, x<span class="op">=</span>idx_space[<span class="dv">0</span>]).plot.line(x<span class="op">=</span><span class="st">"time_dense"</span>, hue<span class="op">=</span><span class="st">"draw"</span>, add_legend<span class="op">=</span><span class="va">False</span>)<span class="op">;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>plt.scatter(t_points[idx_time], prior.observed_data.made_up_point, color<span class="op">=</span><span class="st">"k"</span>, label<span class="op">=</span><span class="st">"measurement"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -794,7 +794,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="sample-the-posterior-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="sample-the-posterior-distribution">Sample the posterior distribution</h2>
 <p>Finally, we can sample the posterior distribution. We can use a state-of-the-art HMC sampler since gradient calculations are provided through automatic differentiation by JAX under the hood. Here we use the Nutpie sampler for PyMC. Note that you need to specify that JAX should be used as a backend for the posterior and gradient evaluation.</p>
-<div id="da51aa28" class="cell" data-execution_count="15">
+<div id="0e588d1a" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>compiled <span class="op">=</span> nutpie.compile_pymc_model(model, backend<span class="op">=</span><span class="st">"jax"</span>, gradient_backend<span class="op">=</span><span class="st">"jax"</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>trace <span class="op">=</span> nutpie.sample(compiled, chains<span class="op">=</span><span class="dv">2</span>, blocking<span class="op">=</span><span class="va">True</span>, seed<span class="op">=</span><span class="dv">33</span>, draws<span class="op">=</span><span class="dv">500</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -945,7 +945,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="trace-plot-during-the-warm-up-phase" class="level3">
 <h3 class="anchored" data-anchor-id="trace-plot-during-the-warm-up-phase">Trace plot during the warm-up phase</h3>
-<div id="a968eee1" class="cell" data-execution_count="16">
+<div id="7a0d9f4c" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the evolution of the decay coefficient during the warm-up phase of the sampler</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>trace.warmup_posterior.k_dec.plot.line(x<span class="op">=</span><span class="st">"draw"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
@@ -956,7 +956,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="a44e043d" class="cell" data-execution_count="17">
+<div id="42d0fe1b" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(trace, var_names<span class="op">=</span>[<span class="st">"k_dec"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -969,7 +969,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="posterior-distribution-of-the-decay-parameter" class="level3">
 <h3 class="anchored" data-anchor-id="posterior-distribution-of-the-decay-parameter">Posterior distribution of the decay parameter</h3>
-<div id="fab390ec" class="cell" data-execution_count="18">
+<div id="b67b6701" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>az.plot_dist(trace, var_names<span class="op">=</span>[<span class="st">"k_dec"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -982,7 +982,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="posterior-concentration-profile-and-breakthrough-curve" class="level3">
 <h3 class="anchored" data-anchor-id="posterior-concentration-profile-and-breakthrough-curve">Posterior concentration profile and breakthrough curve</h3>
-<div id="aaf95b0d" class="cell" data-execution_count="19">
+<div id="2d7e6d7c" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot concentration profiles in the posterior</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>trace.posterior.reactive_tracer.isel(chain<span class="op">=</span><span class="dv">1</span>, time_dense<span class="op">=</span><span class="dv">20</span>).plot.line(x<span class="op">=</span><span class="st">"x"</span>, hue<span class="op">=</span><span class="st">"draw"</span>, add_legend<span class="op">=</span><span class="va">False</span>, alpha<span class="op">=</span><span class="fl">0.1</span>, color<span class="op">=</span><span class="st">"C0"</span>)<span class="op">;</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>plt.scatter(system.cells.centers[idx_space], measurement.values, color<span class="op">=</span><span class="st">"k"</span>, label<span class="op">=</span><span class="st">"measurement"</span>, zorder<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -994,7 +994,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="36e3d945" class="cell" data-execution_count="20">
+<div id="99ad10c6" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>trace.posterior.reactive_tracer.isel(chain<span class="op">=</span><span class="dv">0</span>, x<span class="op">=</span>idx_space[<span class="dv">0</span>]).plot.line(x<span class="op">=</span><span class="st">"time_dense"</span>, hue<span class="op">=</span><span class="st">"draw"</span>, add_legend<span class="op">=</span><span class="va">False</span>, alpha<span class="op">=</span><span class="fl">0.1</span>, color<span class="op">=</span><span class="st">"C0"</span>)<span class="op">;</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>plt.scatter(t_points[idx_time], prior.observed_data.made_up_point, color<span class="op">=</span><span class="st">"k"</span>, label<span class="op">=</span><span class="st">"measurement"</span>, zorder<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
