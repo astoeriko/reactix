@@ -544,7 +544,7 @@ window.Quarto = {
 <p>In this example, we will consider a first order decay reaction:</p>
 <p><span class="math display">\[r = - k c\]</span></p>
 <p>However, more complicated reaction kinetics can easily be implemented with Reactix.</p>
-<div id="b95ac20d" class="cell" data-execution_count="1">
+<div id="65a62b11" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -554,12 +554,12 @@ window.Quarto = {
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>jax.config.update(<span class="st">"jax_enable_x64"</span>, <span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f4346f55" class="cell" data-execution_count="2">
+<div id="3f620a52" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Species <span class="op">=</span> declare_species([<span class="st">"tracer"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="define-the-reactions" class="level2">
 <h2 class="anchored" data-anchor-id="define-the-reactions">Define the reactions</h2>
-<div id="c7c61420" class="cell" data-execution_count="3">
+<div id="807f931f" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@reaction</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FirstOrderDecay(KineticReaction):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    decay_coefficient: jax.Array</span>
@@ -578,7 +578,7 @@ window.Quarto = {
 </section>
 <section id="set-up-the-system" class="level2">
 <h2 class="anchored" data-anchor-id="set-up-the-system">Set up the system</h2>
-<div id="30b85cb2" class="cell" data-execution_count="4">
+<div id="ad414b5d" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>c_in <span class="op">=</span> jnp.array(<span class="fl">1.0</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> jnp.array(<span class="fl">0.5</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>V <span class="op">=</span> jnp.array(<span class="fl">10.0</span>)</span>
@@ -592,24 +592,24 @@ window.Quarto = {
 </section>
 <section id="run-the-solver" class="level2">
 <h2 class="anchored" data-anchor-id="run-the-solver">Run the solver</h2>
-<div id="35cf7da1" class="cell" data-execution_count="5">
+<div id="f33e07ba" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t_points <span class="op">=</span> jnp.linspace(<span class="dv">0</span>, <span class="dv">200</span>, <span class="dv">123</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>solve <span class="op">=</span> make_solver(t_max<span class="op">=</span><span class="dv">200</span>, t_points<span class="op">=</span>t_points, rtol<span class="op">=</span><span class="fl">1e-6</span>, atol<span class="op">=</span><span class="fl">1e-18</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="21c4f183" class="cell" data-execution_count="6">
+<div id="2bf9ec54" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an array of zeros with the length of the number of cells</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>val0 <span class="op">=</span> jnp.zeros(())</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the initial conditions (all zeros in this case)</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> Species(tracer<span class="op">=</span>val0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="cb0ef6c0" class="cell" data-execution_count="7">
+<div id="787497c9" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>solution <span class="op">=</span> solve(state, reactor_system)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="compare-the-solution-against-an-analytical-solution" class="level2">
 <h2 class="anchored" data-anchor-id="compare-the-solution-against-an-analytical-solution">Compare the solution against an analytical solution</h2>
-<div id="9a248e4a" class="cell" data-execution_count="8">
+<div id="028424d4" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>c_0 <span class="op">=</span> val0</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>c_steady <span class="op">=</span> Q <span class="op">/</span> (Q <span class="op">+</span> k <span class="op">*</span> V) <span class="op">*</span> c_in</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>c_analytical <span class="op">=</span> c_steady <span class="op">+</span> (c_0 <span class="op">-</span> c_steady) <span class="op">*</span> np.exp(<span class="op">-</span>(Q <span class="op">/</span> V <span class="op">+</span> k) <span class="op">*</span> t_points)</span>
