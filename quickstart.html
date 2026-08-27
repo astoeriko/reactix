@@ -84,9 +84,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-fb5f3b3fb26a177c4af78adf70c87a98.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-b37018c1bb136ad2c3f564bc6f1689ea.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-fb5f3b3fb26a177c4af78adf70c87a98.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-cb5fc323f198dbef9f9fd5f63787dc25.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-c50a981e758141f51094f1bf6c5860be.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-cb5fc323f198dbef9f9fd5f63787dc25.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -537,7 +537,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Let’s build a simple 1-D transport model with a conservative tracer:</p>
 <section id="step-1-import-reactix" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-import-reactix">Step 1: Import Reactix</h3>
-<div id="38f6621d" class="cell" data-execution_count="1">
+<div id="c815dda3" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -549,7 +549,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-2-declare-chemical-species" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-declare-chemical-species">Step 2: Declare chemical species</h3>
-<div id="998d52d5" class="cell" data-execution_count="2">
+<div id="ec2d6fdf" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the species in your system</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Species <span class="op">=</span> declare_species([<span class="st">"tracer"</span>])</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -559,7 +559,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-3-set-up-the-domain-geometry-and-transport-parameters" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-set-up-the-domain-geometry-and-transport-parameters">Step 3: Set up the domain geometry and transport parameters</h3>
-<div id="73b0ed63" class="cell" data-execution_count="3">
+<div id="917e6ff7" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 1-D domain with 100 cells over 10 length units</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>n_cells <span class="op">=</span> <span class="dv">100</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>cells <span class="op">=</span> Cells.equally_spaced(length<span class="op">=</span><span class="fl">10.0</span>, n_cells<span class="op">=</span>n_cells)</span>
@@ -575,7 +575,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-4-set-boundary-conditions" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-set-boundary-conditions">Step 4: Set boundary conditions</h3>
-<div id="212039dc" class="cell" data-execution_count="4">
+<div id="cf0e4226" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixed concentration at inlet (left) and outlet (right)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>boundary_conditions <span class="op">=</span> [</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    FixedConcentrationBoundary(</span>
@@ -593,7 +593,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-5-create-the-transport-system" class="level3">
 <h3 class="anchored" data-anchor-id="step-5-create-the-transport-system">Step 5: Create the transport system</h3>
-<div id="1d7aa2ba" class="cell" data-execution_count="5">
+<div id="08372d82" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define system properties</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>porosity <span class="op">=</span> jnp.ones(n_cells) <span class="op">*</span> <span class="fl">0.3</span>  <span class="co"># 30% porosity</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>discharge_rate <span class="op">=</span> <span class="kw">lambda</span> t: jnp.array(<span class="fl">0.1</span>)  <span class="co"># Constant flow rate</span></span>
@@ -613,7 +613,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-6-solve-the-model-equations" class="level3">
 <h3 class="anchored" data-anchor-id="step-6-solve-the-model-equations">Step 6: Solve the model equations</h3>
-<div id="85922ed5" class="cell" data-execution_count="6">
+<div id="d25e723d" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create solver</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>t_max <span class="op">=</span> <span class="dv">50</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>t_points <span class="op">=</span> jnp.linspace(<span class="dv">0</span>, t_max, num<span class="op">=</span><span class="dv">200</span>)</span>
@@ -650,7 +650,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now let’s extend the model to include a first-order decay reaction:</p>
 <section id="step-1-define-the-reaction" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-define-the-reaction">Step 1: Define the reaction</h3>
-<div id="579278da" class="cell" data-execution_count="7">
+<div id="2ee3b66a" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> reactix <span class="im">import</span> KineticReaction, reaction</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">@reaction</span></span>
@@ -668,7 +668,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-2-add-reaction-to-system" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-add-reaction-to-system">Step 2: Add reaction to system</h3>
-<div id="58a882fd" class="cell" data-execution_count="8">
+<div id="834a0fe6" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create reaction instance</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>decay_reaction <span class="op">=</span> FirstOrderDecay(decay_coefficient<span class="op">=</span>jnp.array(<span class="fl">0.1</span>))</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -692,7 +692,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="multiple-species-example" class="level2">
 <h2 class="anchored" data-anchor-id="multiple-species-example">Multiple Species Example</h2>
 <p>For systems with multiple interacting species:</p>
-<div id="4006ba61" class="cell" data-execution_count="9">
+<div id="42c1df02" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Declare multiple species</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Species <span class="op">=</span> declare_species([<span class="st">"substrate"</span>, <span class="st">"product"</span>])</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>species_is_mobile <span class="op">=</span> Species(substrate<span class="op">=</span><span class="va">True</span>, product<span class="op">=</span><span class="va">True</span>)</span>

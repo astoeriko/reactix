@@ -72,6 +72,226 @@
     ]
   },
   {
+    "objectID": "api/SpatiallyConst.html",
+    "href": "api/SpatiallyConst.html",
+    "title": "",
+    "section": "",
+    "text": "Code",
+    "crumbs": [
+      "Reactions",
+      "SpatiallyConst"
+    ]
+  },
+  {
+    "objectID": "api/SpatiallyConst.html#parameters",
+    "href": "api/SpatiallyConst.html#parameters",
+    "title": "",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nvalue\njax.Array\nThe constant parameter value.\nrequired",
+    "crumbs": [
+      "Reactions",
+      "SpatiallyConst"
+    ]
+  },
+  {
+    "objectID": "api/reaction.html",
+    "href": "api/reaction.html",
+    "title": "",
+    "section": "",
+    "text": "Code",
+    "crumbs": [
+      "Reactions",
+      "reaction"
+    ]
+  },
+  {
+    "objectID": "api/reaction.html#parameters",
+    "href": "api/reaction.html#parameters",
+    "title": "",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ncls\ntype\nThe class to be decorated, typically a reaction implementation.\nrequired",
+    "crumbs": [
+      "Reactions",
+      "reaction"
+    ]
+  },
+  {
+    "objectID": "api/reaction.html#returns",
+    "href": "api/reaction.html#returns",
+    "title": "",
+    "section": "Returns",
+    "text": "Returns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ncallable\nA factory function that creates instances with spatial awareness.",
+    "crumbs": [
+      "Reactions",
+      "reaction"
+    ]
+  },
+  {
+    "objectID": "api/reaction.html#notes",
+    "href": "api/reaction.html#notes",
+    "title": "",
+    "section": "Notes",
+    "text": "Notes\nThe decorated class will automatically handle parameters marked with SpatiallyVarying or SpatiallyConst, enabling vectorized computations across spatial domains.",
+    "crumbs": [
+      "Reactions",
+      "reaction"
+    ]
+  },
+  {
+    "objectID": "api/index.html",
+    "href": "api/index.html",
+    "title": "",
+    "section": "",
+    "text": "Code",
+    "crumbs": [
+      "Home",
+      "API reference"
+    ]
+  },
+  {
+    "objectID": "api/index.html#transport",
+    "href": "api/index.html#transport",
+    "title": "",
+    "section": "Transport",
+    "text": "Transport\nSpatial discretization, advection/dispersion schemes, and boundary conditions.\n\n\n\nCells\nRepresents the spatial discretization of a 1D domain into cells.\n\n\nAdvection\nHandles advection terms in the 1D transport equation using TVD schemes.\n\n\nDispersion\nHandles dispersion and diffusion terms in the transport equation.\n\n\nFixedConcentrationBoundary\nBoundary condition with fixed concentration at the domain boundary.",
+    "crumbs": [
+      "Home",
+      "API reference"
+    ]
+  },
+  {
+    "objectID": "api/index.html#systems",
+    "href": "api/index.html#systems",
+    "title": "",
+    "section": "Systems",
+    "text": "Systems\nReactive transport and system containers, and solver helpers.\n\n\n\nTransportSystem\nRepresents a 1D reactive transport system.\n\n\nMixedSystem\nRepresents a mixed (batch) reactor system without spatial transport.\n\n\nmake_solver\nCreate a JIT-compiled solver function for reactix simulations.\n\n\nuser_system_parameters\nDecorate system parameter classes with spatial awareness.",
+    "crumbs": [
+      "Home",
+      "API reference"
+    ]
+  },
+  {
+    "objectID": "api/index.html#species",
+    "href": "api/index.html#species",
+    "title": "",
+    "section": "Species",
+    "text": "Species\nSpecies declarations and species container utilities.\n\n\n\ndeclare_species\nDeclare chemical species for reactive transport models.",
+    "crumbs": [
+      "Home",
+      "API reference"
+    ]
+  },
+  {
+    "objectID": "api/index.html#reactions",
+    "href": "api/index.html#reactions",
+    "title": "",
+    "section": "Reactions",
+    "text": "Reactions\nKinetic reaction interfaces and spatial parameter helpers.\n\n\n\nKineticReaction\nAbstract base class for kinetic reactions in reactive transport.\n\n\nreaction\nDecorate a class to create spatially-aware reaction classes.\n\n\nSpatiallyConst\nMarker for parameters that are constant across the domain.\n\n\nSpatiallyVarying\nMarker for parameters that vary spatially in the domain.",
+    "crumbs": [
+      "Home",
+      "API reference"
+    ]
+  },
+  {
+    "objectID": "api/SpatiallyVarying.html",
+    "href": "api/SpatiallyVarying.html",
+    "title": "",
+    "section": "",
+    "text": "Code",
+    "crumbs": [
+      "Reactions",
+      "SpatiallyVarying"
+    ]
+  },
+  {
+    "objectID": "api/SpatiallyVarying.html#parameters",
+    "href": "api/SpatiallyVarying.html#parameters",
+    "title": "",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nvalue\njax.Array\nThe parameter values, with shape including the spatial dimension.\nrequired\n\n\naxis\nint\nThe axis along which the parameter varies spatially. Default is 0.\n0",
+    "crumbs": [
+      "Reactions",
+      "SpatiallyVarying"
+    ]
+  },
+  {
+    "objectID": "api/declare_species.html",
+    "href": "api/declare_species.html",
+    "title": "",
+    "section": "",
+    "text": "Code",
+    "crumbs": [
+      "Species",
+      "declare_species"
+    ]
+  },
+  {
+    "objectID": "api/declare_species.html#parameters",
+    "href": "api/declare_species.html#parameters",
+    "title": "",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nnames\nlist[str]\nList of species names to declare.\nrequired\n\n\nshapes\ndict[str, tuple[int, …]]\nDictionary mapping species names to their concentration array shapes. Species not in this dict default to scalar shape ().\nNone",
+    "crumbs": [
+      "Species",
+      "declare_species"
+    ]
+  },
+  {
+    "objectID": "api/declare_species.html#returns",
+    "href": "api/declare_species.html#returns",
+    "title": "",
+    "section": "Returns",
+    "text": "Returns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ntype\nA dataclass subclass of AbstractSpecies with the specified species as attributes, registered for JAX tree operations.",
+    "crumbs": [
+      "Species",
+      "declare_species"
+    ]
+  },
+  {
+    "objectID": "api/declare_species.html#notes",
+    "href": "api/declare_species.html#notes",
+    "title": "",
+    "section": "Notes",
+    "text": "Notes\nThe returned class includes zeros() and int_zeros() class methods for creating zero-valued instances, and an add(name, value) method for updating species concentrations.\nFor example, the call declare_species([\"tracer\"]) is equivalent to:\n.. code-block:: python\n@jax.tree_util.register_dataclass\n@dataclass(frozen=True)\nclass Species(AbstractSpecies):\n    tracer: jax.Array\n\n    @classmethod\n    def zeros(cls) -&gt; \"Species\":\n        return Species(tracer=jnp.zeros(()))\n\n    @classmethod\n    def int_zeros(cls):\n        return Species(tracer=0)",
+    "crumbs": [
+      "Species",
+      "declare_species"
+    ]
+  },
+  {
+    "objectID": "api/TransportSystem.html",
+    "href": "api/TransportSystem.html",
+    "title": "",
+    "section": "",
+    "text": "Code",
+    "crumbs": [
+      "Systems",
+      "TransportSystem"
+    ]
+  },
+  {
+    "objectID": "api/TransportSystem.html#parameters",
+    "href": "api/TransportSystem.html#parameters",
+    "title": "",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nporosity\njax.Array\nPorosity of the medium, either scalar or per cell.\nrequired\n\n\ndischarge\nCallable[[jax.Array], jax.Array]\nFunction that computes discharge given time.\nrequired\n\n\ncells\nCells\nSpatial discretization of the domain.\nrequired\n\n\nadvection\nAdvection\nAdvection scheme parameters.\nrequired\n\n\ndispersion\nDispersion\nDispersion scheme parameters.\nrequired\n\n\nspecies_is_mobile\nAbstractSpecies\nSpecies mobility information.\nrequired\n\n\nreactions\nlist[KineticReaction]\nList of kinetic reactions. Default is empty list.\nlist()\n\n\nbcs\nlist[BoundaryCondition]\nList of boundary conditions. Default is empty list.\nlist()\n\n\nparameters\nAny\nAdditional system parameters. Default is None. Must be created with @user_system_parameters for spatial awareness and JAX compatibility.\nNone",
+    "crumbs": [
+      "Systems",
+      "TransportSystem"
+    ]
+  },
+  {
+    "objectID": "api/TransportSystem.html#methods",
+    "href": "api/TransportSystem.html#methods",
+    "title": "",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nbuild\nBuild a configured reactive transport system.\n\n\ncell_velocity\nCompute the pore-water velocity in each cell.\n\n\n\n\nbuild\nTransportSystem.build(\n    cells,\n    advection,\n    dispersion,\n    bcs=None,\n    species_is_mobile,\n    reactions=None,\n    discharge,\n    porosity,\n    parameters=None,\n)\nBuild a configured reactive transport system.\nThis convenience constructor validates input shapes and normalizes scalar inputs before creating a TransportSystem instance.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ncells\nCells\nSpatial discretization of the domain.\nrequired\n\n\nadvection\nAdvection\nAdvection scheme parameters.\nrequired\n\n\ndispersion\nDispersion\nDispersion scheme parameters.\nrequired\n\n\nbcs\nlist[BoundaryCondition] or None\nList of boundary conditions. Default is None.\nNone\n\n\nspecies_is_mobile\nAbstractSpecies\nSpecies mobility information.\nrequired\n\n\nreactions\nlist[KineticReaction] or None\nList of kinetic reactions. Default is None.\nNone\n\n\ndischarge\nCallable[[jax.Array], jax.Array] or jax.Array\nDischarge function or scalar discharge value.\nrequired\n\n\nporosity\njax.Array\nPorosity of the medium, either scalar or per cell.\nrequired\n\n\nparameters\nAny or None\nAdditional system parameters. Default is None. Must be created with @user_system_parameters for spatial operations.\nNone\n\n\n\n\n\nReturns\n\n\n\nName\nType\nDescription\n\n\n\n\n\nTransportSystem\nConfigured reactive transport system.\n\n\n\n\n\nRaises\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf porosity has an invalid shape or a boundary condition is incompatible with the selected species.\n\n\n\n\n\n\ncell_velocity\nTransportSystem.cell_velocity(t)\nCompute the pore-water velocity in each cell.\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nt\njax.Array\nCurrent simulation time.\nrequired\n\n\n\n\n\nReturns\n\n\n\nName\nType\nDescription\n\n\n\n\n\njax.Array\nVelocity in each cell.",
+    "crumbs": [
+      "Systems",
+      "TransportSystem"
+    ]
+  },
+  {
     "objectID": "api/Cells.html",
     "href": "api/Cells.html",
     "title": "",
@@ -116,295 +336,111 @@
     ]
   },
   {
-    "objectID": "api/user_system_parameters.html",
-    "href": "api/user_system_parameters.html",
-    "title": "",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Reactix",
     "section": "",
-    "text": "Code",
-    "crumbs": [
-      "Systems",
-      "user_system_parameters"
-    ]
-  },
-  {
-    "objectID": "api/user_system_parameters.html#parameters",
-    "href": "api/user_system_parameters.html#parameters",
-    "title": "",
-    "section": "Parameters",
-    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ncls\ntype\nThe class to be decorated.\nrequired",
-    "crumbs": [
-      "Systems",
-      "user_system_parameters"
-    ]
-  },
-  {
-    "objectID": "api/user_system_parameters.html#returns",
-    "href": "api/user_system_parameters.html#returns",
-    "title": "",
-    "section": "Returns",
-    "text": "Returns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ncallable\nA factory function that creates instances with spatial parameter support.",
-    "crumbs": [
-      "Systems",
-      "user_system_parameters"
-    ]
-  },
-  {
-    "objectID": "api/user_system_parameters.html#notes",
-    "href": "api/user_system_parameters.html#notes",
-    "title": "",
-    "section": "Notes",
-    "text": "Notes\nSimilar to the @reaction decorator, this allows parameters to be marked as SpatiallyVarying or SpatiallyConst for vectorized computations.",
-    "crumbs": [
-      "Systems",
-      "user_system_parameters"
-    ]
-  },
-  {
-    "objectID": "api/TransportSystem.html",
-    "href": "api/TransportSystem.html",
-    "title": "",
-    "section": "",
-    "text": "Code",
-    "crumbs": [
-      "Systems",
-      "TransportSystem"
-    ]
-  },
-  {
-    "objectID": "api/TransportSystem.html#parameters",
-    "href": "api/TransportSystem.html#parameters",
-    "title": "",
-    "section": "Parameters",
-    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nporosity\njax.Array\nPorosity of the medium, either scalar or per cell.\nrequired\n\n\ndischarge\nCallable[[jax.Array], jax.Array]\nFunction that computes discharge given time.\nrequired\n\n\ncells\nCells\nSpatial discretization of the domain.\nrequired\n\n\nadvection\nAdvection\nAdvection scheme parameters.\nrequired\n\n\ndispersion\nDispersion\nDispersion scheme parameters.\nrequired\n\n\nspecies_is_mobile\nAbstractSpecies\nSpecies mobility information.\nrequired\n\n\nreactions\nlist[KineticReaction]\nList of kinetic reactions. Default is empty list.\nlist()\n\n\nbcs\nlist[BoundaryCondition]\nList of boundary conditions. Default is empty list.\nlist()\n\n\nparameters\nAny\nAdditional system parameters. Default is None. Must be created with @user_system_parameters for spatial awareness and JAX compatibility.\nNone",
-    "crumbs": [
-      "Systems",
-      "TransportSystem"
-    ]
-  },
-  {
-    "objectID": "api/TransportSystem.html#methods",
-    "href": "api/TransportSystem.html#methods",
-    "title": "",
-    "section": "Methods",
-    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nbuild\nBuild a configured reactive transport system.\n\n\ncell_velocity\nCompute the pore-water velocity in each cell.\n\n\n\n\nbuild\nTransportSystem.build(\n    cells,\n    advection,\n    dispersion,\n    bcs=None,\n    species_is_mobile,\n    reactions=None,\n    discharge,\n    porosity,\n    parameters=None,\n)\nBuild a configured reactive transport system.\nThis convenience constructor validates input shapes and normalizes scalar inputs before creating a TransportSystem instance.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ncells\nCells\nSpatial discretization of the domain.\nrequired\n\n\nadvection\nAdvection\nAdvection scheme parameters.\nrequired\n\n\ndispersion\nDispersion\nDispersion scheme parameters.\nrequired\n\n\nbcs\nlist[BoundaryCondition] or None\nList of boundary conditions. Default is None.\nNone\n\n\nspecies_is_mobile\nAbstractSpecies\nSpecies mobility information.\nrequired\n\n\nreactions\nlist[KineticReaction] or None\nList of kinetic reactions. Default is None.\nNone\n\n\ndischarge\nCallable[[jax.Array], jax.Array] or jax.Array\nDischarge function or scalar discharge value.\nrequired\n\n\nporosity\njax.Array\nPorosity of the medium, either scalar or per cell.\nrequired\n\n\nparameters\nAny or None\nAdditional system parameters. Default is None. Must be created with @user_system_parameters for spatial operations.\nNone\n\n\n\n\n\nReturns\n\n\n\nName\nType\nDescription\n\n\n\n\n\nTransportSystem\nConfigured reactive transport system.\n\n\n\n\n\nRaises\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf porosity has an invalid shape or a boundary condition is incompatible with the selected species.\n\n\n\n\n\n\ncell_velocity\nTransportSystem.cell_velocity(t)\nCompute the pore-water velocity in each cell.\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nt\njax.Array\nCurrent simulation time.\nrequired\n\n\n\n\n\nReturns\n\n\n\nName\nType\nDescription\n\n\n\n\n\njax.Array\nVelocity in each cell.",
-    "crumbs": [
-      "Systems",
-      "TransportSystem"
-    ]
-  },
-  {
-    "objectID": "api/FixedConcentrationBoundary.html",
-    "href": "api/FixedConcentrationBoundary.html",
-    "title": "",
-    "section": "",
-    "text": "Code",
-    "crumbs": [
-      "Transport",
-      "FixedConcentrationBoundary"
-    ]
-  },
-  {
-    "objectID": "api/FixedConcentrationBoundary.html#parameters",
-    "href": "api/FixedConcentrationBoundary.html#parameters",
-    "title": "",
-    "section": "Parameters",
-    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nfixed_concentration\nfloat or Callable[[jax.Array], jax.Array]\nThe fixed concentration value, either constant or time-dependent.\nrequired\n\n\nis_active\nCallable[[jax.Array, TransportSystem], jax.Array]\nFunction determining if the boundary condition is active. Inherited from BoundaryCondition.\nlambda t, system: jnp.array(True)\n\n\nspecies_selector\nCallable\nFunction to select which species this applies to. Inherited from BoundaryCondition.\nrequired\n\n\nboundary\nLiteral['left', 'right']\nWhich boundary this applies to. Inherited from BoundaryCondition.\nrequired",
-    "crumbs": [
-      "Transport",
-      "FixedConcentrationBoundary"
-    ]
-  },
-  {
-    "objectID": "api/FixedConcentrationBoundary.html#notes",
-    "href": "api/FixedConcentrationBoundary.html#notes",
-    "title": "",
-    "section": "Notes",
-    "text": "Notes\nFor inflow boundaries, both advective and dispersive fluxes contribute. For outflow boundaries, only advective flux is considered.",
-    "crumbs": [
-      "Transport",
-      "FixedConcentrationBoundary"
-    ]
-  },
-  {
-    "objectID": "api/FixedConcentrationBoundary.html#methods",
-    "href": "api/FixedConcentrationBoundary.html#methods",
-    "title": "",
-    "section": "Methods",
-    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\ncompute_flux\nCompute the advective and dispersive flux at the boundary.\n\n\n\n\ncompute_flux\nFixedConcentrationBoundary.compute_flux(time, system, boundary_cell_state)\nCompute the advective and dispersive flux at the boundary.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\njax.Array\nCurrent simulation time.\nrequired\n\n\nsystem\nTransportSystem\nThe reactive transport system.\nrequired\n\n\nboundary_cell_state\njax.Array\nConcentration in the boundary cell.\nrequired\n\n\n\n\n\nReturns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\njax.Array\nThe total flux (advective + dispersive) at the boundary.",
-    "crumbs": [
-      "Transport",
-      "FixedConcentrationBoundary"
-    ]
-  },
-  {
-    "objectID": "api/make_solver.html",
-    "href": "api/make_solver.html",
-    "title": "",
-    "section": "",
-    "text": "Code",
-    "crumbs": [
-      "Systems",
-      "make_solver"
-    ]
-  },
-  {
-    "objectID": "api/make_solver.html#parameters",
-    "href": "api/make_solver.html#parameters",
-    "title": "",
-    "section": "Parameters",
-    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nt_max\nfloat\nMaximum simulation time.\nrequired\n\n\nt_points\njax.Array\nTime points at which to save the solution.\nrequired\n\n\nrtol\nfloat\nRelative tolerance for the solver. Default is 1e-8.\n1e-08\n\n\natol\nfloat\nAbsolute tolerance for the solver. Default is 1e-8.\n1e-08\n\n\nsolver\ndiffrax.AbstractSolver\nODE solver to use. Default is Tsit5.\nNone\n\n\nt0\nfloat\nInitial time. Default is 0.\n0\n\n\ndt0\nfloat\nInitial time step. Default is None (auto).\nNone\n\n\ndevice\njax.Device\nJAX device to run on. Default is CPU.\nNone",
-    "crumbs": [
-      "Systems",
-      "make_solver"
-    ]
-  },
-  {
-    "objectID": "api/make_solver.html#returns",
-    "href": "api/make_solver.html#returns",
-    "title": "",
-    "section": "Returns",
-    "text": "Returns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nsolve\ncallable\nJIT-compiled function that takes initial state and args, returns solution.",
-    "crumbs": [
-      "Systems",
-      "make_solver"
-    ]
-  },
-  {
-    "objectID": "api/make_solver.html#notes",
-    "href": "api/make_solver.html#notes",
-    "title": "",
-    "section": "Notes",
-    "text": "Notes\nThe returned solver function has signature solve(y0, args) where y0 is the initial species concentrations and args are additional arguments passed to the RHS function.",
-    "crumbs": [
-      "Systems",
-      "make_solver"
-    ]
-  },
-  {
-    "objectID": "api/SpatiallyConst.html",
-    "href": "api/SpatiallyConst.html",
-    "title": "",
-    "section": "",
-    "text": "Code",
-    "crumbs": [
-      "Reactions",
-      "SpatiallyConst"
-    ]
-  },
-  {
-    "objectID": "api/SpatiallyConst.html#parameters",
-    "href": "api/SpatiallyConst.html#parameters",
-    "title": "",
-    "section": "Parameters",
-    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nvalue\njax.Array\nThe constant parameter value.\nrequired",
-    "crumbs": [
-      "Reactions",
-      "SpatiallyConst"
-    ]
-  },
-  {
-    "objectID": "api/MixedSystem.html",
-    "href": "api/MixedSystem.html",
-    "title": "",
-    "section": "",
-    "text": "Code",
-    "crumbs": [
-      "Systems",
-      "MixedSystem"
-    ]
-  },
-  {
-    "objectID": "api/MixedSystem.html#parameters",
-    "href": "api/MixedSystem.html#parameters",
-    "title": "",
-    "section": "Parameters",
-    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nreactions\nlist[KineticReaction]\nList of kinetic reactions. Default is empty list.\nlist()\n\n\ndischarge\nCallable[[jax.Array], jax.Array] or jax.Array\nFunction that computes discharge (volumetric flow rate) given time, or a constant discharge value.\nrequired\n\n\ninflow_concentration\nAbstractSpecies\nConcentration of species in the inflow.\nrequired\n\n\nvolume\njax.Array\nVolume of the mixed reactor.\nrequired\n\n\nparameters\nAny\nAdditional system parameters. Default is None.\nNone",
-    "crumbs": [
-      "Systems",
-      "MixedSystem"
-    ]
-  },
-  {
-    "objectID": "api/MixedSystem.html#methods",
-    "href": "api/MixedSystem.html#methods",
-    "title": "",
-    "section": "Methods",
-    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nbuild\nBuild a configured mixed reactor system.\n\n\ncompute_inflow_outflow\nCompute the inflow/outflow contribution to the rate of change of concentrations.\n\n\n\n\nbuild\nMixedSystem.build(\n    reactions=None,\n    discharge,\n    inflow_concentration,\n    volume,\n    parameters=None,\n)\nBuild a configured mixed reactor system.\nThis convenience constructor validates input shapes and normalizes scalar inputs before creating a MixedSystem instance.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nreactions\nlist[KineticReaction] or None\nList of kinetic reactions. Default is None.\nNone\n\n\ndischarge\nCallable[[jax.Array], jax.Array] or jax.Array\nDischarge function or scalar discharge value.\nrequired\n\n\ninflow_concentration\nAbstractSpecies\nConcentration of species in the inflow.\nrequired\n\n\nvolume\njax.Array\nVolume of the mixed reactor.\nrequired\n\n\nparameters\nAny or None\nAdditional system parameters. Default is None.\nNone\n\n\n\n\n\nReturns\n\n\n\nName\nType\nDescription\n\n\n\n\n\nMixedSystem\nConfigured mixed reactor system.\n\n\n\n\n\n\ncompute_inflow_outflow\nMixedSystem.compute_inflow_outflow(time, state)\nCompute the inflow/outflow contribution to the rate of change of concentrations.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\njax.Array\nCurrent simulation time.\nrequired\n\n\nstate\nAbstractSpecies\nCurrent species concentrations.\nrequired\n\n\n\n\n\nReturns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nAbstractSpecies\nRate of change due to inflow/outflow (dc/dt).",
-    "crumbs": [
-      "Systems",
-      "MixedSystem"
-    ]
-  },
-  {
-    "objectID": "installation.html",
-    "href": "installation.html",
-    "title": "Installation",
-    "section": "",
-    "text": "Create an environment\nTo avoid possible dependency conflicts, we recommend installing Reactix in a dedicated environment. Reactix requires Python 3.11 or later.\nYou can create an environment:\nwith uv:\nuv venv reactix-env\nsource reactix-env/bin/activate  # Linux/macOS\nreactix-env\\Scripts\\activate     # Windows\nwith conda:\nconda create -n reactix python=3.13\nconda activate reactix\nor alternatively with venv:\npython -m venv reactix-env\nsource reactix-env/bin/activate   # Linux/macOS\nreactix-env\\Scripts\\activate      # Windows\nActivate the environment before installing the package.\n\n\n\n\n\n\nNote\n\n\n\nIf you don’t have uv installed, you can get it with:\n# Linux/macOS\ncurl -LsSf https://astral.sh/uv/install.sh | sh\n\n# Windows (PowerShell)\npowershell -ExecutionPolicy ByPass -c \"irm https://astral.sh/uv/install.ps1 | iex\"\n\n# Or via pip\npip install uv\n\n\n\n\nInstall Reactix\nTo install the package you can use conda, pip or uv. The package is available on PyPI and conda-forge.\n\nuv (from PyPI):\nuv pip install reactix\n\n\nconda (from conda-forge):\nconda install -c conda-forge reactix\n\n\npip (from PyPI):\npip install reactix\n\n\n\nDependencies\nReactix depends on JAX, diffrax, and PyMC. These are installed automatically when installing Reactix via pip, uv, or conda.\n\nJAX and GPU support: GPU support integration is considered for a future release. Currently, Reactix can only be used with CPU-based JAX installations.\n\n\n\n\n\n\n\n Back to top",
+    "text": "Reactix is a Python package for simulating reactive transport of chemical species suitable for one-dimensional systems with advection, dispersion and kinetic reactions.\nReaction kinetics can be defined flexibly in plain Python. The package combines a finite volume discretization in space with advanced ODE solvers from diffrax for efficient time integration.\nReactix is built on the JAX ecosystem which provides automatic differentiation, making the models fully differentiable. This enables the use of gradient-based methods for sensitivity analysis and uncertainty quantification. The package integrates seamlessly with PyMC for Bayesian modeling and parameter estimation.",
     "crumbs": [
       "Home",
       "Get started",
-      "Installation"
+      "Reactix"
     ]
   },
   {
-    "objectID": "examples/mixed-reactor.html",
-    "href": "examples/mixed-reactor.html",
-    "title": "Mixed reactor example",
+    "objectID": "index.html#what-reactix-is-for",
+    "href": "index.html#what-reactix-is-for",
+    "title": "Reactix",
+    "section": "What Reactix is for",
+    "text": "What Reactix is for\nUse Reactix when you:\n\nwant to easily implement models with custom reaction kinetics,\ncan reasonably simplify the system to one spatial dimension (e.g., column experiment, groundwater transport along a flow line),\nwant to quantify parameter uncertainty with Bayesian methods,\nlike to script your model in Python instead of using graphical interfaces or input files.\n\nReactix might not be the right choice if…\n\nyour model needs to be 2-D or 3-D,\nthe system involves a lot of equilibrium chemical reactions (like in PHREEQC),\nyou want to couple groundwater flow and transport simulations.",
+    "crumbs": [
+      "Home",
+      "Get started",
+      "Reactix"
+    ]
+  },
+  {
+    "objectID": "index.html#main-components",
+    "href": "index.html#main-components",
+    "title": "Reactix",
+    "section": "Main components",
+    "text": "Main components\nThe library is organized around three concepts: a transport system, chemical species, and reactions. All components are documented in the API reference.",
+    "crumbs": [
+      "Home",
+      "Get started",
+      "Reactix"
+    ]
+  },
+  {
+    "objectID": "index.html#start-here",
+    "href": "index.html#start-here",
+    "title": "Reactix",
+    "section": "Start here",
+    "text": "Start here\n\nGo to Installation to set up Reactix.\nContinue to Quickstart for a brief introduction to Reactix.\nBrowse Examples for longer workflows.\nUse the API reference for the full docstring-based reference.\nCheck out the Developer Guide and Contributing if you want to contribute to the project.",
+    "crumbs": [
+      "Home",
+      "Get started",
+      "Reactix"
+    ]
+  },
+  {
+    "objectID": "developer-guide.html",
+    "href": "developer-guide.html",
+    "title": "Developer guide",
     "section": "",
-    "text": "This notebook shows how to use Reactix to simulate an mixed reactor system.\nThe system is described by the following ordinary differential equation:\n\\[\\frac{dc}{dt} = \\frac{Q}{V}\\left(c - c_{\\mathrm{in}}\\right) + r\\]\nwhere \\(c\\) is the concentration, \\(Q\\) is the flow rate of the reactor, \\(V\\) its volume, \\(c_{\\mathrm{in}}\\) the inflowing concentration, and \\(r\\) the reaction rates. Initially the concentration in the system is \\(c_0\\).\nIn this example, we will consider a first order decay reaction:\n\\[r = - k c\\]\nHowever, more complicated reaction kinetics can easily be implemented with Reactix.\nimport jax\nimport jax.numpy as jnp\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nfrom reactix import MixedSystem, declare_species, make_solver, KineticReaction, reaction\n\njax.config.update(\"jax_enable_x64\", True)\nSpecies = declare_species([\"tracer\"])",
+    "text": "The user instructions are mentioned in the introduction guide. This page is intended for developers who want to contribute to the codebase or documentation.",
     "crumbs": [
       "Home",
-      "Examples",
-      "Mixed reactor example"
+      "Development",
+      "Developer guide"
     ]
   },
   {
-    "objectID": "examples/mixed-reactor.html#define-the-reactions",
-    "href": "examples/mixed-reactor.html#define-the-reactions",
-    "title": "Mixed reactor example",
-    "section": "Define the reactions",
-    "text": "Define the reactions\n\n@reaction\nclass FirstOrderDecay(KineticReaction):\n    decay_coefficient: jax.Array\n\n    def rate(self, time, state, system):\n        return self.decay_coefficient * state.tracer\n\n    def stoichiometry(self, time, state, system):\n        return {\n            \"tracer\": -1,\n        }\n\nk = 0.02\nreactions = [FirstOrderDecay(decay_coefficient=k)]",
+    "objectID": "developer-guide.html#development-setup",
+    "href": "developer-guide.html#development-setup",
+    "title": "Developer guide",
+    "section": "Development setup",
+    "text": "Development setup\nCreate an environment, activate it, and install the package in editable mode with the relevant dependency groups.\nuv pip install -e \".[dev]\"\nuv pip install -e \".[dev,docs]\" # if you want to build  and contribute to the documentation as well",
     "crumbs": [
       "Home",
-      "Examples",
-      "Mixed reactor example"
+      "Development",
+      "Developer guide"
     ]
   },
   {
-    "objectID": "examples/mixed-reactor.html#set-up-the-system",
-    "href": "examples/mixed-reactor.html#set-up-the-system",
-    "title": "Mixed reactor example",
-    "section": "Set up the system",
-    "text": "Set up the system\n\nc_in = jnp.array(1.0)\nQ = jnp.array(0.5)\nV = jnp.array(10.0)\nreactor_system = MixedSystem.build(\n    reactions=reactions,\n    discharge=Q,\n    volume=V,\n    inflow_concentration=Species(tracer=c_in),\n)",
+    "objectID": "developer-guide.html#before-opening-a-pull-request",
+    "href": "developer-guide.html#before-opening-a-pull-request",
+    "title": "Developer guide",
+    "section": "Before opening a pull request",
+    "text": "Before opening a pull request\nIf commiting code:\n\nRun the test suite.\nRun Ruff and any formatting checks used by the repository.\n\nIf commiting documentation:\n\nRender the documentation locally and confirm that API reference pages still build correctly.",
     "crumbs": [
       "Home",
-      "Examples",
-      "Mixed reactor example"
+      "Development",
+      "Developer guide"
     ]
   },
   {
-    "objectID": "examples/mixed-reactor.html#run-the-solver",
-    "href": "examples/mixed-reactor.html#run-the-solver",
-    "title": "Mixed reactor example",
-    "section": "Run the solver",
-    "text": "Run the solver\n\nt_points = jnp.linspace(0, 200, 123)\nsolve = make_solver(t_max=200, t_points=t_points, rtol=1e-6, atol=1e-18)\n\n\n# Create an array of zeros with the length of the number of cells\nval0 = jnp.zeros(())\n\n# Set up the initial conditions (all zeros in this case)\nstate = Species(tracer=val0)\n\n\nsolution = solve(state, reactor_system)",
+    "objectID": "developer-guide.html#documentation-workflow",
+    "href": "developer-guide.html#documentation-workflow",
+    "title": "Developer guide",
+    "section": "Documentation workflow",
+    "text": "Documentation workflow\n\nPrerequisites\n\nQuarto installed in your system\nPython environment with Reactix and docs dependencies installed (.[docs])\nJupyter kernel\n\n\n\nBuilding the documentation\nThe documentation site is built with Quarto, and the API reference is generated from package docstrings with quartodoc. All documentation source files live in the docs/ directory.\nA practical local workflow is:\n# Navigate to the docs directory\ncd docs\n\n# Step 1: regenerate the API reference pages from docstrings\nquartodoc build\n\n# Step 2: preview the site with live reload\nquarto preview\nOnly re-run quartodoc build when you change docstrings or the quartodoc sections in _quarto.yml. For edits to .qmd pages only, quarto preview alone is sufficient since it watches for file changes automatically.\nTo do a one-off full build without a live server:\nquarto render\nThe rendered site is written to docs/_site/.\n\n\nAdding or updating example notebooks\nExample notebooks live in the notebooks/ folder at the repository root. To include a notebook in the documentation, convert it manually to a .qmd file and place it in docs/examples/:\nquarto convert ../notebooks/reactix-notebook.ipynb --output docs/examples/reactix-notebook.qmd\n\n\nUpdating the API reference\nThe API reference is configured in the quartodoc: block of docs/_quarto.yml. To add a new public symbol to the reference, add its name under the relevant section in that block and re-run quartodoc build.",
     "crumbs": [
       "Home",
-      "Examples",
-      "Mixed reactor example"
+      "Development",
+      "Developer guide"
     ]
   },
   {
-    "objectID": "examples/mixed-reactor.html#compare-the-solution-against-an-analytical-solution",
-    "href": "examples/mixed-reactor.html#compare-the-solution-against-an-analytical-solution",
-    "title": "Mixed reactor example",
-    "section": "Compare the solution against an analytical solution",
-    "text": "Compare the solution against an analytical solution\n\nc_0 = val0\nc_steady = Q / (Q + k * V) * c_in\nc_analytical = c_steady + (c_0 - c_steady) * np.exp(-(Q / V + k) * t_points)\n\nplt.plot(t_points, solution.ys.tracer, label=\"Numerical Solution\")\nplt.plot(t_points, c_analytical, label=\"Analytical Solution\", linestyle=\"--\")\nplt.legend()",
+    "objectID": "developer-guide.html#publishing",
+    "href": "developer-guide.html#publishing",
+    "title": "Developer guide",
+    "section": "Publishing",
+    "text": "Publishing\nThe documentation is published to GitHub Pages automatically via GitHub Actions on every push to the main branch. The workflow runs quartodoc build followed by quarto render from docs/, then deploys the contents of docs/_site/ to the gh-pages branch.\nTo publish manually from your local machine:\ncd docs\nquartodoc build\nquarto publish gh-pages",
     "crumbs": [
       "Home",
-      "Examples",
-      "Mixed reactor example"
+      "Development",
+      "Developer guide"
     ]
   },
   {
@@ -417,6 +453,78 @@
       "Home",
       "Examples",
       "Overview"
+    ]
+  },
+  {
+    "objectID": "examples/transport_with_pymc.html",
+    "href": "examples/transport_with_pymc.html",
+    "title": "Parameter estimation with PyMC",
+    "section": "",
+    "text": "This notebook demonstrates how Reactix can be coupled with PyMC for Bayesian inference of reaction parameter values.\nPyMC is a library for Bayesian modeling and parameter inference. It can be used to define the prior distributions and likelihood, and offers a range of modern samplers, among them the No-U-turn sampler (NUTS). Using this sampler requires the computation of gradients of the posterior with respect to parameters. Since Reactix is built on JAX, this can be achieved through automatic differentiation. All this is done under the hood by PyMC, so the user only needs to define the model and run the sampler.\nThis notebooks shows a toy example with a simple first-order decay reaction coupled to advective-dispersive transport. Based on an artificial concentration measurement, we will estimate the decay constant.",
+    "crumbs": [
+      "Home",
+      "Examples",
+      "Parameter estimation with PyMC"
+    ]
+  },
+  {
+    "objectID": "examples/transport_with_pymc.html#package-imports",
+    "href": "examples/transport_with_pymc.html#package-imports",
+    "title": "Parameter estimation with PyMC",
+    "section": "Package imports",
+    "text": "Package imports\n\n# Ensure that that the ODE solver return NaN values when it fails instead of raising an error.\n# This is important to prevent the NUTS sampler from crashing when the ODE solver fails to integrate the system of equations,\n# but rather registering a divergence for the given parameter combination.\n%env EQX_ON_ERROR=nan\n\nenv: EQX_ON_ERROR=nan\n\n\n\nimport pytensor\npytensor.config.exception_verbosity = \"high\"\n\n\nimport jax\nimport jax.numpy as jnp\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport dataclasses\nimport pandas as pd\nimport xarray as xr\nimport arviz as az\n\nfrom reactix import (\n    Advection,\n    Cells,\n    Dispersion,\n    FixedConcentrationBoundary,\n    TransportSystem,\n    make_solver,\n    declare_species,\n    KineticReaction,\n    reaction,\n)\nimport pytensor.tensor as pt\nimport pymc as pm\nimport nutpie\n\n\n# Enable 64-bit floating-point precision in JAX\n# See here: https://docs.kidger.site/diffrax/usage/how-to-choose-a-solver/#stiff-problems\njax.config.update(\"jax_enable_x64\", True)",
+    "crumbs": [
+      "Home",
+      "Examples",
+      "Parameter estimation with PyMC"
+    ]
+  },
+  {
+    "objectID": "examples/transport_with_pymc.html#define-the-reactive-transport-model",
+    "href": "examples/transport_with_pymc.html#define-the-reactive-transport-model",
+    "title": "Parameter estimation with PyMC",
+    "section": "Define the reactive-transport model",
+    "text": "Define the reactive-transport model\nIn this example, we will use a simple reactive transport model with a reactive compound that is degraded with first-order decay kinetics.\n\nReaction kinetics\nWe define a custom first-order decay reaction with Reactix:\n\n@reaction\nclass FirstOrderDecay(KineticReaction):\n    decay_coefficient: jax.Array\n\n    def rate(self, time, state, system):\n        return self.decay_coefficient * state.reactive_tracer\n\n    def stoichiometry(self, time, state, system):\n        return {\n            \"reactive_tracer\": -1,\n        }\n    \nSpecies = declare_species([\"tracer\", \"reactive_tracer\"])\n\n\n\nTransport system\nWe set up a system with constant flow velocity and uniform discretization. At the inflow boundary, a constant-concentration boundary is applied with a time-invariant inflow concentration.\nTo keep the code in the PyMC model definition concise, we define a function for setting up the reactive-transport system that takes all the parameters that we want to estimate as inputs. In this case, we want to estimate the first-order decay constant. Note that make_system takes an argument decay_coefficient which is then passed as a value to the FirstOrderDecay reaction object.\n\ndef make_system(decay_coefficient):\n    # Define the set of species and reactions\n    species_is_mobile = Species(tracer=True, reactive_tracer=True)\n    n_cells = 200\n    reactions = [\n        FirstOrderDecay(\n            decay_coefficient=decay_coefficient\n        )\n    ]\n    # Define the cell geometry\n    interface_areas = jnp.ones(n_cells + 1)\n    cells = Cells.equally_spaced(10, n_cells, interface_area=interface_areas)\n\n    # Set transport process options\n    dispersion = Dispersion.build(\n        cells=cells,\n        dispersivity=jnp.array(0.1),\n        pore_diffusion=Species(\n            tracer=jnp.array(1e-9 * 3600 * 24),\n            reactive_tracer=jnp.array(1e-9 * 3600 * 24),\n        ),\n    )\n    advection = Advection.build(\n        limiter_type=\"upwind\",\n    )\n    # Define the boundary conditions\n    bcs = [\n        FixedConcentrationBoundary(\n            boundary=\"left\",\n            species_selector=lambda s: getattr(s, \"tracer\"),\n            fixed_concentration=lambda t: jnp.array(10.0),\n        ),\n        FixedConcentrationBoundary(\n            boundary=\"right\",\n            species_selector=lambda s: getattr(s, \"tracer\"),\n            fixed_concentration=lambda t: jnp.array(3.0),\n        ),\n        FixedConcentrationBoundary(\n            boundary=\"left\",\n            species_selector=lambda s: getattr(s, \"reactive_tracer\"),\n            fixed_concentration=lambda t: jnp.array(1.0),\n        ),\n        FixedConcentrationBoundary(\n            boundary=\"right\",\n            species_selector=lambda s: getattr(s, \"reactive_tracer\"),\n            fixed_concentration=lambda t: jnp.array(3.0),\n        )\n    ]\n\n    # Set up the system\n    porosity= jnp.ones(n_cells) * 0.3\n    #porosity = porosity.at[100:].set(0.1)\n    return TransportSystem.build(\n        porosity=porosity,\n        # velocity=lambda t: jnp.array(1 / 365) * jnp.sin(np.pi * 2 * 1 / 5000 * t),\n        discharge=lambda t: jnp.array(1 / 365) * 0.3,\n        cells=cells,\n        advection=advection,\n        dispersion=dispersion,\n        species_is_mobile=species_is_mobile,\n        bcs=bcs,\n        reactions=reactions\n    )",
+    "crumbs": [
+      "Home",
+      "Examples",
+      "Parameter estimation with PyMC"
+    ]
+  },
+  {
+    "objectID": "examples/transport_with_pymc.html#define-the-pymc-model",
+    "href": "examples/transport_with_pymc.html#define-the-pymc-model",
+    "title": "Parameter estimation with PyMC",
+    "section": "Define the PyMC model",
+    "text": "Define the PyMC model\n\nMeasurement point\nBelow, we create an concentration data point that will be used for parameter estimation. We set a concentration of 0.5 at the 40th cell at the 20th time point.\n\nidx_time = np.array([20,])\nidx_space = np.array([40,])\n\nmeasurement = xr.DataArray(\n    data=[0.5],\n    name=\"concentration_measurement\",\n    dims=\"measurement_nr\",\n    coords={\"measurement_nr\": pd.RangeIndex(len(idx_time))}\n)\n\n\n\nPassing coordinates and defining prior distributions\nPyMC return an InferenceData object with named arrays that have dimensions and coordinates (based on Xarray). In order to save the time as a coordinate for the simulated concentrations, we need to create a dictionary with all the coodinates.\n\nt_points = jnp.linspace(0, 8000, 123)\n\ncoords = {\n    \"time_dense\": np.array(t_points),\n    **{coord.name: coord.values for coord in measurement.coords.values()}\n}\n\nWe can then pass these coordinates to the PyMC model. The first step in the model is to define prior distributions for all parameters that we would like to estimate.\nHere, we chose a half-normal distribution with a standard deviation of 0.01 for the decay coefficient and pass it to the function that builds the reactive-transport system.\nFinally, we also add the cell center locations as a coordinate to the PyMC model. This can only be done after creating the system, when the cell geometry is known.\n\nwith pm.Model(coords=coords) as model:\n    decay_coefficient = pm.HalfNormal(\"k_dec\", 0.01)\n    system = make_system(decay_coefficient)\n    model.add_coord(\"x\", np.array(system.cells.centers))\n\n\n\nSetting up the solver\nPyMC is built around the PyTensor library, whereas Reactix uses JAX. In order to be able to use JAX together with PyMC, the JAX code needs to be wrapped with the pytensor.wrap_jax decorator.\n\nwith model:\n    # Initial conditions: all species start at zero concentration\n    zeros = jnp.zeros(system.cells.n_cells)\n    initial_state = Species(\n        tracer=zeros,\n        reactive_tracer=zeros\n    )\n\n\n    # Wrap the solver function with PyTensor to make it compatible with PyMC\n    @pytensor.wrap_jax\n    def solve_pt(y0, system):\n        solve_fn_dense = make_solver(t_max=8000, t_points=t_points, rtol=1e-6, atol=1e-6)\n        return solve_fn_dense(y0, system).ys\n    \n    # Solve the system of ODEs using the initial state and the system definition\n    solution = solve_pt(initial_state, system)\n\n\n\nSaving outputs and defining the likelihood\n\nwith model:\n    # Save all concentrations as deterministic variables in the PyMC model for later analysis\n    fields = dataclasses.fields(solution)\n    for field in fields:\n        pm.Deterministic(\n            field.name,\n            getattr(solution, field.name),\n            dims=(\"time_dense\", \"x\"),\n        )\n\n    # Define a normal likelihood for the observations, using the model's predicted concentration at the specified time and space indices as the mean\n    pm.Normal(\"made_up_point\", mu=solution.reactive_tracer[idx_time, idx_space], sigma=0.1, observed=measurement.values, dims=(\"measurement_nr\"))",
+    "crumbs": [
+      "Home",
+      "Examples",
+      "Parameter estimation with PyMC"
+    ]
+  },
+  {
+    "objectID": "examples/transport_with_pymc.html#sample-the-prior-distribution",
+    "href": "examples/transport_with_pymc.html#sample-the-prior-distribution",
+    "title": "Parameter estimation with PyMC",
+    "section": "Sample the prior distribution",
+    "text": "Sample the prior distribution\n\nwith model:\n    prior = pm.sample_prior_predictive(draws=100, backend=\"jax\", random_seed=33)\n\n\nPrior predictive checks\nThe following plots show several draws from the prior of the simulated concentrations. This is a good check to assess if the chosen prior distributions for the parameters are reasonable. The measured concentrations is plotted alongside as a black dot.\n\nConcentration profile at the time of measurement\n\nprior.prior.reactive_tracer.isel(chain=0, time_dense=idx_time[0]).plot.line(x=\"x\", hue=\"draw\", add_legend=False);\nplt.scatter(system.cells.centers[idx_space], measurement.values, color=\"k\", label=\"measurement\")\n\n\n\n\n\n\n\n\n\n\nBreakthrough curve at the measurement location\n\nprior.prior.reactive_tracer.isel(chain=0, x=idx_space[0]).plot.line(x=\"time_dense\", hue=\"draw\", add_legend=False);\nplt.scatter(t_points[idx_time], prior.observed_data.made_up_point, color=\"k\", label=\"measurement\")",
+    "crumbs": [
+      "Home",
+      "Examples",
+      "Parameter estimation with PyMC"
+    ]
+  },
+  {
+    "objectID": "examples/transport_with_pymc.html#sample-the-posterior-distribution",
+    "href": "examples/transport_with_pymc.html#sample-the-posterior-distribution",
+    "title": "Parameter estimation with PyMC",
+    "section": "Sample the posterior distribution",
+    "text": "Sample the posterior distribution\nFinally, we can sample the posterior distribution. We can use a state-of-the-art HMC sampler since gradient calculations are provided through automatic differentiation by JAX under the hood. Here we use the Nutpie sampler for PyMC. Note that you need to specify that JAX should be used as a backend for the posterior and gradient evaluation.\n\ncompiled = nutpie.compile_pymc_model(model, backend=\"jax\", gradient_backend=\"jax\")\ntrace = nutpie.sample(compiled, chains=2, blocking=True, seed=33, draws=500)\n\n\n\n\n\n\n    Sampler Progress\n    Total Chains: 2\n    Active Chains: 0\n    \n        Finished Chains:\n        2\n    \n    Sampling for 8 minutes\n    \n        Estimated Time to Completion:\n        now\n    \n\n    \n    \n    \n        \n            \n                Progress\n                Draws\n                Divergences\n                Step Size\n                Gradients/Draw\n            \n        \n        \n            \n                \n                    \n                        \n                        \n                    \n                    900\n                    0\n                    1.20\n                    3\n                \n            \n                \n                    \n                        \n                        \n                    \n                    900\n                    0\n                    1.48\n                    3\n                \n            \n            \n        \n    \n\n\n\n\nTrace plot during the warm-up phase\n\n# Plot the evolution of the decay coefficient during the warm-up phase of the sampler\ntrace.warmup_posterior.k_dec.plot.line(x=\"draw\")\n\n\n\n\n\n\n\n\n\naz.plot_trace(trace, var_names=[\"k_dec\"])\n\n\n\n\n\n\n\n\n\n\nPosterior distribution of the decay parameter\n\naz.plot_dist(trace, var_names=[\"k_dec\"])\n\n\n\n\n\n\n\n\n\n\nPosterior concentration profile and breakthrough curve\n\n# Plot concentration profiles in the posterior\ntrace.posterior.reactive_tracer.isel(chain=1, time_dense=20).plot.line(x=\"x\", hue=\"draw\", add_legend=False, alpha=0.1, color=\"C0\");\nplt.scatter(system.cells.centers[idx_space], measurement.values, color=\"k\", label=\"measurement\", zorder=2)\n\n\n\n\n\n\n\n\n\ntrace.posterior.reactive_tracer.isel(chain=0, x=idx_space[0]).plot.line(x=\"time_dense\", hue=\"draw\", add_legend=False, alpha=0.1, color=\"C0\");\nplt.scatter(t_points[idx_time], prior.observed_data.made_up_point, color=\"k\", label=\"measurement\", zorder=2)",
+    "crumbs": [
+      "Home",
+      "Examples",
+      "Parameter estimation with PyMC"
     ]
   },
   {
@@ -549,162 +657,6 @@
       "Home",
       "Examples",
       "Pathogen transport model"
-    ]
-  },
-  {
-    "objectID": "quickstart.html",
-    "href": "quickstart.html",
-    "title": "Quickstart",
-    "section": "",
-    "text": "This guide will walk you through the basics of using Reactix to set up and solve reactive transport problems.",
-    "crumbs": [
-      "Home",
-      "Get started",
-      "Quickstart"
-    ]
-  },
-  {
-    "objectID": "quickstart.html#basic-concepts",
-    "href": "quickstart.html#basic-concepts",
-    "title": "Quickstart",
-    "section": "Basic Concepts",
-    "text": "Basic Concepts\nA reactive transport model in Reactix consists three main components:\n\nTransport processes: Advection and dispersion of chemical species\nChemical reactions: Kinetic reactions that transform species\nBoundary conditions: Fixed concentrations or fluxes at domain boundaries",
-    "crumbs": [
-      "Home",
-      "Get started",
-      "Quickstart"
-    ]
-  },
-  {
-    "objectID": "quickstart.html#your-first-model",
-    "href": "quickstart.html#your-first-model",
-    "title": "Quickstart",
-    "section": "Your First Model",
-    "text": "Your First Model\nLet’s build a simple 1-D transport model with a conservative tracer:\n\nStep 1: Import Reactix\n\nimport jax\nimport jax.numpy as jnp\nimport matplotlib.pyplot as plt\nfrom reactix import (\n    TransportSystem, Cells, Advection, Dispersion,\n    FixedConcentrationBoundary, declare_species, make_solver\n)\n\n\n\nStep 2: Declare chemical species\n\n# Define the species in your system\nSpecies = declare_species([\"tracer\"])\n\n# Specify which species are mobile (can be transported)\nspecies_is_mobile = Species(tracer=True)\n\n\n\nStep 3: Set up the domain geometry and transport parameters\n\n# Create a 1-D domain with 100 cells over 10 length units\nn_cells = 100\ncells = Cells.equally_spaced(length=10.0, n_cells=n_cells)\n\n# Define transport properties\nadvection = Advection.build(limiter_type=\"upwind\")\ndispersion = Dispersion.build(\n    cells=cells,\n    dispersivity=jnp.array(0.1),  # Longitudinal dispersivity\n    pore_diffusion=Species(tracer=jnp.array(1e-9))  # Molecular diffusion\n)\n\n\n\nStep 4: Set boundary conditions\n\n# Fixed concentration at inlet (left) and outlet (right)\nboundary_conditions = [\n    FixedConcentrationBoundary(\n        boundary=\"left\",\n        species_selector=lambda s: s.tracer,\n        fixed_concentration=lambda t: jnp.array(1.0)  # Constant injection\n    ),\n    FixedConcentrationBoundary(\n        boundary=\"right\",\n        species_selector=lambda s: s.tracer,\n        fixed_concentration=lambda t: jnp.array(0.0)  # Clean boundary\n    )\n]\n\n\n\nStep 5: Create the transport system\n\n# Define system properties\nporosity = jnp.ones(n_cells) * 0.3  # 30% porosity\ndischarge_rate = lambda t: jnp.array(0.1)  # Constant flow rate\n\n# Build the complete system\nsystem = TransportSystem.build(\n    porosity=porosity,\n    discharge=discharge_rate,\n    cells=cells,\n    advection=advection,\n    dispersion=dispersion,\n    species_is_mobile=species_is_mobile,\n    bcs=boundary_conditions,\n    reactions=[]  # No reactions for this simple case\n)\n\n\n\nStep 6: Solve the model equations\n\n# Create solver\nt_max = 50\nt_points = jnp.linspace(0, t_max, num=200)\nsolver = make_solver(t_points=t_points, t_max=t_max, rtol=1e-6, atol=1e-6)\n\n# Set initial conditions (clean system)\ninitial_state = Species(tracer=jnp.zeros(n_cells))\n\n# Solve the transport equation\nsolution = solver(initial_state, system)\n\n# Plot results\nplt.figure(figsize=(10, 6))\n# Plot every 10th time step\nplt.plot(\n    cells.centers,\n    solution.ys.tracer[::10, :].T,\n)\nplt.xlabel('Distance')\nplt.ylabel('Concentration')\nplt.title('Conservative Tracer Transport')",
-    "crumbs": [
-      "Home",
-      "Get started",
-      "Quickstart"
-    ]
-  },
-  {
-    "objectID": "quickstart.html#adding-chemical-reactions",
-    "href": "quickstart.html#adding-chemical-reactions",
-    "title": "Quickstart",
-    "section": "Adding Chemical Reactions",
-    "text": "Adding Chemical Reactions\nNow let’s extend the model to include a first-order decay reaction:\n\nStep 1: Define the reaction\n\nfrom reactix import KineticReaction, reaction\n\n@reaction\nclass FirstOrderDecay(KineticReaction):\n    decay_coefficient: jax.Array\n\n    def rate(self, time, state, system):\n        # Reaction rate proportional to concentration\n        return self.decay_coefficient * state.tracer\n\n    def stoichiometry(self, time, state, system):\n        # One mole of tracer consumed per reaction\n        return {\"tracer\": -1}\n\n\n\nStep 2: Add reaction to system\n\n# Create reaction instance\ndecay_reaction = FirstOrderDecay(decay_coefficient=jnp.array(0.1))\n\n# Build system with reactions\nreactive_system = TransportSystem.build(\n    porosity=porosity,\n    discharge=discharge_rate,\n    cells=cells,\n    advection=advection,\n    dispersion=dispersion,\n    species_is_mobile=species_is_mobile,\n    bcs=boundary_conditions,\n    reactions=[decay_reaction]  # Include the decay reaction\n)\n\n# Solve reactive transport\nreactive_solution = solver(initial_state, reactive_system)",
-    "crumbs": [
-      "Home",
-      "Get started",
-      "Quickstart"
-    ]
-  },
-  {
-    "objectID": "quickstart.html#multiple-species-example",
-    "href": "quickstart.html#multiple-species-example",
-    "title": "Quickstart",
-    "section": "Multiple Species Example",
-    "text": "Multiple Species Example\nFor systems with multiple interacting species:\n\n# Declare multiple species\nSpecies = declare_species([\"substrate\", \"product\"])\nspecies_is_mobile = Species(substrate=True, product=True)\n\n@reaction\nclass Transformation(KineticReaction):\n    rate_constant: jax.Array\n\n    def rate(self, time, state, system):\n        return self.rate_constant * state.substrate\n\n    def stoichiometry(self, time, state, system):\n        return {\n            \"substrate\": -1,  # Consumed\n            \"product\": 1      # Produced\n        }\n\n# Initial state with substrate present\ninitial_state = Species(\n    substrate=jnp.ones(n_cells),  # Initial substrate\n    product=jnp.zeros(n_cells)    # No product initially\n)",
-    "crumbs": [
-      "Home",
-      "Get started",
-      "Quickstart"
-    ]
-  },
-  {
-    "objectID": "quickstart.html#some-tips",
-    "href": "quickstart.html#some-tips",
-    "title": "Quickstart",
-    "section": "Some Tips",
-    "text": "Some Tips\n\nUnits: Be consistent with units across all parameters (length, time, concentration)\nStability: Use appropriate spatial resolution and solver options (tolerances, type of solver, discretization scheme for the transport terms) for numerical stability.\nBoundary conditions: Ensure boundary conditions are physically reasonable. Not specifying any boundary condition for a species implies a no-flux boundary.",
-    "crumbs": [
-      "Home",
-      "Get started",
-      "Quickstart"
-    ]
-  },
-  {
-    "objectID": "quickstart.html#next-steps",
-    "href": "quickstart.html#next-steps",
-    "title": "Quickstart",
-    "section": "Next Steps",
-    "text": "Next Steps\n\nExplore the Examples for more detailed workflows and use cases\nCheck the API Reference for detailed documentation",
-    "crumbs": [
-      "Home",
-      "Get started",
-      "Quickstart"
-    ]
-  },
-  {
-    "objectID": "examples/transport_with_pymc.html",
-    "href": "examples/transport_with_pymc.html",
-    "title": "Parameter estimation with PyMC",
-    "section": "",
-    "text": "This notebook demonstrates how Reactix can be coupled with PyMC for Bayesian inference of reaction parameter values.\nPyMC is a library for Bayesian modeling and parameter inference. It can be used to define the prior distributions and likelihood, and offers a range of modern samplers, among them the No-U-turn sampler (NUTS). Using this sampler requires the computation of gradients of the posterior with respect to parameters. Since Reactix is built on JAX, this can be achieved through automatic differentiation. All this is done under the hood by PyMC, so the user only needs to define the model and run the sampler.\nThis notebooks shows a toy example with a simple first-order decay reaction coupled to advective-dispersive transport. Based on an artificial concentration measurement, we will estimate the decay constant.",
-    "crumbs": [
-      "Home",
-      "Examples",
-      "Parameter estimation with PyMC"
-    ]
-  },
-  {
-    "objectID": "examples/transport_with_pymc.html#package-imports",
-    "href": "examples/transport_with_pymc.html#package-imports",
-    "title": "Parameter estimation with PyMC",
-    "section": "Package imports",
-    "text": "Package imports\n\n# Ensure that that the ODE solver return NaN values when it fails instead of raising an error.\n# This is important to prevent the NUTS sampler from crashing when the ODE solver fails to integrate the system of equations,\n# but rather registering a divergence for the given parameter combination.\n%env EQX_ON_ERROR=nan\n\nenv: EQX_ON_ERROR=nan\n\n\n\nimport pytensor\npytensor.config.exception_verbosity = \"high\"\n\n\nimport jax\nimport jax.numpy as jnp\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport dataclasses\nimport pandas as pd\nimport xarray as xr\nimport arviz as az\n\nfrom reactix import (\n    Advection,\n    Cells,\n    Dispersion,\n    FixedConcentrationBoundary,\n    TransportSystem,\n    make_solver,\n    declare_species,\n    KineticReaction,\n    reaction,\n)\nimport pytensor.tensor as pt\nimport pymc as pm\nimport nutpie\n\n\n# Enable 64-bit floating-point precision in JAX\n# See here: https://docs.kidger.site/diffrax/usage/how-to-choose-a-solver/#stiff-problems\njax.config.update(\"jax_enable_x64\", True)",
-    "crumbs": [
-      "Home",
-      "Examples",
-      "Parameter estimation with PyMC"
-    ]
-  },
-  {
-    "objectID": "examples/transport_with_pymc.html#define-the-reactive-transport-model",
-    "href": "examples/transport_with_pymc.html#define-the-reactive-transport-model",
-    "title": "Parameter estimation with PyMC",
-    "section": "Define the reactive-transport model",
-    "text": "Define the reactive-transport model\nIn this example, we will use a simple reactive transport model with a reactive compound that is degraded with first-order decay kinetics.\n\nReaction kinetics\nWe define a custom first-order decay reaction with Reactix:\n\n@reaction\nclass FirstOrderDecay(KineticReaction):\n    decay_coefficient: jax.Array\n\n    def rate(self, time, state, system):\n        return self.decay_coefficient * state.reactive_tracer\n\n    def stoichiometry(self, time, state, system):\n        return {\n            \"reactive_tracer\": -1,\n        }\n    \nSpecies = declare_species([\"tracer\", \"reactive_tracer\"])\n\n\n\nTransport system\nWe set up a system with constant flow velocity and uniform discretization. At the inflow boundary, a constant-concentration boundary is applied with a time-invariant inflow concentration.\nTo keep the code in the PyMC model definition concise, we define a function for setting up the reactive-transport system that takes all the parameters that we want to estimate as inputs. In this case, we want to estimate the first-order decay constant. Note that make_system takes an argument decay_coefficient which is then passed as a value to the FirstOrderDecay reaction object.\n\ndef make_system(decay_coefficient):\n    # Define the set of species and reactions\n    species_is_mobile = Species(tracer=True, reactive_tracer=True)\n    n_cells = 200\n    reactions = [\n        FirstOrderDecay(\n            decay_coefficient=decay_coefficient\n        )\n    ]\n    # Define the cell geometry\n    interface_areas = jnp.ones(n_cells + 1)\n    cells = Cells.equally_spaced(10, n_cells, interface_area=interface_areas)\n\n    # Set transport process options\n    dispersion = Dispersion.build(\n        cells=cells,\n        dispersivity=jnp.array(0.1),\n        pore_diffusion=Species(\n            tracer=jnp.array(1e-9 * 3600 * 24),\n            reactive_tracer=jnp.array(1e-9 * 3600 * 24),\n        ),\n    )\n    advection = Advection.build(\n        limiter_type=\"upwind\",\n    )\n    # Define the boundary conditions\n    bcs = [\n        FixedConcentrationBoundary(\n            boundary=\"left\",\n            species_selector=lambda s: getattr(s, \"tracer\"),\n            fixed_concentration=lambda t: jnp.array(10.0),\n        ),\n        FixedConcentrationBoundary(\n            boundary=\"right\",\n            species_selector=lambda s: getattr(s, \"tracer\"),\n            fixed_concentration=lambda t: jnp.array(3.0),\n        ),\n        FixedConcentrationBoundary(\n            boundary=\"left\",\n            species_selector=lambda s: getattr(s, \"reactive_tracer\"),\n            fixed_concentration=lambda t: jnp.array(1.0),\n        ),\n        FixedConcentrationBoundary(\n            boundary=\"right\",\n            species_selector=lambda s: getattr(s, \"reactive_tracer\"),\n            fixed_concentration=lambda t: jnp.array(3.0),\n        )\n    ]\n\n    # Set up the system\n    porosity= jnp.ones(n_cells) * 0.3\n    #porosity = porosity.at[100:].set(0.1)\n    return TransportSystem.build(\n        porosity=porosity,\n        # velocity=lambda t: jnp.array(1 / 365) * jnp.sin(np.pi * 2 * 1 / 5000 * t),\n        discharge=lambda t: jnp.array(1 / 365) * 0.3,\n        cells=cells,\n        advection=advection,\n        dispersion=dispersion,\n        species_is_mobile=species_is_mobile,\n        bcs=bcs,\n        reactions=reactions\n    )",
-    "crumbs": [
-      "Home",
-      "Examples",
-      "Parameter estimation with PyMC"
-    ]
-  },
-  {
-    "objectID": "examples/transport_with_pymc.html#define-the-pymc-model",
-    "href": "examples/transport_with_pymc.html#define-the-pymc-model",
-    "title": "Parameter estimation with PyMC",
-    "section": "Define the PyMC model",
-    "text": "Define the PyMC model\n\nMeasurement point\nBelow, we create an concentration data point that will be used for parameter estimation. We set a concentration of 0.5 at the 40th cell at the 20th time point.\n\nidx_time = np.array([20,])\nidx_space = np.array([40,])\n\nmeasurement = xr.DataArray(\n    data=[0.5],\n    name=\"concentration_measurement\",\n    dims=\"measurement_nr\",\n    coords={\"measurement_nr\": pd.RangeIndex(len(idx_time))}\n)\n\n\n\nPassing coordinates and defining prior distributions\nPyMC return an InferenceData object with named arrays that have dimensions and coordinates (based on Xarray). In order to save the time as a coordinate for the simulated concentrations, we need to create a dictionary with all the coodinates.\n\nt_points = jnp.linspace(0, 8000, 123)\n\ncoords = {\n    \"time_dense\": np.array(t_points),\n    **{coord.name: coord.values for coord in measurement.coords.values()}\n}\n\nWe can then pass these coordinates to the PyMC model. The first step in the model is to define prior distributions for all parameters that we would like to estimate.\nHere, we chose a half-normal distribution with a standard deviation of 0.01 for the decay coefficient and pass it to the function that builds the reactive-transport system.\nFinally, we also add the cell center locations as a coordinate to the PyMC model. This can only be done after creating the system, when the cell geometry is known.\n\nwith pm.Model(coords=coords) as model:\n    decay_coefficient = pm.HalfNormal(\"k_dec\", 0.01)\n    system = make_system(decay_coefficient)\n    model.add_coord(\"x\", np.array(system.cells.centers))\n\n\n\nSetting up the solver\nPyMC is built around the PyTensor library, whereas Reactix uses JAX. In order to be able to use JAX together with PyMC, the JAX code needs to be wrapped with the pytensor.wrap_jax decorator.\n\nwith model:\n    # Initial conditions: all species start at zero concentration\n    zeros = jnp.zeros(system.cells.n_cells)\n    initial_state = Species(\n        tracer=zeros,\n        reactive_tracer=zeros\n    )\n\n\n    # Wrap the solver function with PyTensor to make it compatible with PyMC\n    @pytensor.wrap_jax\n    def solve_pt(y0, system):\n        solve_fn_dense = make_solver(t_max=8000, t_points=t_points, rtol=1e-6, atol=1e-6)\n        return solve_fn_dense(y0, system).ys\n    \n    # Solve the system of ODEs using the initial state and the system definition\n    solution = solve_pt(initial_state, system)\n\n\n\nSaving outputs and defining the likelihood\n\nwith model:\n    # Save all concentrations as deterministic variables in the PyMC model for later analysis\n    fields = dataclasses.fields(solution)\n    for field in fields:\n        pm.Deterministic(\n            field.name,\n            getattr(solution, field.name),\n            dims=(\"time_dense\", \"x\"),\n        )\n\n    # Define a normal likelihood for the observations, using the model's predicted concentration at the specified time and space indices as the mean\n    pm.Normal(\"made_up_point\", mu=solution.reactive_tracer[idx_time, idx_space], sigma=0.1, observed=measurement.values, dims=(\"measurement_nr\"))",
-    "crumbs": [
-      "Home",
-      "Examples",
-      "Parameter estimation with PyMC"
-    ]
-  },
-  {
-    "objectID": "examples/transport_with_pymc.html#sample-the-prior-distribution",
-    "href": "examples/transport_with_pymc.html#sample-the-prior-distribution",
-    "title": "Parameter estimation with PyMC",
-    "section": "Sample the prior distribution",
-    "text": "Sample the prior distribution\n\nwith model:\n    prior = pm.sample_prior_predictive(draws=100, backend=\"jax\", random_seed=33)\n\n\nPrior predictive checks\nThe following plots show several draws from the prior of the simulated concentrations. This is a good check to assess if the chosen prior distributions for the parameters are reasonable. The measured concentrations is plotted alongside as a black dot.\n\nConcentration profile at the time of measurement\n\nprior.prior.reactive_tracer.isel(chain=0, time_dense=idx_time[0]).plot.line(x=\"x\", hue=\"draw\", add_legend=False);\nplt.scatter(system.cells.centers[idx_space], measurement.values, color=\"k\", label=\"measurement\")\n\n\n\n\n\n\n\n\n\n\nBreakthrough curve at the measurement location\n\nprior.prior.reactive_tracer.isel(chain=0, x=idx_space[0]).plot.line(x=\"time_dense\", hue=\"draw\", add_legend=False);\nplt.scatter(t_points[idx_time], prior.observed_data.made_up_point, color=\"k\", label=\"measurement\")",
-    "crumbs": [
-      "Home",
-      "Examples",
-      "Parameter estimation with PyMC"
-    ]
-  },
-  {
-    "objectID": "examples/transport_with_pymc.html#sample-the-posterior-distribution",
-    "href": "examples/transport_with_pymc.html#sample-the-posterior-distribution",
-    "title": "Parameter estimation with PyMC",
-    "section": "Sample the posterior distribution",
-    "text": "Sample the posterior distribution\nFinally, we can sample the posterior distribution. We can use a state-of-the-art HMC sampler since gradient calculations are provided through automatic differentiation by JAX under the hood. Here we use the Nutpie sampler for PyMC. Note that you need to specify that JAX should be used as a backend for the posterior and gradient evaluation.\n\ncompiled = nutpie.compile_pymc_model(model, backend=\"jax\", gradient_backend=\"jax\")\ntrace = nutpie.sample(compiled, chains=2, blocking=True, seed=33, draws=500)\n\n\n\n\n\n\n    Sampler Progress\n    Total Chains: 2\n    Active Chains: 0\n    \n        Finished Chains:\n        2\n    \n    Sampling for 8 minutes\n    \n        Estimated Time to Completion:\n        now\n    \n\n    \n    \n    \n        \n            \n                Progress\n                Draws\n                Divergences\n                Step Size\n                Gradients/Draw\n            \n        \n        \n            \n                \n                    \n                        \n                        \n                    \n                    900\n                    0\n                    1.20\n                    3\n                \n            \n                \n                    \n                        \n                        \n                    \n                    900\n                    0\n                    1.48\n                    3\n                \n            \n            \n        \n    \n\n\n\n\nTrace plot during the warm-up phase\n\n# Plot the evolution of the decay coefficient during the warm-up phase of the sampler\ntrace.warmup_posterior.k_dec.plot.line(x=\"draw\")\n\n\n\n\n\n\n\n\n\naz.plot_trace(trace, var_names=[\"k_dec\"])\n\n\n\n\n\n\n\n\n\n\nPosterior distribution of the decay parameter\n\naz.plot_dist(trace, var_names=[\"k_dec\"])\n\n\n\n\n\n\n\n\n\n\nPosterior concentration profile and breakthrough curve\n\n# Plot concentration profiles in the posterior\ntrace.posterior.reactive_tracer.isel(chain=1, time_dense=20).plot.line(x=\"x\", hue=\"draw\", add_legend=False, alpha=0.1, color=\"C0\");\nplt.scatter(system.cells.centers[idx_space], measurement.values, color=\"k\", label=\"measurement\", zorder=2)\n\n\n\n\n\n\n\n\n\ntrace.posterior.reactive_tracer.isel(chain=0, x=idx_space[0]).plot.line(x=\"time_dense\", hue=\"draw\", add_legend=False, alpha=0.1, color=\"C0\");\nplt.scatter(t_points[idx_time], prior.observed_data.made_up_point, color=\"k\", label=\"measurement\", zorder=2)",
-    "crumbs": [
-      "Home",
-      "Examples",
-      "Parameter estimation with PyMC"
     ]
   },
   {
@@ -852,155 +804,203 @@
     ]
   },
   {
-    "objectID": "developer-guide.html",
-    "href": "developer-guide.html",
-    "title": "Developer guide",
+    "objectID": "examples/mixed-reactor.html",
+    "href": "examples/mixed-reactor.html",
+    "title": "Mixed reactor example",
     "section": "",
-    "text": "The user instructions are mentioned in the introduction guide. This page is intended for developers who want to contribute to the codebase or documentation.",
+    "text": "This notebook shows how to use Reactix to simulate an mixed reactor system.\nThe system is described by the following ordinary differential equation:\n\\[\\frac{dc}{dt} = \\frac{Q}{V}\\left(c - c_{\\mathrm{in}}\\right) + r\\]\nwhere \\(c\\) is the concentration, \\(Q\\) is the flow rate of the reactor, \\(V\\) its volume, \\(c_{\\mathrm{in}}\\) the inflowing concentration, and \\(r\\) the reaction rates. Initially the concentration in the system is \\(c_0\\).\nIn this example, we will consider a first order decay reaction:\n\\[r = - k c\\]\nHowever, more complicated reaction kinetics can easily be implemented with Reactix.\nimport jax\nimport jax.numpy as jnp\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nfrom reactix import MixedSystem, declare_species, make_solver, KineticReaction, reaction\n\njax.config.update(\"jax_enable_x64\", True)\nSpecies = declare_species([\"tracer\"])",
     "crumbs": [
       "Home",
-      "Development",
-      "Developer guide"
+      "Examples",
+      "Mixed reactor example"
     ]
   },
   {
-    "objectID": "developer-guide.html#development-setup",
-    "href": "developer-guide.html#development-setup",
-    "title": "Developer guide",
-    "section": "Development setup",
-    "text": "Development setup\nCreate an environment, activate it, and install the package in editable mode with the relevant dependency groups.\nuv pip install -e \".[dev]\"\nuv pip install -e \".[dev,docs]\" # if you want to build  and contribute to the documentation as well",
+    "objectID": "examples/mixed-reactor.html#define-the-reactions",
+    "href": "examples/mixed-reactor.html#define-the-reactions",
+    "title": "Mixed reactor example",
+    "section": "Define the reactions",
+    "text": "Define the reactions\n\n@reaction\nclass FirstOrderDecay(KineticReaction):\n    decay_coefficient: jax.Array\n\n    def rate(self, time, state, system):\n        return self.decay_coefficient * state.tracer\n\n    def stoichiometry(self, time, state, system):\n        return {\n            \"tracer\": -1,\n        }\n\nk = 0.02\nreactions = [FirstOrderDecay(decay_coefficient=k)]",
     "crumbs": [
       "Home",
-      "Development",
-      "Developer guide"
+      "Examples",
+      "Mixed reactor example"
     ]
   },
   {
-    "objectID": "developer-guide.html#before-opening-a-pull-request",
-    "href": "developer-guide.html#before-opening-a-pull-request",
-    "title": "Developer guide",
-    "section": "Before opening a pull request",
-    "text": "Before opening a pull request\nIf commiting code:\n\nRun the test suite.\nRun Ruff and any formatting checks used by the repository.\n\nIf commiting documentation:\n\nRender the documentation locally and confirm that API reference pages still build correctly.",
+    "objectID": "examples/mixed-reactor.html#set-up-the-system",
+    "href": "examples/mixed-reactor.html#set-up-the-system",
+    "title": "Mixed reactor example",
+    "section": "Set up the system",
+    "text": "Set up the system\n\nc_in = jnp.array(1.0)\nQ = jnp.array(0.5)\nV = jnp.array(10.0)\nreactor_system = MixedSystem.build(\n    reactions=reactions,\n    discharge=Q,\n    volume=V,\n    inflow_concentration=Species(tracer=c_in),\n)",
     "crumbs": [
       "Home",
-      "Development",
-      "Developer guide"
+      "Examples",
+      "Mixed reactor example"
     ]
   },
   {
-    "objectID": "developer-guide.html#documentation-workflow",
-    "href": "developer-guide.html#documentation-workflow",
-    "title": "Developer guide",
-    "section": "Documentation workflow",
-    "text": "Documentation workflow\n\nPrerequisites\n\nQuarto installed in your system\nPython environment with Reactix and docs dependencies installed (.[docs])\nJupyter kernel\n\n\n\nBuilding the documentation\nThe documentation site is built with Quarto, and the API reference is generated from package docstrings with quartodoc. All documentation source files live in the docs/ directory.\nA practical local workflow is:\n# Navigate to the docs directory\ncd docs\n\n# Step 1: regenerate the API reference pages from docstrings\nquartodoc build\n\n# Step 2: preview the site with live reload\nquarto preview\nOnly re-run quartodoc build when you change docstrings or the quartodoc sections in _quarto.yml. For edits to .qmd pages only, quarto preview alone is sufficient since it watches for file changes automatically.\nTo do a one-off full build without a live server:\nquarto render\nThe rendered site is written to docs/_site/.\n\n\nAdding or updating example notebooks\nExample notebooks live in the notebooks/ folder at the repository root. To include a notebook in the documentation, convert it manually to a .qmd file and place it in docs/examples/:\nquarto convert ../notebooks/reactix-notebook.ipynb --output docs/examples/reactix-notebook.qmd\n\n\nUpdating the API reference\nThe API reference is configured in the quartodoc: block of docs/_quarto.yml. To add a new public symbol to the reference, add its name under the relevant section in that block and re-run quartodoc build.",
+    "objectID": "examples/mixed-reactor.html#run-the-solver",
+    "href": "examples/mixed-reactor.html#run-the-solver",
+    "title": "Mixed reactor example",
+    "section": "Run the solver",
+    "text": "Run the solver\n\nt_points = jnp.linspace(0, 200, 123)\nsolve = make_solver(t_max=200, t_points=t_points, rtol=1e-6, atol=1e-18)\n\n\n# Create an array of zeros with the length of the number of cells\nval0 = jnp.zeros(())\n\n# Set up the initial conditions (all zeros in this case)\nstate = Species(tracer=val0)\n\n\nsolution = solve(state, reactor_system)",
     "crumbs": [
       "Home",
-      "Development",
-      "Developer guide"
+      "Examples",
+      "Mixed reactor example"
     ]
   },
   {
-    "objectID": "developer-guide.html#publishing",
-    "href": "developer-guide.html#publishing",
-    "title": "Developer guide",
-    "section": "Publishing",
-    "text": "Publishing\nThe documentation is published to GitHub Pages automatically via GitHub Actions on every push to the main branch. The workflow runs quartodoc build followed by quarto render from docs/, then deploys the contents of docs/_site/ to the gh-pages branch.\nTo publish manually from your local machine:\ncd docs\nquartodoc build\nquarto publish gh-pages",
+    "objectID": "examples/mixed-reactor.html#compare-the-solution-against-an-analytical-solution",
+    "href": "examples/mixed-reactor.html#compare-the-solution-against-an-analytical-solution",
+    "title": "Mixed reactor example",
+    "section": "Compare the solution against an analytical solution",
+    "text": "Compare the solution against an analytical solution\n\nc_0 = val0\nc_steady = Q / (Q + k * V) * c_in\nc_analytical = c_steady + (c_0 - c_steady) * np.exp(-(Q / V + k) * t_points)\n\nplt.plot(t_points, solution.ys.tracer, label=\"Numerical Solution\")\nplt.plot(t_points, c_analytical, label=\"Analytical Solution\", linestyle=\"--\")\nplt.legend()",
     "crumbs": [
       "Home",
-      "Development",
-      "Developer guide"
+      "Examples",
+      "Mixed reactor example"
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Reactix",
+    "objectID": "installation.html",
+    "href": "installation.html",
+    "title": "Installation",
     "section": "",
-    "text": "Reactix is a Python package for simulating reactive transport of chemical species suitable for one-dimensional systems with advection, dispersion and kinetic reactions.\nReaction kinetics can be defined flexibly in plain Python. The package combines a finite volume discretization in space with advanced ODE solvers from diffrax for efficient time integration.\nReactix is built on the JAX ecosystem which provides automatic differentiation, making the models fully differentiable. This enables the use of gradient-based methods for sensitivity analysis and uncertainty quantification. The package integrates seamlessly with PyMC for Bayesian modeling and parameter estimation.",
+    "text": "Create an environment\nTo avoid possible dependency conflicts, we recommend installing Reactix in a dedicated environment. Reactix requires Python 3.11 or later.\nYou can create an environment:\nwith uv:\nuv venv reactix-env\nsource reactix-env/bin/activate  # Linux/macOS\nreactix-env\\Scripts\\activate     # Windows\nwith conda:\nconda create -n reactix python=3.13\nconda activate reactix\nor alternatively with venv:\npython -m venv reactix-env\nsource reactix-env/bin/activate   # Linux/macOS\nreactix-env\\Scripts\\activate      # Windows\nActivate the environment before installing the package.\n\n\n\n\n\n\nNote\n\n\n\nIf you don’t have uv installed, you can get it with:\n# Linux/macOS\ncurl -LsSf https://astral.sh/uv/install.sh | sh\n\n# Windows (PowerShell)\npowershell -ExecutionPolicy ByPass -c \"irm https://astral.sh/uv/install.ps1 | iex\"\n\n# Or via pip\npip install uv\n\n\n\n\nInstall Reactix\nTo install the package you can use conda, pip or uv. The package is available on PyPI and conda-forge.\n\nuv (from PyPI):\nuv pip install reactix\n\n\nconda (from conda-forge):\nconda install -c conda-forge reactix\n\n\npip (from PyPI):\npip install reactix\n\n\n\nDependencies\nReactix depends on JAX, diffrax, and PyMC. These are installed automatically when installing Reactix via pip, uv, or conda.\n\nJAX and GPU support: GPU support integration is considered for a future release. Currently, Reactix can only be used with CPU-based JAX installations.\n\n\n\n\n\n\n\n Back to top",
     "crumbs": [
       "Home",
       "Get started",
-      "Reactix"
+      "Installation"
     ]
   },
   {
-    "objectID": "index.html#what-reactix-is-for",
-    "href": "index.html#what-reactix-is-for",
-    "title": "Reactix",
-    "section": "What Reactix is for",
-    "text": "What Reactix is for\nUse Reactix when you:\n\nwant to easily implement models with custom reaction kinetics,\ncan reasonably simplify the system to one spatial dimension (e.g., column experiment, groundwater transport along a flow line),\nwant to quantify parameter uncertainty with Bayesian methods,\nlike to script your model in Python instead of using graphical interfaces or input files.\n\nReactix might not be the right choice if…\n\nyour model needs to be 2-D or 3-D,\nthe system involves a lot of equilibrium chemical reactions (like in PHREEQC),\nyou want to couple groundwater flow and transport simulations.",
+    "objectID": "quickstart.html",
+    "href": "quickstart.html",
+    "title": "Quickstart",
+    "section": "",
+    "text": "This guide will walk you through the basics of using Reactix to set up and solve reactive transport problems.",
     "crumbs": [
       "Home",
       "Get started",
-      "Reactix"
+      "Quickstart"
     ]
   },
   {
-    "objectID": "index.html#main-components",
-    "href": "index.html#main-components",
-    "title": "Reactix",
-    "section": "Main components",
-    "text": "Main components\nThe library is organized around three concepts: a transport system, chemical species, and reactions. All components are documented in the API reference.",
+    "objectID": "quickstart.html#basic-concepts",
+    "href": "quickstart.html#basic-concepts",
+    "title": "Quickstart",
+    "section": "Basic Concepts",
+    "text": "Basic Concepts\nA reactive transport model in Reactix consists three main components:\n\nTransport processes: Advection and dispersion of chemical species\nChemical reactions: Kinetic reactions that transform species\nBoundary conditions: Fixed concentrations or fluxes at domain boundaries",
     "crumbs": [
       "Home",
       "Get started",
-      "Reactix"
+      "Quickstart"
     ]
   },
   {
-    "objectID": "index.html#start-here",
-    "href": "index.html#start-here",
-    "title": "Reactix",
-    "section": "Start here",
-    "text": "Start here\n\nGo to Installation to set up Reactix.\nContinue to Quickstart for a brief introduction to Reactix.\nBrowse Examples for longer workflows.\nUse the API reference for the full docstring-based reference.\nCheck out the Developer Guide and Contributing if you want to contribute to the project.",
+    "objectID": "quickstart.html#your-first-model",
+    "href": "quickstart.html#your-first-model",
+    "title": "Quickstart",
+    "section": "Your First Model",
+    "text": "Your First Model\nLet’s build a simple 1-D transport model with a conservative tracer:\n\nStep 1: Import Reactix\n\nimport jax\nimport jax.numpy as jnp\nimport matplotlib.pyplot as plt\nfrom reactix import (\n    TransportSystem, Cells, Advection, Dispersion,\n    FixedConcentrationBoundary, declare_species, make_solver\n)\n\n\n\nStep 2: Declare chemical species\n\n# Define the species in your system\nSpecies = declare_species([\"tracer\"])\n\n# Specify which species are mobile (can be transported)\nspecies_is_mobile = Species(tracer=True)\n\n\n\nStep 3: Set up the domain geometry and transport parameters\n\n# Create a 1-D domain with 100 cells over 10 length units\nn_cells = 100\ncells = Cells.equally_spaced(length=10.0, n_cells=n_cells)\n\n# Define transport properties\nadvection = Advection.build(limiter_type=\"upwind\")\ndispersion = Dispersion.build(\n    cells=cells,\n    dispersivity=jnp.array(0.1),  # Longitudinal dispersivity\n    pore_diffusion=Species(tracer=jnp.array(1e-9))  # Molecular diffusion\n)\n\n\n\nStep 4: Set boundary conditions\n\n# Fixed concentration at inlet (left) and outlet (right)\nboundary_conditions = [\n    FixedConcentrationBoundary(\n        boundary=\"left\",\n        species_selector=lambda s: s.tracer,\n        fixed_concentration=lambda t: jnp.array(1.0)  # Constant injection\n    ),\n    FixedConcentrationBoundary(\n        boundary=\"right\",\n        species_selector=lambda s: s.tracer,\n        fixed_concentration=lambda t: jnp.array(0.0)  # Clean boundary\n    )\n]\n\n\n\nStep 5: Create the transport system\n\n# Define system properties\nporosity = jnp.ones(n_cells) * 0.3  # 30% porosity\ndischarge_rate = lambda t: jnp.array(0.1)  # Constant flow rate\n\n# Build the complete system\nsystem = TransportSystem.build(\n    porosity=porosity,\n    discharge=discharge_rate,\n    cells=cells,\n    advection=advection,\n    dispersion=dispersion,\n    species_is_mobile=species_is_mobile,\n    bcs=boundary_conditions,\n    reactions=[]  # No reactions for this simple case\n)\n\n\n\nStep 6: Solve the model equations\n\n# Create solver\nt_max = 50\nt_points = jnp.linspace(0, t_max, num=200)\nsolver = make_solver(t_points=t_points, t_max=t_max, rtol=1e-6, atol=1e-6)\n\n# Set initial conditions (clean system)\ninitial_state = Species(tracer=jnp.zeros(n_cells))\n\n# Solve the transport equation\nsolution = solver(initial_state, system)\n\n# Plot results\nplt.figure(figsize=(10, 6))\n# Plot every 10th time step\nplt.plot(\n    cells.centers,\n    solution.ys.tracer[::10, :].T,\n)\nplt.xlabel('Distance')\nplt.ylabel('Concentration')\nplt.title('Conservative Tracer Transport')",
     "crumbs": [
       "Home",
       "Get started",
-      "Reactix"
+      "Quickstart"
     ]
   },
   {
-    "objectID": "api/reaction.html",
-    "href": "api/reaction.html",
+    "objectID": "quickstart.html#adding-chemical-reactions",
+    "href": "quickstart.html#adding-chemical-reactions",
+    "title": "Quickstart",
+    "section": "Adding Chemical Reactions",
+    "text": "Adding Chemical Reactions\nNow let’s extend the model to include a first-order decay reaction:\n\nStep 1: Define the reaction\n\nfrom reactix import KineticReaction, reaction\n\n@reaction\nclass FirstOrderDecay(KineticReaction):\n    decay_coefficient: jax.Array\n\n    def rate(self, time, state, system):\n        # Reaction rate proportional to concentration\n        return self.decay_coefficient * state.tracer\n\n    def stoichiometry(self, time, state, system):\n        # One mole of tracer consumed per reaction\n        return {\"tracer\": -1}\n\n\n\nStep 2: Add reaction to system\n\n# Create reaction instance\ndecay_reaction = FirstOrderDecay(decay_coefficient=jnp.array(0.1))\n\n# Build system with reactions\nreactive_system = TransportSystem.build(\n    porosity=porosity,\n    discharge=discharge_rate,\n    cells=cells,\n    advection=advection,\n    dispersion=dispersion,\n    species_is_mobile=species_is_mobile,\n    bcs=boundary_conditions,\n    reactions=[decay_reaction]  # Include the decay reaction\n)\n\n# Solve reactive transport\nreactive_solution = solver(initial_state, reactive_system)",
+    "crumbs": [
+      "Home",
+      "Get started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "quickstart.html#multiple-species-example",
+    "href": "quickstart.html#multiple-species-example",
+    "title": "Quickstart",
+    "section": "Multiple Species Example",
+    "text": "Multiple Species Example\nFor systems with multiple interacting species:\n\n# Declare multiple species\nSpecies = declare_species([\"substrate\", \"product\"])\nspecies_is_mobile = Species(substrate=True, product=True)\n\n@reaction\nclass Transformation(KineticReaction):\n    rate_constant: jax.Array\n\n    def rate(self, time, state, system):\n        return self.rate_constant * state.substrate\n\n    def stoichiometry(self, time, state, system):\n        return {\n            \"substrate\": -1,  # Consumed\n            \"product\": 1      # Produced\n        }\n\n# Initial state with substrate present\ninitial_state = Species(\n    substrate=jnp.ones(n_cells),  # Initial substrate\n    product=jnp.zeros(n_cells)    # No product initially\n)",
+    "crumbs": [
+      "Home",
+      "Get started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "quickstart.html#some-tips",
+    "href": "quickstart.html#some-tips",
+    "title": "Quickstart",
+    "section": "Some Tips",
+    "text": "Some Tips\n\nUnits: Be consistent with units across all parameters (length, time, concentration)\nStability: Use appropriate spatial resolution and solver options (tolerances, type of solver, discretization scheme for the transport terms) for numerical stability.\nBoundary conditions: Ensure boundary conditions are physically reasonable. Not specifying any boundary condition for a species implies a no-flux boundary.",
+    "crumbs": [
+      "Home",
+      "Get started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "quickstart.html#next-steps",
+    "href": "quickstart.html#next-steps",
+    "title": "Quickstart",
+    "section": "Next Steps",
+    "text": "Next Steps\n\nExplore the Examples for more detailed workflows and use cases\nCheck the API Reference for detailed documentation",
+    "crumbs": [
+      "Home",
+      "Get started",
+      "Quickstart"
+    ]
+  },
+  {
+    "objectID": "api/FixedConcentrationBoundary.html",
+    "href": "api/FixedConcentrationBoundary.html",
     "title": "",
     "section": "",
     "text": "Code",
     "crumbs": [
-      "Reactions",
-      "reaction"
+      "Transport",
+      "FixedConcentrationBoundary"
     ]
   },
   {
-    "objectID": "api/reaction.html#parameters",
-    "href": "api/reaction.html#parameters",
+    "objectID": "api/FixedConcentrationBoundary.html#parameters",
+    "href": "api/FixedConcentrationBoundary.html#parameters",
     "title": "",
     "section": "Parameters",
-    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ncls\ntype\nThe class to be decorated, typically a reaction implementation.\nrequired",
+    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nfixed_concentration\nfloat or Callable[[jax.Array], jax.Array]\nThe fixed concentration value, either constant or time-dependent.\nrequired\n\n\nis_active\nCallable[[jax.Array, TransportSystem], jax.Array]\nFunction determining if the boundary condition is active. Inherited from BoundaryCondition.\nlambda t, system: jnp.array(True)\n\n\nspecies_selector\nCallable\nFunction to select which species this applies to. Inherited from BoundaryCondition.\nrequired\n\n\nboundary\nLiteral['left', 'right']\nWhich boundary this applies to. Inherited from BoundaryCondition.\nrequired",
     "crumbs": [
-      "Reactions",
-      "reaction"
+      "Transport",
+      "FixedConcentrationBoundary"
     ]
   },
   {
-    "objectID": "api/reaction.html#returns",
-    "href": "api/reaction.html#returns",
-    "title": "",
-    "section": "Returns",
-    "text": "Returns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ncallable\nA factory function that creates instances with spatial awareness.",
-    "crumbs": [
-      "Reactions",
-      "reaction"
-    ]
-  },
-  {
-    "objectID": "api/reaction.html#notes",
-    "href": "api/reaction.html#notes",
+    "objectID": "api/FixedConcentrationBoundary.html#notes",
+    "href": "api/FixedConcentrationBoundary.html#notes",
     "title": "",
     "section": "Notes",
-    "text": "Notes\nThe decorated class will automatically handle parameters marked with SpatiallyVarying or SpatiallyConst, enabling vectorized computations across spatial domains.",
+    "text": "Notes\nFor inflow boundaries, both advective and dispersive fluxes contribute. For outflow boundaries, only advective flux is considered.",
     "crumbs": [
-      "Reactions",
-      "reaction"
+      "Transport",
+      "FixedConcentrationBoundary"
+    ]
+  },
+  {
+    "objectID": "api/FixedConcentrationBoundary.html#methods",
+    "href": "api/FixedConcentrationBoundary.html#methods",
+    "title": "",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\ncompute_flux\nCompute the advective and dispersive flux at the boundary.\n\n\n\n\ncompute_flux\nFixedConcentrationBoundary.compute_flux(time, system, boundary_cell_state)\nCompute the advective and dispersive flux at the boundary.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\njax.Array\nCurrent simulation time.\nrequired\n\n\nsystem\nTransportSystem\nThe reactive transport system.\nrequired\n\n\nboundary_cell_state\njax.Array\nConcentration in the boundary cell.\nrequired\n\n\n\n\n\nReturns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\njax.Array\nThe total flux (advective + dispersive) at the boundary.",
+    "crumbs": [
+      "Transport",
+      "FixedConcentrationBoundary"
     ]
   },
   {
@@ -1048,69 +1048,157 @@
     ]
   },
   {
-    "objectID": "api/SpatiallyVarying.html",
-    "href": "api/SpatiallyVarying.html",
+    "objectID": "api/Dispersion.html",
+    "href": "api/Dispersion.html",
     "title": "",
     "section": "",
     "text": "Code",
     "crumbs": [
-      "Reactions",
-      "SpatiallyVarying"
+      "Transport",
+      "Dispersion"
     ]
   },
   {
-    "objectID": "api/SpatiallyVarying.html#parameters",
-    "href": "api/SpatiallyVarying.html#parameters",
+    "objectID": "api/Dispersion.html#parameters",
+    "href": "api/Dispersion.html#parameters",
     "title": "",
     "section": "Parameters",
-    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nvalue\njax.Array\nThe parameter values, with shape including the spatial dimension.\nrequired\n\n\naxis\nint\nThe axis along which the parameter varies spatially. Default is 0.\n0",
+    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ndispersivity\njax.Array\nLongitudinal dispersivity, either scalar or per cell.\nrequired\n\n\npore_diffusion\nAbstractSpecies\nPore diffusion coefficient for each species.\nrequired",
     "crumbs": [
-      "Reactions",
-      "SpatiallyVarying"
+      "Transport",
+      "Dispersion"
     ]
   },
   {
-    "objectID": "api/declare_species.html",
-    "href": "api/declare_species.html",
+    "objectID": "api/Dispersion.html#methods",
+    "href": "api/Dispersion.html#methods",
+    "title": "",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nbuild\nBuild a Dispersion instance and validate dispersivity shape.\n\n\nget_dispersion_coefficient\nCompute dispersion coefficients for each species.\n\n\nrate\nCompute the dispersion contribution to the species rate of change.\n\n\n\n\nbuild\nDispersion.build(cells, dispersivity, pore_diffusion)\nBuild a Dispersion instance and validate dispersivity shape.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ncells\nCells\nSpatial discretization of the domain.\nrequired\n\n\ndispersivity\njax.Array\nLongitudinal dispersivity, either scalar or per cell.\nrequired\n\n\npore_diffusion\nAbstractSpecies\nPore diffusion coefficient for each species.\nrequired\n\n\n\n\n\nReturns\n\n\n\nName\nType\nDescription\n\n\n\n\n\nDispersion\nConfigured dispersion scheme.\n\n\n\n\n\nRaises\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf dispersivity does not match the number of cells.\n\n\n\n\n\n\nget_dispersion_coefficient\nDispersion.get_dispersion_coefficient(time, system)\nCompute dispersion coefficients for each species.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\njax.Array\nCurrent simulation time.\nrequired\n\n\nsystem\nTransportSystem\nThe reactive transport system.\nrequired\n\n\n\n\n\nReturns\n\n\n\nName\nType\nDescription\n\n\n\n\n\nAbstractSpecies\nDispersion coefficients for each species.\n\n\n\n\n\n\nrate\nDispersion.rate(time, state, system)\nCompute the dispersion contribution to the species rate of change.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\njax.Array\nCurrent simulation time.\nrequired\n\n\nstate\nAbstractSpecies\nCurrent species concentrations.\nrequired\n\n\nsystem\nTransportSystem\nThe reactive transport system.\nrequired\n\n\n\n\n\nReturns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nAbstractSpecies\nDispersion contribution to the rate of change.",
+    "crumbs": [
+      "Transport",
+      "Dispersion"
+    ]
+  },
+  {
+    "objectID": "api/MixedSystem.html",
+    "href": "api/MixedSystem.html",
     "title": "",
     "section": "",
     "text": "Code",
     "crumbs": [
-      "Species",
-      "declare_species"
+      "Systems",
+      "MixedSystem"
     ]
   },
   {
-    "objectID": "api/declare_species.html#parameters",
-    "href": "api/declare_species.html#parameters",
+    "objectID": "api/MixedSystem.html#parameters",
+    "href": "api/MixedSystem.html#parameters",
     "title": "",
     "section": "Parameters",
-    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nnames\nlist[str]\nList of species names to declare.\nrequired\n\n\nshapes\ndict[str, tuple[int, …]]\nDictionary mapping species names to their concentration array shapes. Species not in this dict default to scalar shape ().\nNone",
+    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nreactions\nlist[KineticReaction]\nList of kinetic reactions. Default is empty list.\nlist()\n\n\ndischarge\nCallable[[jax.Array], jax.Array] or jax.Array\nFunction that computes discharge (volumetric flow rate) given time, or a constant discharge value.\nrequired\n\n\ninflow_concentration\nAbstractSpecies\nConcentration of species in the inflow.\nrequired\n\n\nvolume\njax.Array\nVolume of the mixed reactor.\nrequired\n\n\nparameters\nAny\nAdditional system parameters. Default is None.\nNone",
     "crumbs": [
-      "Species",
-      "declare_species"
+      "Systems",
+      "MixedSystem"
     ]
   },
   {
-    "objectID": "api/declare_species.html#returns",
-    "href": "api/declare_species.html#returns",
+    "objectID": "api/MixedSystem.html#methods",
+    "href": "api/MixedSystem.html#methods",
+    "title": "",
+    "section": "Methods",
+    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nbuild\nBuild a configured mixed reactor system.\n\n\ncompute_inflow_outflow\nCompute the inflow/outflow contribution to the rate of change of concentrations.\n\n\n\n\nbuild\nMixedSystem.build(\n    reactions=None,\n    discharge,\n    inflow_concentration,\n    volume,\n    parameters=None,\n)\nBuild a configured mixed reactor system.\nThis convenience constructor validates input shapes and normalizes scalar inputs before creating a MixedSystem instance.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nreactions\nlist[KineticReaction] or None\nList of kinetic reactions. Default is None.\nNone\n\n\ndischarge\nCallable[[jax.Array], jax.Array] or jax.Array\nDischarge function or scalar discharge value.\nrequired\n\n\ninflow_concentration\nAbstractSpecies\nConcentration of species in the inflow.\nrequired\n\n\nvolume\njax.Array\nVolume of the mixed reactor.\nrequired\n\n\nparameters\nAny or None\nAdditional system parameters. Default is None.\nNone\n\n\n\n\n\nReturns\n\n\n\nName\nType\nDescription\n\n\n\n\n\nMixedSystem\nConfigured mixed reactor system.\n\n\n\n\n\n\ncompute_inflow_outflow\nMixedSystem.compute_inflow_outflow(time, state)\nCompute the inflow/outflow contribution to the rate of change of concentrations.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\njax.Array\nCurrent simulation time.\nrequired\n\n\nstate\nAbstractSpecies\nCurrent species concentrations.\nrequired\n\n\n\n\n\nReturns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nAbstractSpecies\nRate of change due to inflow/outflow (dc/dt).",
+    "crumbs": [
+      "Systems",
+      "MixedSystem"
+    ]
+  },
+  {
+    "objectID": "api/user_system_parameters.html",
+    "href": "api/user_system_parameters.html",
+    "title": "",
+    "section": "",
+    "text": "Code",
+    "crumbs": [
+      "Systems",
+      "user_system_parameters"
+    ]
+  },
+  {
+    "objectID": "api/user_system_parameters.html#parameters",
+    "href": "api/user_system_parameters.html#parameters",
+    "title": "",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ncls\ntype\nThe class to be decorated.\nrequired",
+    "crumbs": [
+      "Systems",
+      "user_system_parameters"
+    ]
+  },
+  {
+    "objectID": "api/user_system_parameters.html#returns",
+    "href": "api/user_system_parameters.html#returns",
     "title": "",
     "section": "Returns",
-    "text": "Returns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ntype\nA dataclass subclass of AbstractSpecies with the specified species as attributes, registered for JAX tree operations.",
+    "text": "Returns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ncallable\nA factory function that creates instances with spatial parameter support.",
     "crumbs": [
-      "Species",
-      "declare_species"
+      "Systems",
+      "user_system_parameters"
     ]
   },
   {
-    "objectID": "api/declare_species.html#notes",
-    "href": "api/declare_species.html#notes",
+    "objectID": "api/user_system_parameters.html#notes",
+    "href": "api/user_system_parameters.html#notes",
     "title": "",
     "section": "Notes",
-    "text": "Notes\nThe returned class includes zeros() and int_zeros() class methods for creating zero-valued instances, and an add(name, value) method for updating species concentrations.\nFor example, the call declare_species([\"tracer\"]) is equivalent to:\n.. code-block:: python\n@jax.tree_util.register_dataclass\n@dataclass(frozen=True)\nclass Species(AbstractSpecies):\n    tracer: jax.Array\n\n    @classmethod\n    def zeros(cls) -&gt; \"Species\":\n        return Species(tracer=jnp.zeros(()))\n\n    @classmethod\n    def int_zeros(cls):\n        return Species(tracer=0)",
+    "text": "Notes\nSimilar to the @reaction decorator, this allows parameters to be marked as SpatiallyVarying or SpatiallyConst for vectorized computations.",
     "crumbs": [
-      "Species",
-      "declare_species"
+      "Systems",
+      "user_system_parameters"
+    ]
+  },
+  {
+    "objectID": "api/make_solver.html",
+    "href": "api/make_solver.html",
+    "title": "",
+    "section": "",
+    "text": "Code",
+    "crumbs": [
+      "Systems",
+      "make_solver"
+    ]
+  },
+  {
+    "objectID": "api/make_solver.html#parameters",
+    "href": "api/make_solver.html#parameters",
+    "title": "",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nt_max\nfloat\nMaximum simulation time.\nrequired\n\n\nt_points\njax.Array\nTime points at which to save the solution.\nrequired\n\n\nrtol\nfloat\nRelative tolerance for the solver. Default is 1e-8.\n1e-08\n\n\natol\nfloat\nAbsolute tolerance for the solver. Default is 1e-8.\n1e-08\n\n\nsolver\ndiffrax.AbstractSolver\nODE solver to use. Default is Tsit5.\nNone\n\n\nt0\nfloat\nInitial time. Default is 0.\n0\n\n\ndt0\nfloat\nInitial time step. Default is None (auto).\nNone\n\n\ndevice\njax.Device\nJAX device to run on. Default is CPU.\nNone",
+    "crumbs": [
+      "Systems",
+      "make_solver"
+    ]
+  },
+  {
+    "objectID": "api/make_solver.html#returns",
+    "href": "api/make_solver.html#returns",
+    "title": "",
+    "section": "Returns",
+    "text": "Returns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nsolve\ncallable\nJIT-compiled function that takes initial state and args, returns solution.",
+    "crumbs": [
+      "Systems",
+      "make_solver"
+    ]
+  },
+  {
+    "objectID": "api/make_solver.html#notes",
+    "href": "api/make_solver.html#notes",
+    "title": "",
+    "section": "Notes",
+    "text": "Notes\nThe returned solver function has signature solve(y0, args) where y0 is the initial species concentrations and args are additional arguments passed to the RHS function.",
+    "crumbs": [
+      "Systems",
+      "make_solver"
     ]
   },
   {
@@ -1155,94 +1243,6 @@
     "crumbs": [
       "Transport",
       "Advection"
-    ]
-  },
-  {
-    "objectID": "api/index.html",
-    "href": "api/index.html",
-    "title": "",
-    "section": "",
-    "text": "Code",
-    "crumbs": [
-      "Home",
-      "API reference"
-    ]
-  },
-  {
-    "objectID": "api/index.html#transport",
-    "href": "api/index.html#transport",
-    "title": "",
-    "section": "Transport",
-    "text": "Transport\nSpatial discretization, advection/dispersion schemes, and boundary conditions.\n\n\n\nCells\nRepresents the spatial discretization of a 1D domain into cells.\n\n\nAdvection\nHandles advection terms in the 1D transport equation using TVD schemes.\n\n\nDispersion\nHandles dispersion and diffusion terms in the transport equation.\n\n\nFixedConcentrationBoundary\nBoundary condition with fixed concentration at the domain boundary.",
-    "crumbs": [
-      "Home",
-      "API reference"
-    ]
-  },
-  {
-    "objectID": "api/index.html#systems",
-    "href": "api/index.html#systems",
-    "title": "",
-    "section": "Systems",
-    "text": "Systems\nReactive transport and system containers, and solver helpers.\n\n\n\nTransportSystem\nRepresents a 1D reactive transport system.\n\n\nMixedSystem\nRepresents a mixed (batch) reactor system without spatial transport.\n\n\nmake_solver\nCreate a JIT-compiled solver function for reactix simulations.\n\n\nuser_system_parameters\nDecorate system parameter classes with spatial awareness.",
-    "crumbs": [
-      "Home",
-      "API reference"
-    ]
-  },
-  {
-    "objectID": "api/index.html#species",
-    "href": "api/index.html#species",
-    "title": "",
-    "section": "Species",
-    "text": "Species\nSpecies declarations and species container utilities.\n\n\n\ndeclare_species\nDeclare chemical species for reactive transport models.",
-    "crumbs": [
-      "Home",
-      "API reference"
-    ]
-  },
-  {
-    "objectID": "api/index.html#reactions",
-    "href": "api/index.html#reactions",
-    "title": "",
-    "section": "Reactions",
-    "text": "Reactions\nKinetic reaction interfaces and spatial parameter helpers.\n\n\n\nKineticReaction\nAbstract base class for kinetic reactions in reactive transport.\n\n\nreaction\nDecorate a class to create spatially-aware reaction classes.\n\n\nSpatiallyConst\nMarker for parameters that are constant across the domain.\n\n\nSpatiallyVarying\nMarker for parameters that vary spatially in the domain.",
-    "crumbs": [
-      "Home",
-      "API reference"
-    ]
-  },
-  {
-    "objectID": "api/Dispersion.html",
-    "href": "api/Dispersion.html",
-    "title": "",
-    "section": "",
-    "text": "Code",
-    "crumbs": [
-      "Transport",
-      "Dispersion"
-    ]
-  },
-  {
-    "objectID": "api/Dispersion.html#parameters",
-    "href": "api/Dispersion.html#parameters",
-    "title": "",
-    "section": "Parameters",
-    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ndispersivity\njax.Array\nLongitudinal dispersivity, either scalar or per cell.\nrequired\n\n\npore_diffusion\nAbstractSpecies\nPore diffusion coefficient for each species.\nrequired",
-    "crumbs": [
-      "Transport",
-      "Dispersion"
-    ]
-  },
-  {
-    "objectID": "api/Dispersion.html#methods",
-    "href": "api/Dispersion.html#methods",
-    "title": "",
-    "section": "Methods",
-    "text": "Methods\n\n\n\nName\nDescription\n\n\n\n\nbuild\nBuild a Dispersion instance and validate dispersivity shape.\n\n\nget_dispersion_coefficient\nCompute dispersion coefficients for each species.\n\n\nrate\nCompute the dispersion contribution to the species rate of change.\n\n\n\n\nbuild\nDispersion.build(cells, dispersivity, pore_diffusion)\nBuild a Dispersion instance and validate dispersivity shape.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ncells\nCells\nSpatial discretization of the domain.\nrequired\n\n\ndispersivity\njax.Array\nLongitudinal dispersivity, either scalar or per cell.\nrequired\n\n\npore_diffusion\nAbstractSpecies\nPore diffusion coefficient for each species.\nrequired\n\n\n\n\n\nReturns\n\n\n\nName\nType\nDescription\n\n\n\n\n\nDispersion\nConfigured dispersion scheme.\n\n\n\n\n\nRaises\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nValueError\nIf dispersivity does not match the number of cells.\n\n\n\n\n\n\nget_dispersion_coefficient\nDispersion.get_dispersion_coefficient(time, system)\nCompute dispersion coefficients for each species.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\njax.Array\nCurrent simulation time.\nrequired\n\n\nsystem\nTransportSystem\nThe reactive transport system.\nrequired\n\n\n\n\n\nReturns\n\n\n\nName\nType\nDescription\n\n\n\n\n\nAbstractSpecies\nDispersion coefficients for each species.\n\n\n\n\n\n\nrate\nDispersion.rate(time, state, system)\nCompute the dispersion contribution to the species rate of change.\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntime\njax.Array\nCurrent simulation time.\nrequired\n\n\nstate\nAbstractSpecies\nCurrent species concentrations.\nrequired\n\n\nsystem\nTransportSystem\nThe reactive transport system.\nrequired\n\n\n\n\n\nReturns\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nAbstractSpecies\nDispersion contribution to the rate of change.",
-    "crumbs": [
-      "Transport",
-      "Dispersion"
     ]
   }
 ]

@@ -85,9 +85,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fb5f3b3fb26a177c4af78adf70c87a98.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-b37018c1bb136ad2c3f564bc6f1689ea.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-fb5f3b3fb26a177c4af78adf70c87a98.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-cb5fc323f198dbef9f9fd5f63787dc25.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c50a981e758141f51094f1bf6c5860be.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-cb5fc323f198dbef9f9fd5f63787dc25.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -525,7 +525,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="example-model" class="level1">
 <h1>Example model</h1>
 <p>This notebook demonstrates how to set up and run a simple reactive transport model with Reactix. The model includes two chemical species – one conservative tracer and one compound that undergoes first-order decay.</p>
-<div id="f6679b48" class="cell" data-execution_count="1">
+<div id="bf3723b8" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -549,7 +549,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="define-the-species-in-the-system" class="level2">
 <h2 class="anchored" data-anchor-id="define-the-species-in-the-system">Define the species in the system</h2>
 <p>The first step is to create a list of all species in the model with <code>declare_species</code>. This will create a <code>Species</code> object where the attributes are the different chemical species. This object can be used to hold to define properties or concentrations for each species in a structured way. Next, we will use it to indicate for each species if it is transported.</p>
-<div id="019fa313" class="cell" data-execution_count="2">
+<div id="4fdb435e" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Species <span class="op">=</span> declare_species([<span class="st">"tracer"</span>, <span class="st">"reactive_tracer"</span>])</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>species_is_mobile <span class="op">=</span> Species(tracer<span class="op">=</span><span class="va">True</span>, reactive_tracer<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -557,7 +557,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="define-the-reactions" class="level2">
 <h2 class="anchored" data-anchor-id="define-the-reactions">Define the reactions</h2>
 <p>To set up the reactive system, we first need to define a class for each distinct reaction. In the class, we provide the rate law (in this case, first order decay) through the <code>rate</code> method and the corresponding coefficients as attributes of the class. In the <code>stoichiometry</code> method, we indicate to which species the reaction rate applies, and with which stoichiometric coefficient.</p>
-<div id="44985697" class="cell" data-execution_count="3">
+<div id="335d795a" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@reaction</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FirstOrderDecay(KineticReaction):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    decay_coefficient: jax.Array</span>
@@ -571,14 +571,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The value of the kinetic parameter is provided when we create an instance of the reaction class.</p>
-<div id="f487b45d" class="cell" data-execution_count="4">
+<div id="74d691c9" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>reactions <span class="op">=</span> [FirstOrderDecay(decay_coefficient<span class="op">=</span><span class="dv">1</span> <span class="op">/</span> <span class="dv">500</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="set-up-the-discretization" class="level2">
 <h2 class="anchored" data-anchor-id="set-up-the-discretization">Set up the discretization</h2>
 <p>Next, we define the geometry of the cells. In this case, we create 200 equally spaced cells. The interface areas can be all equal or vary in size.</p>
-<div id="07306654" class="cell" data-execution_count="5">
+<div id="2b4d4e6d" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n_cells <span class="op">=</span> <span class="dv">200</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>interface_areas <span class="op">=</span> jnp.ones(n_cells <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># interface_areas = interface_areas.at[100:].set(2) # Make one interface area larger</span></span>
@@ -588,7 +588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="define-advection-and-dispersion-parameters-and-setting" class="level2">
 <h2 class="anchored" data-anchor-id="define-advection-and-dispersion-parameters-and-setting">Define advection and dispersion parameters and setting</h2>
 <p>The <code>Advection</code> and <code>Dispersion</code> objects hold parameters and setting needed to compute the advective and dispersive fluxes. Note that the discharge will be saved in the <code>TransportSystem</code> object (not in <code>Advection</code>) because it needs to be accessed by both <code>Advection</code> and <code>Dispersion</code> (in order to compute the hydrodynamic dispersivity). The advective flow velocity is computed internally from the discharge based on the cross-sectional areas of the cells and the porosity.</p>
-<div id="d8d89978" class="cell" data-execution_count="6">
+<div id="ce44064a" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dispersion <span class="op">=</span> Dispersion.build(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    cells<span class="op">=</span>cells,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    dispersivity<span class="op">=</span>jnp.array(<span class="fl">0.1</span>),</span>
@@ -607,7 +607,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The code below shows how fixed-concentration boundaries can be set up for the different species.</p>
 <p>Each boundary condition needs to declare which of the two boundaries and which species it will be applied to. Selecting the species work with a selector function that takes a <code>Species</code> object as input and returns the species of interest. The fixed concentration can be either a constant value, or it can vary with time. In the latter case, it must be specified with a function that takes time as an input and returns the corresponding boundary concentration.</p>
 <p>If no boundary condition is specified for a species on a boundary this results implicitly in a no-flux condition.</p>
-<div id="0d1b5988" class="cell" data-execution_count="7">
+<div id="ace7bac0" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>bcs <span class="op">=</span> [</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    FixedConcentrationBoundary(</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        boundary<span class="op">=</span><span class="st">"left"</span>,</span>
@@ -635,7 +635,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="set-up-the-system" class="level2">
 <h2 class="anchored" data-anchor-id="set-up-the-system">Set up the system</h2>
 <p>The next step is to create a <code>TransportSystem</code> object that contains all the previous settings.</p>
-<div id="559f9a61" class="cell" data-execution_count="8">
+<div id="4dbcf71c" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>porosity <span class="op">=</span> jnp.ones(n_cells) <span class="op">*</span> <span class="fl">0.3</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>porosity <span class="op">=</span> porosity.at[<span class="dv">100</span>:].<span class="bu">set</span>(<span class="fl">0.1</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>system <span class="op">=</span> TransportSystem.build(</span>
@@ -653,7 +653,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="configure-the-solver" class="level2">
 <h2 class="anchored" data-anchor-id="configure-the-solver">Configure the solver</h2>
 <p>Next, we set solver options: the end time of the simulation, the times when a solution should be returned, and tolerances.</p>
-<div id="25a566e0" class="cell" data-execution_count="9">
+<div id="bef66103" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>t_points <span class="op">=</span> jnp.linspace(<span class="dv">0</span>, <span class="dv">8000</span>, <span class="dv">123</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> make_solver(t_max<span class="op">=</span><span class="dv">8000</span>, t_points<span class="op">=</span>t_points, rtol<span class="op">=</span><span class="fl">1e-3</span>, atol<span class="op">=</span><span class="fl">1e-3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -661,7 +661,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="define-initial-conditions" class="level2">
 <h2 class="anchored" data-anchor-id="define-initial-conditions">Define initial conditions</h2>
 <p>The initial conditions must be provided as a <code>Species</code> object. For each species, it contains an array of concentrations (one for each cell).</p>
-<div id="fea469b9" class="cell" data-execution_count="10">
+<div id="e0a8a029" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an array of zeros with the length of the number of cells</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>val0 <span class="op">=</span> jnp.zeros(cells.n_cells)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># val0 = val0.at[slice(10,20)].set(10.0)</span></span>
@@ -674,11 +674,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="run-the-solver">Run the solver</h2>
 <p>Finally, we run the solver to obtain the solution of the system of equations.</p>
 <p>The output is a <code>Solution</code> object that contains the simulation results but also statistics on the solver run (e.g., number of steps). The attributes <code>ys</code> contains the output states as a <code>Species</code> object. It contains an array of size (n_times, n_cells) with concentrations for each species. The attribute <code>ts</code> of <code>solution</code> holds the corresponding times.</p>
-<div id="af51d69e" class="cell" data-execution_count="11">
+<div id="5769704a" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>solution <span class="op">=</span> solver(state, system)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># %timeit solution = solver(state, system)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="1e9f82a3" class="cell" data-execution_count="12">
+<div id="7a651680" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>solution.ys.tracer.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>(123, 200)</code></pre>
@@ -689,7 +689,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="plot-the-results">Plot the results</h2>
 <p>The following plots show the concentrations of the conservative and reactive tracer over space at different times.</p>
 <p>You can see how the conservative tracer travels through the domain until it reaches the inflow concentration everywhere.</p>
-<div id="2d26e489" class="cell" data-execution_count="13">
+<div id="8ea9891b" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>plt.plot(cells.centers[:], solution.ys.tracer.T[:, <span class="dv">0</span>::<span class="dv">10</span>])</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Conservative tracer"</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"concentration"</span>)</span>
@@ -704,7 +704,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The reactive tracer initially also travels through the domain but then reaches a constant profile that is shaped by the first-order decay.</p>
-<div id="fce899a1" class="cell" data-execution_count="14">
+<div id="16121a95" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plt.plot(cells.centers[:], solution.ys.reactive_tracer.T[:, <span class="dv">0</span>::<span class="dv">10</span>])</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Reactive compound"</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"concentration"</span>)</span>
@@ -719,7 +719,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The following plot animates the two concentration profiles over time.</p>
-<div id="9bd104bb" class="cell" data-execution_count="15">
+<div id="43f3db85" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> HTML</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> animation, collections</span>
@@ -924,36 +924,36 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_imgb770ac7efc4d445db7dac79b1761d34f">
+  <img id="_anim_imgf09e5b9d3a7546f9b39978f5b7a2c011">
   <div class="anim-controls">
-    <input id="_anim_sliderb770ac7efc4d445db7dac79b1761d34f" type="range" class="anim-slider" name="points" min="0" max="1" step="1" value="0" oninput="animb770ac7efc4d445db7dac79b1761d34f.set_frame(parseInt(this.value));">
+    <input id="_anim_sliderf09e5b9d3a7546f9b39978f5b7a2c011" type="range" class="anim-slider" name="points" min="0" max="1" step="1" value="0" oninput="animf09e5b9d3a7546f9b39978f5b7a2c011.set_frame(parseInt(this.value));">
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="animb770ac7efc4d445db7dac79b1761d34f.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="animf09e5b9d3a7546f9b39978f5b7a2c011.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="animb770ac7efc4d445db7dac79b1761d34f.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="animf09e5b9d3a7546f9b39978f5b7a2c011.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="animb770ac7efc4d445db7dac79b1761d34f.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="animf09e5b9d3a7546f9b39978f5b7a2c011.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="animb770ac7efc4d445db7dac79b1761d34f.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="animf09e5b9d3a7546f9b39978f5b7a2c011.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="animb770ac7efc4d445db7dac79b1761d34f.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="animf09e5b9d3a7546f9b39978f5b7a2c011.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="animb770ac7efc4d445db7dac79b1761d34f.play_animation()">
+      <button title="Play" aria-label="Play" onclick="animf09e5b9d3a7546f9b39978f5b7a2c011.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="animb770ac7efc4d445db7dac79b1761d34f.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="animf09e5b9d3a7546f9b39978f5b7a2c011.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="animb770ac7efc4d445db7dac79b1761d34f.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="animf09e5b9d3a7546f9b39978f5b7a2c011.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="animb770ac7efc4d445db7dac79b1761d34f.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="animf09e5b9d3a7546f9b39978f5b7a2c011.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectb770ac7efc4d445db7dac79b1761d34f" class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_b770ac7efc4d445db7dac79b1761d34f">
-      <label for="_anim_radio1_b770ac7efc4d445db7dac79b1761d34f">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_b770ac7efc4d445db7dac79b1761d34f" checked="">
-      <label for="_anim_radio2_b770ac7efc4d445db7dac79b1761d34f">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_b770ac7efc4d445db7dac79b1761d34f">
-      <label for="_anim_radio3_b770ac7efc4d445db7dac79b1761d34f">Reflect</label>
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectf09e5b9d3a7546f9b39978f5b7a2c011" class="anim-state">
+      <input type="radio" name="state" value="once" id="_anim_radio1_f09e5b9d3a7546f9b39978f5b7a2c011">
+      <label for="_anim_radio1_f09e5b9d3a7546f9b39978f5b7a2c011">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_f09e5b9d3a7546f9b39978f5b7a2c011" checked="">
+      <label for="_anim_radio2_f09e5b9d3a7546f9b39978f5b7a2c011">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_f09e5b9d3a7546f9b39978f5b7a2c011">
+      <label for="_anim_radio3_f09e5b9d3a7546f9b39978f5b7a2c011">Reflect</label>
     </form>
   </div>
 </div>
@@ -963,9 +963,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_imgb770ac7efc4d445db7dac79b1761d34f";
-    var slider_id = "_anim_sliderb770ac7efc4d445db7dac79b1761d34f";
-    var loop_select_id = "_anim_loop_selectb770ac7efc4d445db7dac79b1761d34f";
+    var img_id = "_anim_imgf09e5b9d3a7546f9b39978f5b7a2c011";
+    var slider_id = "_anim_sliderf09e5b9d3a7546f9b39978f5b7a2c011";
+    var loop_select_id = "_anim_loop_selectf09e5b9d3a7546f9b39978f5b7a2c011";
     var frames = new Array(123);
     
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAHgCAYAAAB6jN80AAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -34076,7 +34076,7 @@ SYqVBVSSJEmx+v+4s9hjUafukwAAAABJRU5ErkJggg==\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        animb770ac7efc4d445db7dac79b1761d34f = new Animation(frames, img_id, slider_id, 40.0,
+        animf09e5b9d3a7546f9b39978f5b7a2c011 = new Animation(frames, img_id, slider_id, 40.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -34087,7 +34087,7 @@ SYqVBVSSJEmx+v+4s9hjUafukwAAAABJRU5ErkJggg==\
 <section id="check-the-mass-balance" class="level2">
 <h2 class="anchored" data-anchor-id="check-the-mass-balance">Check the mass balance</h2>
 <p>The following plot shows the mass of the conservative tracer present in the system over time, comparing it to the mass that entered the system. Up to the moment that the tracer reaches the outlet, they should be the same.</p>
-<div id="9683b687" class="cell" data-execution_count="16">
+<div id="e69e81f1" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mass_in <span class="op">=</span> (</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    system.discharge(solution.ts)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span> bcs[<span class="dv">0</span>].fixed_concentration(solution.ts)</span>
