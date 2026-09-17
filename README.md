@@ -339,6 +339,8 @@ For questions about this project, please open an issue or contact Anna Störiko 
 
 This project is supported by TU Delft.
 
+Many thanks to [Elviss Dvinskis](https://github.com/edvinskis) and [Aysun Urhan](https://github.com/aysunrhn) from the [DCC team](https://www.tudelft.nl/en/digital-competence-centre) at TU Delft for their support to get this package released!
+
 ## License
 
 This project is under an MIT license. Please see [the license](./LICENSE) for details.
