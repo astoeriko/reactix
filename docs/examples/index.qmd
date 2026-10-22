@@ -8,3 +8,5 @@ This section collects worked examples:
 - [Pathogen transport model](pathogen-model.qmd) -- a more complex example showing reactive transport of pathogens with attachment and detachment.
 - [PyMC integration](transport_with_pymc.qmd) -- demonstrates integration of Reactix models with PyMC for Bayesian parameter estimation
 - [Mixed-reactor model](mixed-reactor.qmd) -- show how to set up a model for a mixed system (without transport)
+
+To run the tutorial notebooks, install a Jupyter frontend such as [JupyterLab](https://jupyterlab.readthedocs.io) or the Jupyter extension in VSCode.
