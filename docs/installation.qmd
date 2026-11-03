@@ -99,7 +99,7 @@ For Bayesian modeling, Reactix can be coupled with [PyMC](https://www.pymc.io). 
 ## pixi
 
 ``` bash
-pixi add reactix[pymc]
+pixi add reactix pymc arviz nutpie
 ```
 
 ## conda
@@ -129,7 +129,7 @@ Running the Jupyter notebook examples in the notebooks folder requires additiona
 ## pixi
 
 ``` bash
-pixi add reactix[notebooks]
+pixi add reactix ipympl ipykernel matplotlib
 ```
 
 ## conda
