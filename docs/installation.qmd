@@ -55,7 +55,7 @@ Activate the environment before installing the package.
 
 To install the package you can use pixi, conda, pip or uv. The package is available on PyPI and conda-forge. Reactix depends on [JAX](https://jax.readthedocs.io) and [diffrax](https://docs.kidger.site/diffrax/). These are installed automatically when installing Reactix via pixi, pip, uv, or conda.
 
-::: panel-tabset
+::: {.panel-tabset group="package-manager"}
 ## pixi
 
 This will install Reactix from conda-forge.
