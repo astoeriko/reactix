@@ -34,47 +34,12 @@ Reactix might not be the right choice if…
 
 ### Create an environment
 
-To avoid possible dependency conflicts, we recommend installing Reactix in a dedicated environment. Reactix requires **Python 3.11 or later**.
+To avoid possible dependency conflicts, we recommend installing Reactix in a dedicated environment. Reactix requires Python 3.11 or later.
+You can create an environment using conda, pixi, uv or venv.
 
-You can create an environment:
-
-**with uv:**
-
-```bash
-uv venv reactix-env
-source reactix-env/bin/activate  # Linux/macOS
-reactix-env\Scripts\activate     # Windows
-```
-
-**with conda:**
-
-```bash
-conda create -n reactix python=3.13
-conda activate reactix
-```
-
-**or alternatively with venv:**
-
-```bash
-python -m venv reactix-env
-source reactix-env/bin/activate   # Linux/macOS
-reactix-env\Scripts\activate      # Windows
-```
+More detailed instructions for different package managers can be found in the [installation guide](https://astoeriko.github.io/reactix/installation.html)
 
 Activate the environment before installing the package.
-
-> **Note:** If you don't have `uv` installed, you can get it with:
-
-```bash
-# Linux/macOS
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Windows (PowerShell)
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-
-# Or via pip
-pip install uv
-```
 
 ### Dependencies
 

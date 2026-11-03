@@ -2,77 +2,155 @@
 title: "Installation"
 ---
 
-### Create an environment
+# Create an environment
 
-To avoid possible dependency conflicts, we recommend installing Reactix in a dedicated environment. Reactix requires **Python 3.11 or later**.
+To avoid possible dependency conflicts, we recommend installing Reactix in a dedicated environment or to use [Pixi](https://pixi.prefix.dev) to create a workspace for your project. Reactix requires Python 3.11 or later.
 
-You can create an environment:
+::: panel-tabset
+## pixi
 
-**with uv:**
+Start a new Pixi workspace:
 
-```bash
+``` bash
+pixi init my_reactix_workspace
+```
+
+where `my_reactix_workspace` should be the name of your project using Reactix.
+
+## conda
+
+Create and activate a new conda environment:
+
+``` bash
+conda create -n reactix
+conda activate reactix
+```
+
+To avoid issues with conda packages from multiple channels, we recommend to set a strict channel priority and set the `conda-forge` channel as the top of the channel list in your `.condarc`. See the [Tips & Trick page](https://conda-forge.org/docs/user/tipsandtricks/#using-multiple-channels) of conda-forge for instructions.
+
+## uv
+
+Create and activate an environment:
+
+``` bash
 uv venv reactix-env
 source reactix-env/bin/activate  # Linux/macOS
 reactix-env\Scripts\activate     # Windows
 ```
 
-**with conda:**
+## venv
 
-```bash
-conda create -n reactix python=3.13
-conda activate reactix
-```
+Create and activate an environment:
 
-**or alternatively with venv:**
-
-```bash
+``` bash
 python -m venv reactix-env
 source reactix-env/bin/activate   # Linux/macOS
 reactix-env\Scripts\activate      # Windows
 ```
+:::
 
 Activate the environment before installing the package.
 
-:::{.callout-note}
-If you don't have `uv` installed, you can get it with:
+# Install Reactix
 
-```bash
-# Linux/macOS
-curl -LsSf https://astral.sh/uv/install.sh | sh
+To install the package you can use pixi, conda, pip or uv. The package is available on PyPI and conda-forge. Reactix depends on [JAX](https://jax.readthedocs.io) and [diffrax](https://docs.kidger.site/diffrax/). These are installed automatically when installing Reactix via pixi, pip, uv, or conda.
 
-# Windows (PowerShell)
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+::: {.panel-tabset group="package-manager"}
+## pixi
 
-# Or via pip
-pip install uv
-```
-:::
+This will install Reactix from conda-forge.
 
-### Install Reactix
-
-To install the package you can use conda, pip or uv. The package is available on PyPI and conda-forge. 
-
-#### **uv** (from PyPI):
-
-```bash
-uv pip install reactix
+``` bash
+pixi add reactix
 ```
 
-#### **conda** (from conda-forge):
+## conda
 
-```bash
+This will install Reactix from conda-forge.
+
+``` bash
 conda install -c conda-forge reactix
 ```
 
-#### **pip** (from PyPI):
+## uv
 
-```bash
-pip install reactix
+This will install Reactix from PyPI.
+
+``` bash
+uv pip install reactix
 ```
 
-### Dependencies
+## pip
 
-Reactix depends on [JAX](https://jax.readthedocs.io), [diffrax](https://docs.kidger.site/diffrax/), and [PyMC](https://www.pymc.io). These are installed automatically when installing Reactix via pip, uv, or conda.
+This will install Reactix from PyPI.
 
-> **JAX and GPU support:** GPU support integration is considered for a future release. Currently, Reactix can only be used with CPU-based JAX installations.
+``` bash
+pip install reactix
+```
+:::
 
+# Additional dependencies
+
+## Bayesian modeling with PyMC
+
+For Bayesian modeling, Reactix can be coupled with [PyMC](https://www.pymc.io). To install the additionally required dependencies alongside Reactix:
+
+::: {.panel-tabset group="package-manager"}
+## pixi
+
+``` bash
+pixi add reactix pymc arviz nutpie
+```
+
+## conda
+
+``` bash
+conda install -c conda-forge reactix pymc arviz nutpie
+```
+
+## uv
+
+``` bash
+uv pip install reactix[pymc]
+```
+
+## pip
+
+``` bash
+pip install reactix[pymc]
+```
+:::
+
+## Running examples
+
+Running the Jupyter notebook examples in the notebooks folder requires additional dependencies. You can install them as follows:
+
+::: {.panel-tabset group="package-manager"}
+## pixi
+
+``` bash
+pixi add reactix ipympl ipykernel matplotlib
+```
+
+## conda
+
+``` bash
+conda install -c conda-forge reactix ipympl ipykernel matplotlib
+```
+
+## uv
+
+``` bash
+uv pip install reactix[notebooks]
+```
+
+## pip
+
+``` bash
+pip install reactix[notebooks]
+```
+:::
+
+## JAX and GPU support
+
+GPU support integration is considered for a future release. Currently, Reactix can only be used with CPU-based JAX installations.
